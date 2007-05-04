@@ -1,0 +1,13 @@
+
+Jack Hebert
+5/4/07
+
+1. Download current news articles from a set of RSS feeds.
+
+2. Use Stanford parser to break each article into phrases, small Know-it-all like facts.
+
+3. Use Wordnet to merge similar facts via synonyms and ...
+
+4. Use facts that are present in several articles to build up important phrases/facts in original articles.
+
+5. Display with snazzienss.
