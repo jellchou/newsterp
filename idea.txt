@@ -3,11 +3,38 @@ Jack Hebert
 5/4/07
 
 1. Download current news articles from a set of RSS feeds.
+   These can be gathered manually, downloaded periodically.
 
 2. Use Stanford parser to break each article into phrases, small Know-it-all like facts.
+   Want small basic facts initially. Mark which larger phrases they came from.
 
 3. Use Wordnet to merge similar facts via synonyms and ...
+   This can be done with the cluser if needed.
+     Basically each fact contains a set of tokens.
+     For each token, look at facts it is present in. Emit facts that match.
+     Consolidate matching facts.
 
 4. Use facts that are present in several articles to build up important phrases/facts in original articles.
+   Take set of matching facts and find larger phrases from (2) which have been best verified.
 
 5. Display with snazzienss.
+   Index from (articles -> verified facts).
+   Can combine with tradition index from (words -> articles).
+
+
+
+Email to Mike Cafarella - 
+****
+Mike,
+
+I've got a project idea that I would love some advice on, given that KnowItAll provided some inspiration for it. The project will attempt to extract basic facts from news articles. Then for a given headline / cluster of news articles, we can provide a set of facts that have a high probability of being accurate or important.
+
+So to do this, it seems necessary to first extract small tuples or facts from each news article (this seems like KnowItAll), and then merge them using synonyms or stemming or ... (I am more comfortable with this, and have access to the Hadoop cluster for cse490h).
+
+So do you have any thoughts / specific advise for parsing out small phrases? I will read through the latest KnowItAll papers, but what is the best way to do this? Should we be creating parse trees? or are parts of speech enough? or just segmenting phrases?
+
+Thanks,
+Jack Hebert
+****
+
+
