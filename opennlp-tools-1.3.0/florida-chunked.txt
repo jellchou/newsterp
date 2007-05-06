@@ -1,0 +1,16 @@
+
+ [NP SEATTLE/NNP (/-LRB- AP/NNP )/-RRB- ] -/: [NP A/DT water/NN main/JJ break/NN ] [ADJP responsible/JJ ] [PP for/IN ] [NP a/DT sinkhole/NN ] [NP that/IN ] [VP swallowed/VBD ] [NP two/CD cars/NNS ] [ADVP also/RB ] [VP created/VBD ] [NP a/DT large/JJ gap/NN ] [PP in/IN ] [NP a/DT nearby/JJ bridge/NN ] [NP 's/POS foundation/NN ] [PP that/IN ] [NP workers/NNS ] [VP were/VBD filling/VBG ] [PP in/IN ] [NP Thursday/NNP ] ,/, [NP city/NN officials/NNS ] [VP said/VBD ] ./.
+
+ [NP University/NNP Bridge/NNP ] [PP over/IN ] [NP Portage/NNP Bay/NNP ] [VP was/VBD opened/VBN ] [PP to/TO ] [NP bikes/NNS ] and/CC [NP pedestrians/NNS ] [NP Thursday/NNP ] but/CC [VP remained/VBD ] [ADJP closed/JJ ] [PP to/TO ] [NP vehicle/NN traffic/NN ] [PP as/IN ] [NP the/DT 10-by-15-foot/JJ gap/NN ] [VP was/VBD filled/VBN ] [PP in/IN ] ,/, [NP a/DT job/NN ] [NP that/WDT ] [VP was/VBD expected/VBN to/TO be/VB finished/VBN ] [PP that/IN ] [NP night/NN ] ,/, [VP said/VBD ] [NP Gregg/NNP H./NNP Hirakawa/NNP ] ,/, [NP spokesman/NN ] [PP for/IN ] [NP the/DT city/NN Transportation/NNP Department/NNP ] ./.
+
+ "/`` [NP We/PRP ] [VP do/VBP have/VB ] [NP a/DT section/NN ] [PP of/IN ] [NP the/DT bridge/NN ] [NP that/WDT ] [VP is/VBZ being/VBG supported/VBN ] [PP by/IN ] [NP open/JJ space/NN ] ,/, and/CC [NP air/NN ] [VP is/VBZ ] not/RB [NP a/DT good/JJ support/NN ] ,/, "/'' [NP Hirakawa/NNP ] [VP said/VBD ] ./.
+ [NP The/DT bridge/NN ] ,/, [NP which/WDT ] [VP is/VBZ used/VBN ] [PP by/IN ] [NP about/IN 31,400/CD vehicles/NNS ] [ADVP daily/RB ] ,/, [VP wo/MD n't/RB collapse/VB ] [NP because/IN most/JJS ] [PP of/IN ] [NP its/PRP$ weight/NN ] [VP is/VBZ distributed/VBN ] [ADVP elsewhere/RB ] ,/, [NP he/PRP ] [VP added/VBD ] ./.
+
+ [NP The/DT bridge/NN ] [VP was/VBD ] [NP closed/JJ Wednesday/NNP morning/NN ] [PP after/IN ] [NP the/DT rupture/NN ] [PP of/IN ] [NP a/DT 90-year-old/JJ water/NN main/JJ ] [VP unleashed/VBD ] [NP a/DT muddy/JJ cascade/NN ] [PP near/IN ] [NP the/DT span/NN ] [NP 's/POS southern/JJ foundation/NN ] ./.
+ [NP The/DT sinkhole/NN ] [NP the/DT flooding/NN ] [VP opened/VBD ] [PRT up/RP ] [PP on/IN ] [NP a/DT nearby/JJ street/NN ] [VP is/VBZ ] [NP 8/CD to/TO 10/CD feet/NNS ] [ADJP deep/JJ ] and/CC [NP 30/CD to/TO 40/CD feet/NNS ] [ADJP wide/JJ ] ./.
+
+ [NP Jorge/NNP Maya/NNP ] ,/, [NP kitchen/NN manager/NN ] [PP at/IN ] [NP a/DT nearby/JJ Red/NNP Robin/NNP restaurant/NN ] ,/, [VP said/VBD ] [NP he/PRP ] [VP tried/VBD to/TO move/VB ] [NP his/PRP$ Dodge/NNP minivan/NN ] [PP as/IN ] [NP the/DT asphalt/NN ] [VP slumped/VBD ] [PP around/IN ] [NP it/PRP ] but/CC [VP wound/VBD up/RB having/VBG to/TO flee/VB ] [PP as/IN ] [NP his/PRP$ car/NN ] [VP sank/VBD ] [PP into/IN ] [NP the/DT muddy/JJ hole/NN ] ./.
+
+ "/`` [NP It/PRP ] [VP was/VBD ] [ADJP scary/JJ ] ,/, "/'' [NP Maya/NNP ] [VP said/VBD ] ./.
+
+ [NP It/PRP ] [VP took/VBD ] [PP until/IN ] [NP late/JJ Wednesday/NNP afternoon/NN ] [VP to/TO restore/VB ] [NP water/NN service/NN ] [PP to/TO ] [NP areas/NNS ] [ADVP south/RB ] [PP of/IN ] [NP the/DT bridge/NN ] ,/, [NP a/DT key/NN route/NN ] [PP to/TO ] [NP the/DT University/NNP ] [PP of/IN ] [NP Washington/NNP ] ./.

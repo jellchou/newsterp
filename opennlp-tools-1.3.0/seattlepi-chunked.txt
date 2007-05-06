@@ -1,0 +1,48 @@
+ [NP Cars/NNPS ] [VP rattle/NN ] [ADVP again/RB ] [PP over/IN ] [NP University/NNP Bridge/NNP Water/NNP main/JJ break/NN ] [VP had/VBD closed/VBN ] [NP span/NN ]
+
+ [PP By/IN ] [NP VANESSA/NNP HO/NNP P-I/NNP REPORTER/NN ]
+
+ [NP The/DT University/NNP Bridge/NNP ] [VP reopened/VBN ] [PP to/TO ] [NP vehicles/NNS ] [NP Thursday/NNP afternoon/NN ] ,/, [SBAR after/IN ] [NP workers/NNS ] [VP finished/VBD filling/VBG ] [NP a/DT gaping/VBG earthen/NN hole/NN and/CC commuters/NNS ] [VP endured/VBD ] [NP two/CD mornings/NNS ] [PP of/IN ] [NP traffic/NN woes/NNS ] ./.
+
+ [NP The/DT busy/JJ bridge/NN ] ,/, [VP used/VBN ] [PP by/IN ] [NP more/JJR than/IN 30,000/CD cars/NNS ] [NP a/DT day/NN ] ,/, [VP was/VBD closed/VBN ] [NP Wednesday/NNP morning/NN ] [SBAR after/IN ] [NP a/DT large/JJ water/NN main/JJ burst/NN ] [PP under/IN ] [NP its/PRP$ southern/JJ end/NN ] ,/, [VP creating/VBG ] [NP a/DT sinkhole/NN ] [PP that/IN ] [NP devoured/JJ two/CD unoccupied/JJ cars/NNS ] ./.
+
+ [NP The/DT hole/NN ] [VP included/VBD ] [NP a/DT significant/JJ amount/NN ] [PP of/IN ] [NP soil/NN erosion/NN ] [PP under/IN ] [NP the/DT bridge/NN ] [NP 's/POS southeastern/JJ support/NN ] ./.
+ [NP Transportation/NNP workers/NNS ] [VP finished/VBD filling/VBG ] [NP that/DT void/NN ] [PP with/IN ] [NP more/JJR than/IN 40/CD cubic/JJ yards/NNS ] [PP of/IN ] [NP concrete/JJ and/CC sand/NN ] [NP Thursday/NNP ] ./.
+
+ "/`` [NP We/PRP ] [VP 're/VBP ] [ADJP happy/JJ ] [SBAR that/IN ] [NP it/PRP ] [VP did/VBD not/RB cause/VB ] [NP damage/NN ] [PP to/TO ] [NP the/DT structural/JJ integrity/NN ] [PP of/IN ] [NP the/DT bridge/NN ] ,/, "/'' [VP said/VBD ] [NP Mary/NNP Beth/NNP Turner/NNP ] ,/, [NP a/DT spokeswoman/NN ] [PP for/IN ] [NP the/DT city/NN ] [NP 's/POS Department/NNP ] [PP of/IN ] [NP Transportation/NNP ] ./.
+ "/`` [NP We/PRP ] [VP 're/VBP ] [ADJP sorry/JJ ] [SBAR that/IN ] [NP it/PRP ] [VP did/VBD inconvenience/NN ] [NP all/DT the/DT residents/NNS ] [PP in/IN ] [NP that/DT area/NN ] ./.
+ [NP That/DT ] [VP 's/VBZ ] [NP an/DT area/NN ] [ADVP where/WRB ] [NP we/PRP ] [VP 've/VBP had/VBD ] [NP slides/NNS ] [NP several/JJ times/NNS ] [ADVP before/RB ] ,/, so/IN [NP they/PRP ] [VP 're/VBP kind/NN of/IN used/VBN ] [PP to/TO ] [NP the/DT drill/NN ] ./. "/''
+
+ [SBAR Although/IN ] [NP the/DT bridge/NN ] [VP is/VBZ considered/VBN structurally/RB sound/NN ] ,/, [NP transportation/NN workers/NNS ] [VP will/MD continue/VB to/TO measure/VB ] [NP movement/NN ] [PP in/IN ] [NP the/DT supports/NNS ] ./.
+
+ [NP The/DT bridge/NN ] [NP 's/POS ] [ADJP 3/CD p.m./NN ] [NP reopening/VBG ] [VP came/VBD ] [PP in/IN ] [NP time/NN ] [PP for/IN ] [NP the/DT annual/JJ boating/NN festivities/NNS ] [NP this/DT weekend/NN ] ./.
+ [NP The/DT event/NN ] ,/, [NP which/WDT ] [VP celebrates/VBZ ] [NP the/DT opening/NN ] [PP of/IN ] [NP boating/NN season/NN ] ,/, [VP involves/VBZ ] [NP the/DT closure/NN ] [PP of/IN ] [NP the/DT nearby/JJ Montlake/NNP Bridge/NNP ] [PP to/TO ] [NP car/NN traffic/NN ] ./.
+
+ [ADVP Elsewhere/RB ] ,/, [NP city/NN crews/NNS ] [VP had/VBD ] [ADVP much/RB ] [PP to/TO ] [NP do/VB ] ./.
+ [NP The/DT broken/JJ main/JJ spilled/VBN 3/CD million/CD gallons/NNS ] [PP of/IN ] [NP water/NN ] ,/, [VP creating/VBG ] [NP a/DT sinkhole/NN ] [VP measuring/VBG ] [NP about/IN 30/CD feet/NNS ] [ADJP wide/JJ ] [PP by/IN ] [NP 50/CD feet/NNS ] [ADVP long/RB ] ./.
+ [NP It/PRP ] [VP washed/VBD ] [PP out/IN ] [NP Portage/NNP Bay/NNP Place/NNP East/NNP ] ,/, [NP a/DT small/JJ road/NN ] [VP accessed/VBN ] [PP by/IN ] [NP residents/NNS ] [PP of/IN ] [NP about/IN 100/CD homes/NNS ] ,/, [NP most/JJS ] [PP of/IN ] [NP them/PRP ] [NP houseboats/NNS ] ./.
+
+ [NP Utility/NNP crews/NNS ] [VP will/MD also/RB repair/VB ] [NP the/DT broken/VBN water/NN main/NN ] --/: [NP a/DT cast-iron/NN ] ,/, [NP 24-inch-diameter/JJ pipe/NN ] --/: and/CC [VP inspect/VBP ] [NP it/PRP ] [PP for/IN ] [ADVP why/WRB ] [NP it/PRP ] [VP cracked/VBD ] ./.
+ [NP The/DT pipe/NN ] [VP was/VBD laid/VBN ] [PP in/IN ] [NP 1917/CD ] ,/, but/CC [NP cast-iron/NN mains/NNS ] [VP are/VBP often/RB expected/VBN to/TO last/VB ] [NP 150/CD to/TO 200/CD years/NNS ] ./.
+
+ "/`` [NP It/PRP ] [VP 's/VBZ been/VBN ] [PP through/IN ] [NP some/DT pretty/JJ big/JJ earthquakes/NNS ] ,/, "/'' [VP said/VBD ] [NP Joe/NNP Mickelson/NNP ] ,/, [NP a/DT Seattle/NNP Public/NNP Utilities/NNP water-operations/NNS director/NN ] ./.
+
+ [NP He/PRP ] [VP said/VBD ] [NP the/DT rerouted/JJ water/NN ] [VP is/VBZ working/VBG ] [NP fine/NN ] [PP for/IN ] [NP now/RB ] ,/, but/CC [NP the/DT pipe/NN ] [VP needs/VBZ to/TO be/VB fixed/VBN ] [VP to/TO accommodate/VB ] [NP increased/VBN summer/NN water/NN demand/NN ] ./.
+
+ [PP On/IN ] [NP Thursday/NNP ] ,/, [NP transportation/NN workers/NNS ] [VP were/VBD paving/VBG ] [NP an/DT alternative/JJ road/NN ] [PP for/IN ] [NP residents/NNS ] [PP through/IN ] [NP the/DT steep/JJ parking/NN lot/NN ] [PP of/IN ] [NP Red/NNP Robin/NNP ] ,/, [NP a/DT popular/JJ fixture/NN ] [PP in/IN ] [NP the/DT Eastlake/NNP neighborhood/NN ] ./.
+
+ [PP With/IN ] [NP the/DT din/NN ] [PP of/IN ] [NP excavators/NNS and/CC bulldozers/NNS ] [PP around/IN ] [NP him/PRP ] ,/, [NP the/DT restaurant/NN ] [NP 's/POS facilities/NNS manager/NN ] ,/, [NP John/NNP Allen/NNP ] ,/, [VP shrugged/VBD ] ./.
+
+ "/`` [NP You/PRP ] [ADVP just/RB ] [NP kind/NN ] [PP of/IN ] [VP have/VBP to/TO take/VB ] [NP it/PRP ] [PP with/IN ] [NP a/DT smile/NN ] ,/, "/'' [NP he/PRP ] [VP said/VBD ] ./.
+ "/`` [NP You/PRP ] [VP take/VBP ] [NP the/DT good/JJ ] [PP with/IN ] [NP the/DT bad/JJ ] ./. "/''
+
+ [NP Houseboat/NNP resident/NN Ellyn/NNP Swanson/NNP ] [VP was/VBD ] [ADJP grateful/JJ ] [PP that/IN ] [NP her/PRP$ water/NN and/CC gas/NN ] [VP were/VBD ] [ADVP back/RB ] [PP on/IN ] ./.
+ [SBAR As/IN ] [NP she/PRP ] [VP walked/VBD ] [NP her/PRP$ dog/NN ] ,/, [NP Penny/NNP ] ,/, [NP the/DT one/CD inconvenience/NN ] [NP she/PRP ] [VP had/VBD now/RB was/VBD ] [PP that/IN ] [NP Penny/NNP ] [VP could/MD n't/RB go/VB ] [PP under/IN ] [NP the/DT bridge/NN ] --/: [NP something/NN ] [NP she/PRP ] [VP likes/VBZ to/TO do/VB ] ./.
+
+ "/`` [NP It/PRP ] [VP 's/VBZ ] [NP all/DT nice/JJ and/CC quiet/JJ ] [ADVP now/RB ] ,/, "/'' [NP Swanson/NNP ] [VP said/VBD ] ./.
+
+ [NP Blaine/NNP Hammond/NNP ] ,/, [NP who/WP ] [ADVP also/RB ] [VP lives/VBZ ] [PP on/IN ] [NP a/DT houseboat/NN ] ,/, [VP said/VBD ] [NP he/PRP ] [VP was/VBD ] [ADJP glad/JJ ] [NP he/PRP ] [VP had/VBD just/RB shopped/VBN ] [PP for/IN ] [NP groceries/NNS ] [PP before/IN ] [NP the/DT water/NN main/JJ ] [VP ruptured/VBD ] ./.
+ [NP City/NNP crews/NNS ] [VP had/VBD allowed/VBN ] [NP residents/NNS ] [NP a/DT short/JJ opportunity/NN ] [VP to/TO move/VB ] [NP cars/NNS ] [PP off/IN ] [NP the/DT washed-out/NN road/NN ] [NP Wednesday/NNP ] ,/, but/CC [NP Hammond/NNP ] [VP had/VBD been/VBN ] [ADJP busy/JJ ] [PP at/IN ] [NP the/DT time/NN ] ./.
+
+ [NP Hammond/NNP ] [ADVP often/RB ] [VP walked/VBD ] [NP the/DT University/NNP Bridge/NNP ] [PP for/IN ] [NP errands/NNS ] ./.
+ [SBAR As/IN ] [NP he/PRP ] [VP walked/VBD ] [NP it/PRP ] [NP Thursday/NNP morning/NN ] ,/, [NP he/PRP ] [VP enjoyed/VBD ] [NP the/DT sun/NN ] and/CC [NP an/DT unusually/RB quiet/JJ span/NN ] ./.

@@ -1,0 +1,65 @@
+/******************************************************************************
+ * Copyright (c) 2007 Mark Alan Finlayson
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the MIT Java Wordnet Interface 
+ * Public License v1.0 which accompanies this distribution, and is 
+ * available at http://www.mit.edu/~markaf/projects/wordnet/license.html.
+ *
+ * To communicate praise, suggestions, constructive criticism, or feature
+ * requests, write:
+ *
+ * Mark Alan Finlayson
+ * email: markaf@alum.mit.edu
+ * post: 32 Vassar St., Room 32-258, Cambridge, MA 02138 USA
+ * web: http://www.mit.edu/~markaf/wordnet/
+ *******************************************************************************/
+
+Changelog for edu.mit.wordnet:
+Ver : Release Date	: Changes
+=============================
+1.1	: Apr 28, 2007	: 1. Changed license to CCPL by-nc v3.0 unported
+					  2. Fixed bug 001 (resource URL problem)
+					  		-Added call to URLDecoder in getDirectoryHandle() method
+					  3. Fixed bug 002 (delay FileProvider instantiation)
+					    	-Dictionary: Moved FileProvider instantiation to open() method
+					    	-FileProvider: Moved null/file URL check to getDirectoryMethod() method
+					  4. Fixed bug 003 (unbounded cache)
+					  		-AbstractCachingParser: changed HashMap to WeakHashMap
+					  		-DataLineParser: removed caching
+					  		-IndexLineParser: removed caching
+					  		-ExceptionLineParser: removed caching
+					  		-IDAwareCache: added max capacity support, default = 10*initial
+					  		-Dictionary: made cache a field, not a superclass
+					  		-Added IClassCache, IClassCacheIDAware interfaces
+					  		-Renamed IDAwareCache to ClassCacheIDAware, separated out ClassCache implementation
+					  		-ClassCacheWithID now implements IClassCacheIDAware
+					  4. Added feature 003 (Wordnet 3.0 support)
+					    	-Tested JWI with Wordnet 3.0 UNIX files
+					  5. Added feature 007 (more informative error messages on open() failure)
+					  		-IDataProvider: Added 'throws IOException' to open() method
+					  		-Added DataProviderNotOpenException class
+					  		-FileProvider: added checkOpen() calls
+					  6. Added feature 008 (access to providers via IDictionary interface)
+					  		-IDictionary: Added getters and setters for the providers
+1.0	: Apr 23, 2007	: Initial Release under MIT license
+ 
+
+Features planned for future releases:
+ID	: ETA 	: Req.	: Done?	: Added	: Description
+=================================================
+008 : 5/07	: 5/07	: Yes	: 5/07	: Access to DataProvider and ParserProvider via IDictionary interface
+007 : 5/07	: 5/07	: Yes	: 5/07	: More informative error messages on failure to find dictionary files
+006 : Soon	: 5/07	: No	: -		: JUnit test suite for development purposes
+005	: 5/07	: 5/07	: No	: -		: Simple word-sense disambiguation
+004	: 5/07	: 5/07	: No	: -		: Access to sense count files
+003	: 5/07	: 5/07	: Yes	: 5/07	: Support for Wordnet 3.0
+002	: Far	: 5/07	: No	: -		: Interationalized error messages
+001	: Never	: 5/07	: No	: -		: Non-English Wordnet support (I'm monolingual, so someone else has to do it)
+
+Bug Reports
+ID	: Priority 	: Rep.	: Fix?	: Fixed	: Description
+=====================================================
+003 : High		: 5/07	: Yes	: 5/07	: Caches grow without bound on heavy use, overflowing Java Heap
+002	: High		: 5/07	: Yes	: 5/07	: Dictionary should delay IDataProvider initialization until open(), to allow delayed call to setSource(URL)
+001	: High		: 5/07	: Yes	: 5/07	: Resource URL doesn't work for FileProvider

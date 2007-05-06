@@ -1,0 +1,18 @@
+ [NP SEATTLE/NNP ] --/: [NP Seattle/NNP officials/NNS ] [VP said/VBD ] [NP there/EX ] [VP was/VBD ] [NP no/DT structural/JJ damage/NN ] [PP to/TO ] [NP the/DT University/NNP Bridge/NNP ] [PP from/IN ] [NP a/DT broken/VBN water/NN main/NN ] [NP that/WDT ] [VP undermined/VBD ] [NP an/DT area/NN ] [PP under/IN ] [NP the/DT bridge/NN ] [NP 's/POS southern/JJ end/NN ] ./.
+
+ [NP The/DT bridge/NN ] [VP reopened/VBD ] [PP to/TO ] [NP vehicle/NN traffic/NN ] [PP on/IN ] [NP Thursday/NNP afternoon/NN ] ,/, [NP 31/CD hours/NNS ] [PP after/IN ] [NP the/DT main/JJ broke/JJ and/CC ] [VP caused/VBD ] [NP a/DT sinkhole/JJ that/IN ] [VP swallowed/VBD ] [NP two/CD cars/NNS ] ./.
+
+ [NP Transportation/NNP crews/NNS ] [VP continue/VBP to/TO repair/VB ] [NP the/DT sinkhole/NN ] ./.
+ [NP Crews/NNPS ] [VP built/VBD ] [NP a/DT temporary/JJ bypass/NN ] [VP to/TO reconnect/VB ] [NP people/NNS ] [VP cut/VB ] [PRT off/RP ] [ADVP when/WRB ] [NP the/DT water/NN ] [VP washed/VBD ] [ADVP away/RB ] [NP the/DT only/JJ road/NN ] [PP in/IN ] [PP and/CC ] [PP out/IN ] [PP of/IN ] [NP their/PRP$ Portage/NN Bay/NNP neighborhood/NN ] ./.
+ [NP It/PRP ] [VP runs/VBZ ] [PP through/IN ] [NP the/DT nearby/JJ Red/NNP Robin/NNP restaurant/NN parking/NN lot/NN ] ./.
+
+ "/`` [NP We/PRP ] [VP 're/VBP still/RB asking/VBG ] [NP motorists/NNS ] [VP to/TO use/VB ] [NP caution/NN ] [PP in/IN ] [NP the/DT area/NN ] "/`` [SBAR because/IN ] [NP there/EX ] [VP 's/VBZ ] [ADVP still/RB ] [NP a/DT lot/NN ] [PP of/IN ] [NP work/NN ] [VP being/VBG done/VBN ] ,/, [VP said/VBD ] [NP Gregg/NNP H./NNP Hirakawa/NNP ] ,/, [NP spokesman/NN ] [PP for/IN ] [NP the/DT city/NN Transportation/NNP Department/NNP ] ./.
+
+ [NP Hirakawa/NNP ] [VP said/VBD ] [NP the/DT corner/NN ] [PP of/IN ] [NP the/DT bridge/NN ] [ADVP where/WRB ] [NP city/NN workers/NNS ] [VP poured/VBD ] [NP a/DT slurry/NN ] [PP of/IN ] [NP concrete/JJ and/CC sand/NN ] [VP was/VBD designed/VBN to/TO carry/VB ] [NP a/DT maximum/JJ load/NN ] [PP of/IN ] [NP 300/CD tons/NNS ] --/: [ADVP when/WRB ] [NP it/PRP ] [VP 's/VBZ not/RB missing/VBG ] [NP part/NN ] [PP of/IN ] [NP its/PRP$ foundation/NN ] ./.
+
+ "/`` [NP We/PRP ] [VP do/VBP have/VB ] [NP a/DT section/NN ] [PP of/IN ] [NP the/DT bridge/NN ] [NP that/WDT ] [VP is/VBZ being/VBG supported/VBN ] [PP by/IN ] [NP open/JJ space/NN ] ,/, and/CC [NP air/NN ] [VP is/VBZ ] not/RB [NP a/DT good/JJ support/NN ] ,/, "/'' [NP he/PRP ] [VP said/VBD ] ./.
+
+ [NP The/DT bridge/NN ] ,/, [VP used/VBN ] [PP by/IN ] [NP 31,400/CD vehicles/NNS ] [ADVP daily/RB ] ,/, [VP did/VBD n't/RB collapse/VB ] [NP because/IN most/JJS ] [PP of/IN ] [NP its/PRP$ weight/NN ] [VP was/VBD distributed/VBN ] [ADVP elsewhere/RB ] ,/, [NP Hirakawa/NNP ] [VP explained/VBD ] ./.
+
+ [NP The/DT 2-foot-diameter/JJ cast/NN iron/NN pipe/NN ] [VP may/MD have/VB been/VBN leaking/VBG ] [PP since/IN ] [NP Tuesday/NNP ] ,/, but/CC [NP the/DT rupture/NN ] [VP became/VBD ] [ADJP evident/JJ ] [ADVP shortly/RB ] [PP after/IN ] [NP 7:30/CD a.m./NN ]
+ [NP Wednesday/NNP ] [ADVP when/WRB ] [NP a/DT muddy/JJ cascade/NN ] [VP emerged/VBD ] [PP near/IN ] [NP the/DT southern/JJ foundation/NN ] [PP of/IN ] [NP the/DT bridge/NN ] ,/, [NP which/WDT ] [VP was/VBD closed/VBN ] [PP within/IN ] [NP minutes/NNS ] ./.
