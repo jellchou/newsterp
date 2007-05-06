@@ -1,0 +1,26 @@
+ [NP It/PRP ] [VP 's/VBZ ] [NP the/DT second/JJ major/JJ water/NN main/JJ break/NN ] [PP in/IN ] [PP as/IN ] [NP many/JJ weeks/NNS ] [PP in/IN ] [NP the/DT Seattle/NNP area/NN ] ./.
+ [NP This/DT time/NN ] ,/, [NP a/DT 24-inch/JJ diameter/NN line/NN ] [VP scoured/VBN ] [PP out/IN ] [NP a/DT hole/NN ] [ADJP so/RB large/JJ ] [NP it/PRP ] [VP ate/VBD ] [NP two/CD cars/NNS ] ./.
+
+
+ [NP A/DT 10-foot/JJ long/JJ crack/NN ] [VP formed/VBN ] [PP in/IN ] [NP the/DT 95-year-old/JJ cast/NN iron/NN pipe/NN ] ./.
+
+ [NP Jorge/NNP Maya/NNP ] [VP tried/VBD to/TO get/VB ] [NP his/PRP$ minivan/NN ] [ADVP away/RB ] [ADVP when/WRB ] [NP the/DT leak/NN ] [VP started/VBD ] [PP at/IN ] [NP 7:30/CD Wednesday/NNP morning/NN ] ./.
+
+ [NP Jorge/NNP ] [VP says/VBZ ] ,/, "/`` [NP The/DT car/NN ] [VP started/VBD going/VBG ] [ADVP down/RB ] ,/, and/CC [NP I/PRP ] [VP jumped/VBD ] [PP out/IN ] [PP of/IN ] [NP my/PRP$ car/NN ] ./.
+ [NP I/PRP ] [VP was/VBD ] [ADJP very/RB scared/VBN ] ./. "/''
+
+ [NP The/DT size/NN ] [PP of/IN ] [NP the/DT pit/NN ] [VP is/VBZ ] [ADJP amazing/JJ ] ,/, [VP estimated/VBN ] [PP at/IN ] [NP 9/CD feet/NNS ] [ADJP deep/JJ ] and/CC [NP 30/CD to/TO 40/CD feet/NNS ] [ADVP long/RB ] ./.
+
+ [NP Underground/NN telephone/NN lines/NNS ] [VP were/VBD cut/VBN ] ,/, and/CC [NP a/DT gas/NN line/NN ] [VP threatened/VBD ] ./.
+
+ But/CC [NP a/DT big/JJ concern/NN ] [VP is/VBZ ] [SBAR whether/IN ] [NP the/DT approach/NN ] [PP to/TO ] [NP the/DT University/NNP Bridge/NNP ] [VP was/VBD undermined/VBN ] ./.
+
+ [NP Gregg/NNP Hirakawa/NNP ] [PP of/IN ] [NP the/DT Seattle/NNP Department/NNP ] [PP of/IN ] [NP Transportation/NNP ] [VP says/VBZ ] ,/, "/`` [NP We/PRP ] [VP have/VBP determined/VBN ] [NP there/EX ] [VP is/VBZ ] [NP some/DT undermining/NN ] [PP under/IN ] [NP this/DT structure/NN ] ./.
+ [NP We/PRP ] [VP 've/VBP put/VBN ] [NP underwater/RB cameras/NNS ] [ADVP down/IN ] [ADVP there/RB ] ,/, and/CC [NP the/DT undermining/NN ] [VP is/VBZ ] [ADJP such/JJ ] [SBAR that/IN ] [NP we/PRP ] [VP have/VBP to/TO go/VB ] [ADVP down/RB ] [ADVP there/RB ] [VP to/TO make/VB ] [NP a/DT final/JJ determination/NN ] ./.
+
+ [NP Just/RB last/JJ week/NN ] ,/, [NP another/DT water/NN main/JJ ] [VP broke/VBD ] [PP under/IN ] [NP Dexter/NNP Avenue/NNP north/NN ] ,/, [NP a/DT 20/CD inch/NN diameter/NN line/NN ] ./.
+
+ [NP The/DT events/NNS ] [VP are/VBP ] [ADJP rare/JJ ] ,/, but/CC [VP are/VBP ] [NP two/CD lines/NNS ] [VP breaking/VBG ] [PP in/IN ] [NP two/CD weeks/NNS ] [NP just/RB a/DT wierd/NN coincidence/NN ] ,/, or/CC [VP is/VBZ ] [NP Seattle/NNP ] [NP 's/POS fresh/JJ water/NN infrastructure/NN ] [VP taking/VBG ] [NP a/DT turn/NN ] [PP for/IN ] [NP the/DT worse/JJR ] ?/.
+
+ [NP Gregg/NNP Hirakawa/NNP ] [VP says/VBZ ] ,/, "/`` [NP The/DT industry/NN standard/NN ] [VP is/VBZ ] [NP 100/CD years/NNS ] ./.
+ [NP The/DT analysis/NN ] [NP we/PRP ] [VP 're/VBP doing/VBG ] [VP indicates/VBZ ] [SBAR that/IN ] [NP the/DT life/NN ] [PP in/IN ] [NP our/PRP$ system/NN ] [VP is/VBZ ] [ADVP probably/RB ] [NP 150/CD to/TO 200/CD years/NNS ] [ADJP old/JJ ] ./. "/''
