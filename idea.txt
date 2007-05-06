@@ -1,4 +1,33 @@
 
+
+
+References:
+Automatic Paraphrase Acquisition from News Articles - http://citeseer.ist.psu.edu/555041.html
+Open Information Extraction from the Web (TextRunner) - http://turing.cs.washington.edu/papers/ijcai07.pdf
+
+
+Jack Hebert
+5/6/07
+
+1. Simple python script to gather news items.
+
+2. OpenNLP can tag parts of speech and do some NP chunking.
+   Follow TextRunner style of considering all pairs of base NP's and relation (words) between them.
+   - Attempt to filter on length, only pronoun NPs, some sorts of clausal boundaries.
+
+3. Do something cool with wordnet to generalize extracted relation -> (set of potential generalized relations).
+
+4. Look for collisions between relations as possible need to merge facts. Mark as mergable if appropriate.
+
+
+
+
+
+
+
+
+
+
 Jack Hebert
 5/4/07
 
