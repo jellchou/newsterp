@@ -28,7 +28,7 @@ class AskGoogle:
         links = []
         for query in self.queries:
             print 'Running query:', query
-            for i in range(10):
+            for i in range(1):
                 links += self.GetLinks(self.SendQuery(query+' rss', str(10*i)))
                 print len(links), ' links.'
         print '\n'.join(links)
@@ -71,14 +71,16 @@ class AskGoogle:
 
 class FetchPool:
     def __init__(self, links):
-        self.urls = links
         self.results = []
+        self.rssPages = []
         self.mutexLock = threading.Lock()
-        self.threadPool = workerPool.WorkerPool(2)
+        self.threadPool = workerPool.WorkerPool(10)
         temp = {}
         for link in links:
             temp[link] = None
         self.urls = temp.keys()
+        self.numToDo = len(self.urls)
+        self.numDone = 0
 
     def GetUrl(self):
         toReturn = ''
@@ -89,11 +91,26 @@ class FetchPool:
         self.mutexLock.release()
         return toReturn
 
-    def AddResults(self, links):
+    def AddLinkResults(self, links):
         self.mutexLock.acquire()
         self.results += links
-        print len(self.results), ' results.'
+        print len(self.results), ' results.', str(float(self.numDone) / (self.numToDo+1)), len(self.rssPages)
+        self.numDone += 1
         self.mutexLock.release()
+
+    def AddRssResult(self, link):
+        self.mutexLock.acquire()
+        self.rssPages.append(link)
+        print len(self.results), ' results.', str(float(self.numDone) / (self.numToDo+1)), len(self.rssPages)
+        self.numDone += 1
+        self.mutexLock.release()
+
+    def GetResults(self, link):
+        self.mutexLock.acquire()
+        toReturn = [self.results, self.rssPages]
+        self.results, self.rssPages = [], []
+        self.mutexLock.release()
+        return toReturn
 
     def run(self):
         for i in range(20):
@@ -114,17 +131,21 @@ class PageFetcher:
 
     def run(self):
         while(True):
+            results = []
             url = self.fetchPool.GetUrl()
             if(url==''):
                 break
             try:
                 self.FetchPage(url)
-                results = self.ExtractLinks()
-                self.fetchPool.AddResults(results)
+                if(self.IsRSS()):
+                    self.fetchPool.AddRssResult(url)
+                else:
+                    results = self.ExtractLinks()
             except ValueError:
                 print 'Could not fetch: ', url
             except urllib2.URLError:
                 print 'Could not fetch: ', url
+            self.fetchPool.AddLinkResults(results)
 
     def FetchPage(self, urlToFetch):
         if(urlToFetch.find('http')==-1):
@@ -146,17 +167,19 @@ class PageFetcher:
         toReturn = []
         links = self.page.split('<a href=')[1:]
         for link in links:
-            if(link.find(' ')>-1):
-                link = link[:link.find(' ')]
-            openChar = link[0]
-            if((openChar=='"')|(openChar=="'")):
-                end = link.find(openChar, 2)
-            else:
-                end = link.find('>')
             try:
+                if(len(link)==0):
+                    continue
+                if(link.find(' ')>-1):
+                    link = link[:link.find(' ')]
+                openChar = link[0]
+                if((openChar=='"')|(openChar=="'")):
+                    end = link.find(openChar, 2)
+                else:
+                    end = link.find('>')
                 toAdd = link[1:end]
                 if((toAdd.find('http')!=0)&(toAdd.find('www')!=0)):
-                    if(toAdd[0]=='/'):
+                    if((toAdd[0]=='/')|(self.baseUrl[-1]=='/')):
                         toAdd = self.baseUrl + toAdd
                     else:
                         toAdd = self.baseUrl +'/' + toAdd
@@ -172,31 +195,35 @@ class PageFetcher:
 
 
 def main():
-    #a = AskGoogle()
-    #links = a.Run()
+    a = AskGoogle()
+    links = a.Run()
 
 
-    links = ['http://www.google.com', 'www.nytimes.com', 'www.cs.washington.edu']
+    #links = ['http://www.google.com', 'www.nytimes.com', 'www.cs.washington.edu']
     f = FetchPool(links)
     f.run()
     f.wait()
 
     print '*****'
+    time.sleep(2)
+    links1, rss1 = f.GetResults()
 
-    f2 = FetchPool(f.results)
+
+    f2 = FetchPool(links1)
     f2.run()
     f2.wait()
 
     print '*****'
+    time.sleep(10)
+    
+    extralinks1, extrarss1 = f.GetResults()
+    links2, rss2 = f.GetResults()
 
-    f3 = FetchPool(f2.results)
-    f3.run()
-    f3.wait()
+    #f3 = FetchPool(f2.results)
+    #f3.run()
+    #f3.wait()
 
     
-    # TODO: of the pages that aren't RSS, try all pages within a click.
-    # TODO: try all pages within 2 clicks?
-    # TODO: multithread pageFetcher just a little bit.
     # TODO: write out all of the pages that are RSS or XML feeds.
 
 main()
