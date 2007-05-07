@@ -2,8 +2,11 @@
 #
 #
 
+import time
 import urllib2
 import httplib
+import threading
+import workerPool
 
 ''' This module will query google through Mark\'s tunnel to find
 web pages with rss feeds listed. The pages will then be downloaded
@@ -66,22 +69,71 @@ class AskGoogle:
         return toReturn
 
 
+class FetchPool:
+    def __init__(self, links):
+        self.urls = links
+        self.results = []
+        self.mutexLock = threading.Lock()
+        self.threadPool = workerPool.WorkerPool(2)
+        temp = {}
+        for link in links:
+            temp[link] = None
+        self.urls = temp.keys()
+
+    def GetUrl(self):
+        toReturn = ''
+        self.mutexLock.acquire()
+        if(len(self.urls)>0):
+            toReturn = self.urls[0]
+            self.urls = self.urls[1:]
+        self.mutexLock.release()
+        return toReturn
+
+    def AddResults(self, links):
+        self.mutexLock.acquire()
+        self.results += links
+        print len(self.results), ' results.'
+        self.mutexLock.release()
+
+    def run(self):
+        for i in range(20):
+            self.threadPool.startWorkerJob('!', PageFetcher(self))
+        self.threadPool.stop()
+
+    def wait(self):
+        while(len(self.urls)>0):
+            time.sleep(.5)
+        time.sleep(2)
+
+
 class PageFetcher:
-    def __init__(self):
-        self.doneFetching = False
+    def __init__(self, pool):
+        self.fetchPool = pool
         self.baseUrl = ''
         self.page = ''
 
+    def run(self):
+        while(True):
+            url = self.fetchPool.GetUrl()
+            if(url==''):
+                break
+            try:
+                self.FetchPage(url)
+                results = self.ExtractLinks()
+                self.fetchPool.AddResults(results)
+            except ValueError:
+                print 'Could not fetch: ', url
+            except urllib2.URLError:
+                print 'Could not fetch: ', url
+
     def FetchPage(self, urlToFetch):
+        if(urlToFetch.find('http')==-1):
+            urlToFetch = 'http://'+urlToFetch
         request = urllib2.Request(urlToFetch)
         request.add_header('User-Agent', 'NewsTerp - jhebert@cs.washington.edu')
         opener = urllib2.build_opener()
         self.page = opener.open(request).read() 
         self.baseUrl = urlToFetch
-        self.doneFetching = True
-
-    def DoneFetching(self):
-        return self.doneFetching
 
     def IsRSS(self):
         if(self.page.find('<rss version')>-1):
@@ -94,15 +146,23 @@ class PageFetcher:
         toReturn = []
         links = self.page.split('<a href=')[1:]
         for link in links:
+            if(link.find(' ')>-1):
+                link = link[:link.find(' ')]
             openChar = link[0]
-            end = link.find(openChar, 2)
-            toAdd = link[1:end]
-            if((toAdd.find('http:')==-1)&(toAdd.find('www.')==-1)):
-                if(toAdd[0]=='/'):
-                    toAdd = self.baseUrl + toAdd
-                else:
-                    toAdd = self.baseUrl +'/' + toAdd
-            toReturn.append(toAdd)
+            if((openChar=='"')|(openChar=="'")):
+                end = link.find(openChar, 2)
+            else:
+                end = link.find('>')
+            try:
+                toAdd = link[1:end]
+                if((toAdd.find('http')!=0)&(toAdd.find('www')!=0)):
+                    if(toAdd[0]=='/'):
+                        toAdd = self.baseUrl + toAdd
+                    else:
+                        toAdd = self.baseUrl +'/' + toAdd
+                toReturn.append(toAdd)
+            except:
+                pass
         return toReturn
 
     def GetPage(self):
@@ -115,12 +175,25 @@ def main():
     #a = AskGoogle()
     #links = a.Run()
 
-    p = PageFetcher()
-    p.FetchPage('http://www.reddit.com')
-    print p.ExtractLinks()
 
+    links = ['http://www.google.com', 'www.nytimes.com', 'www.cs.washington.edu']
+    f = FetchPool(links)
+    f.run()
+    f.wait()
 
-    # TODO: use pageFetcher to grab all of these pages.
+    print '*****'
+
+    f2 = FetchPool(f.results)
+    f2.run()
+    f2.wait()
+
+    print '*****'
+
+    f3 = FetchPool(f2.results)
+    f3.run()
+    f3.wait()
+
+    
     # TODO: of the pages that aren't RSS, try all pages within a click.
     # TODO: try all pages within 2 clicks?
     # TODO: multithread pageFetcher just a little bit.
