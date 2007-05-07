@@ -67,3 +67,31 @@ Jack Hebert
 ****
 
 
+Response -
+****
+Hi Jack,
+
+If you're just looking to extract named-entities (people, places, things),
+it's a little tough to get right, but the steps are clear.  You can use a
+combination of text classification and an off-the-shelf parser to find
+these things.  (And maybe a dictionary, to disqualify in-dict words.)
+
+If you want real triple-style facts ("bush/invaded/iraq") then you'll need
+to do something similar to TextRunner (in IJCAI 2007).  This kind of
+"open information extraction" took us a whole research paper to get
+working.  It's interesting to pursue this, but read the TR paper before
+you get going.  (It has details on all the linguistic stuff we used.)
+
+Another option is to do named-entity extraction plus a
+constrained-vocabulary set of verbs/predicates.  You might be able to be
+lighter on the linguistic machinery, and still get most of the interesting
+stuff.
+
+Does this help at all?
+
+I'm not in the department much this week, but I'm happy to answer
+more questions via mail...
+
+--Mike
+****
+
