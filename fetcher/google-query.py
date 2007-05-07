@@ -69,13 +69,15 @@ class AskGoogle:
 class PageFetcher:
     def __init__(self):
         self.doneFetching = False
+        self.baseUrl = ''
         self.page = ''
 
     def FetchPage(self, urlToFetch):
         request = urllib2.Request(urlToFetch)
-        request.add('User-Agent', 'NewsTerp - jhebert@cs.washington.edu')
+        request.add_header('User-Agent', 'NewsTerp - jhebert@cs.washington.edu')
         opener = urllib2.build_opener()
         self.page = opener.open(request).read() 
+        self.baseUrl = urlToFetch
         self.doneFetching = True
 
     def DoneFetching(self):
@@ -89,16 +91,35 @@ class PageFetcher:
         return False
 
     def ExtractLinks(self):
-        # TODO: extract and return all links from this page.
+        toReturn = []
+        links = self.page.split('<a href=')[1:]
+        for link in links:
+            openChar = link[0]
+            end = link.find(openChar, 2)
+            toAdd = link[1:end]
+            if((toAdd.find('http:')==-1)&(toAdd.find('www.')==-1)):
+                if(toAdd[0]=='/'):
+                    toAdd = self.baseUrl + toAdd
+                else:
+                    toAdd = self.baseUrl +'/' + toAdd
+            toReturn.append(toAdd)
+        return toReturn
 
     def GetPage(self):
         return self.page
 
 
-    
+
+
 def main():
-    a = AskGoogle()
-    links = a.Run()
+    #a = AskGoogle()
+    #links = a.Run()
+
+    p = PageFetcher()
+    p.FetchPage('http://www.reddit.com')
+    print p.ExtractLinks()
+
+
     # TODO: use pageFetcher to grab all of these pages.
     # TODO: of the pages that aren't RSS, try all pages within a click.
     # TODO: try all pages within 2 clicks?
