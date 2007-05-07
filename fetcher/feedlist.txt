@@ -1,0 +1,14 @@
+http://www.komotv.com/news/local/index.rss
+http://www.komotv.com/news/national/index.rss
+http://www.komotv.com/news/business/index.rss
+http://www.komotv.com/news/entertainment/index.rss
+http://www.komotv.com/news/health/index.rss
+http://www.komotv.com/news/boeing/index.rss
+http://www.komotv.com/news/tech/index.rss
+http://rss.news.yahoo.com/rss/topstories
+http://rss.news.yahoo.com/rss/us
+http://rss.news.yahoo.com/rss/terrorism
+http://rss.news.yahoo.com/rss/mostemailed
+http://rss.news.yahoo.com/rss/mostviewed
+http://rss.news.yahoo.com/rss/highestrated
+
