@@ -35,7 +35,7 @@ class AskGoogle:
         links = []
         for query in self.queries:
             print 'Running query:', query
-            for i in range(10):
+            for i in range(15):
                 links += self.GetLinks(self.SendQuery(query+' rss', str(10*i)))
                 print len(links), ' links.'
         print '\n'.join(links)
@@ -77,11 +77,14 @@ class AskGoogle:
 
 
 class FetchPool:
-    def __init__(self, links):
+    def __init__(self, links, keepResults):
         self.results = []
         self.rssPages = []
         self.mutexLock = threading.Lock()
-        self.threadPool = workerPool.WorkerPool(10)
+        self.keepResults = keepResults
+        self.resultCount = 0
+        self.numThreads = 20
+        self.threadPool = workerPool.WorkerPool(self.numThreads)
         temp = {}
         for link in links:
             temp[link] = None
@@ -100,10 +103,12 @@ class FetchPool:
 
     def AddLinkResults(self, links):
         self.mutexLock.acquire()
-        self.results += links
+        if(self.keepResults):
+            self.results += links
+        self.resultCount += len(links)
         frac = str(self.numDone) + '/' + str(self.numToDo)
         percent = str(float(self.numDone) / (self.numToDo+1))
-        print len(self.results), ' results.', frac, percent, len(self.rssPages)
+        print self.resultCount, ' results.', frac, percent, len(self.rssPages)
         self.numDone += 1
         self.mutexLock.release()
 
@@ -125,7 +130,7 @@ class FetchPool:
         return toReturn
 
     def run(self):
-        for i in range(20):
+        for i in range(self.numThreads):
             self.threadPool.startWorkerJob('!', PageFetcher(self))
         self.threadPool.stop()
 
@@ -213,7 +218,7 @@ def main():
     links = a.Run()
 
     #links = ['http://www.google.com', 'www.nytimes.com', 'www.cs.washington.edu']
-    f = FetchPool(links)
+    f = FetchPool(links, True)
     f.run()
     f.wait()
 
@@ -222,7 +227,7 @@ def main():
     links1, rss1 = f.GetResults()
 
 
-    f2 = FetchPool(links1)
+    f2 = FetchPool(links1, False)
     f2.run()
     f2.wait()
 
