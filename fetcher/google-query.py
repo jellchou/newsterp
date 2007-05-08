@@ -3,10 +3,14 @@
 #
 
 import time
+import socket
 import urllib2
 import httplib
 import threading
 import workerPool
+       
+socket.setdefaulttimeout(30)
+
 
 ''' This module will query google through Mark\'s tunnel to find
 web pages with rss feeds listed. The pages will then be downloaded
@@ -19,18 +23,19 @@ class AskGoogle:
     ''' For queries to run we need the proxy server running. Ask Jack about this. '''
     def __init__(self):
         # TODO: list of states, countries.
-        self.queries = ['news', 'local news', 'global news', 'international news',
-                        'weather', 'business', 'tech', 'sports', 'fashion',
-                        'Europe', 'Asia', 'US', 'cbs rss', 'abc', 'komo', 'kiro'
-                        'times', 'financial', 'breaking news', 'popular news',
-                        'most emailed news', 'newspaper', 'washington', 'seattle'
-                        'northwest', 'australia', 'england', 'iraq', 'google']
+        self.queries=['news', 'local news', 'global news', 'international news',
+                      'weather', 'business', 'tech', 'sports', 'fashion',
+                      'Europe', 'Asia', 'US', 'cbs rss', 'abc', 'komo', 'kiro'
+                      'times', 'financial', 'breaking news', 'popular news',
+                      'most emailed news', 'newspaper', 'washington', 'seattle'
+                      'northwest', 'australia', 'england', 'iraq', 'google',
+                      'seattle', 'new york', 'times']
 
     def Run(self):
         links = []
         for query in self.queries:
             print 'Running query:', query
-            for i in range(5):
+            for i in range(10):
                 links += self.GetLinks(self.SendQuery(query+' rss', str(10*i)))
                 print len(links), ' links.'
         print '\n'.join(links)
@@ -106,6 +111,10 @@ class FetchPool:
         self.mutexLock.acquire()
         self.rssPages.append(link)
         print len(self.results), ' results.', str(float(self.numDone) / (self.numToDo+1)), len(self.rssPages)
+        f = open('rss.out','a')
+        f.write(link)
+        f.write('\n')
+        f.close()
         self.mutexLock.release()
 
     def GetResults(self):
@@ -223,10 +232,7 @@ def main():
     extralinks1, extrarss1 = f.GetResults()
     links2, rss2 = f.GetResults()
 
-    totalRss = rss1 + extrarss1 + rss2
-    f = open('rss.out','w')
-    f.write('\n'.join(totalRss))
-    f.close()
+
 
 
 main()
