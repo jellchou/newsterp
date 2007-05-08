@@ -11,6 +11,14 @@ import workerPool
 
 socket.setdefaulttimeout(30)
 
+""" This class should iterate over the list of RSS pages and download them.
+Should look for new RSS pages since the last download, or specifically new
+links on them since the last download. """
+
+# TODO: save hash of RSS so we know if it has changed
+# TODO: extract out links and download pages (if unique)
+
+__author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
 
 class FetcherPool:
@@ -18,7 +26,10 @@ class FetcherPool:
         self.threadPool = workerPool.WorkerPool(10)
         self.mutexLock = threading.Lock()
         self.rssPages = []
-        self.urls = urls
+        temp = {}
+        for url in urls:
+            temp[url] = None
+        self.urls = temp.keys()
         self.numToDo = len(urls)
         self.numDone = 0
 

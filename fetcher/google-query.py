@@ -12,9 +12,9 @@ import workerPool
 socket.setdefaulttimeout(30)
 
 
-''' This module will query google through Mark\'s tunnel to find
+""" This module will query google through Mark's tunnel to find
 web pages with rss feeds listed. The pages will then be downloaded
-and potential rss feeds parsed out. '''
+and potential rss feeds parsed out. """
 
 __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
