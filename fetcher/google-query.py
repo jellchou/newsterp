@@ -28,7 +28,7 @@ class AskGoogle:
         links = []
         for query in self.queries:
             print 'Running query:', query
-            for i in range(1):
+            for i in range(5):
                 links += self.GetLinks(self.SendQuery(query+' rss', str(10*i)))
                 print len(links), ' links.'
         print '\n'.join(links)
@@ -94,7 +94,9 @@ class FetchPool:
     def AddLinkResults(self, links):
         self.mutexLock.acquire()
         self.results += links
-        print len(self.results), ' results.', str(float(self.numDone) / (self.numToDo+1)), len(self.rssPages)
+        frac = str(self.numDone) + '/' + str(self.numToDo)
+        percent = str(float(self.numDone) / (self.numToDo+1))
+        print len(self.results), ' results.', frac, percent, len(self.rssPages)
         self.numDone += 1
         self.mutexLock.release()
 
@@ -102,10 +104,9 @@ class FetchPool:
         self.mutexLock.acquire()
         self.rssPages.append(link)
         print len(self.results), ' results.', str(float(self.numDone) / (self.numToDo+1)), len(self.rssPages)
-        self.numDone += 1
         self.mutexLock.release()
 
-    def GetResults(self, link):
+    def GetResults(self):
         self.mutexLock.acquire()
         toReturn = [self.results, self.rssPages]
         self.results, self.rssPages = [], []
@@ -142,9 +143,11 @@ class PageFetcher:
                 else:
                     results = self.ExtractLinks()
             except ValueError:
-                print 'Could not fetch: ', url
+                print 'Could not fetch: ', url, ' ValueError.'
             except urllib2.URLError:
-                print 'Could not fetch: ', url
+                print 'Could not fetch: ', url, ' URLError.'
+            except:
+                print 'Could not fetch: ', url, ' unknown error.'
             self.fetchPool.AddLinkResults(results)
 
     def FetchPage(self, urlToFetch):
@@ -218,6 +221,12 @@ def main():
     
     extralinks1, extrarss1 = f.GetResults()
     links2, rss2 = f.GetResults()
+
+    totalRss = rss1 + extrarss1 + rss2
+    f = open('rss.out','w')
+    f.write('\n'.join(totalRss))
+    f.close()
+
 
     #f3 = FetchPool(f2.results)
     #f3.run()
