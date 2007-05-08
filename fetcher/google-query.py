@@ -18,11 +18,13 @@ __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 class AskGoogle:
     ''' For queries to run we need the proxy server running. Ask Jack about this. '''
     def __init__(self):
+        # TODO: list of states, countries.
         self.queries = ['news', 'local news', 'global news', 'international news',
                         'weather', 'business', 'tech', 'sports', 'fashion',
                         'Europe', 'Asia', 'US', 'cbs rss', 'abc', 'komo', 'kiro'
                         'times', 'financial', 'breaking news', 'popular news',
-                        'most emailed news', 'newspaper']
+                        'most emailed news', 'newspaper', 'washington', 'seattle'
+                        'northwest', 'australia', 'england', 'iraq', 'google']
 
     def Run(self):
         links = []
@@ -201,7 +203,6 @@ def main():
     a = AskGoogle()
     links = a.Run()
 
-
     #links = ['http://www.google.com', 'www.nytimes.com', 'www.cs.washington.edu']
     f = FetchPool(links)
     f.run()
@@ -227,12 +228,5 @@ def main():
     f.write('\n'.join(totalRss))
     f.close()
 
-
-    #f3 = FetchPool(f2.results)
-    #f3.run()
-    #f3.wait()
-
-    
-    # TODO: write out all of the pages that are RSS or XML feeds.
 
 main()
