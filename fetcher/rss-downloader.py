@@ -15,8 +15,7 @@ socket.setdefaulttimeout(30)
 Should look for new RSS pages since the last download, or specifically new
 links on them since the last download. """
 
-# TODO: save hash of RSS so we know if it has changed
-# TODO: extract out links and download pages (if unique)
+# TODO: only save unique links
 
 __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
@@ -42,9 +41,9 @@ class FetcherPool:
         self.mutexLock.release()
         return toReturn
 
-    def ReturnRss(self, page):
+    def ReturnLinks(self, links):
         self.mutexLock.acquire()
-        self.rssPages.append(page)
+        self.rssPages += links
         self.numDone += 1
         frac = str(self.numDone)+'/'+str(self.numToDo)
         dec = str(float(self.numDone) / (self.numToDo+1))
@@ -72,7 +71,8 @@ class RssFetcher:
                 break
             try:
                 page = self.FetchPage(url)
-                self.master.ReturnRss(page)
+                links = self.ExtractLinks(page)
+                self.master.ReturnLinks(links)
             except e:
                 print 'Error:', e
 
@@ -84,6 +84,18 @@ class RssFetcher:
         opener = urllib2.build_opener()
         return opener.open(request).read() 
 
+    def ExtractLinks(self, xml):
+        toReturn = []
+        index = xml.find('http://')
+        while(index > -1):
+            charDelim = xml[index-1]
+            end = xml.find(charDelim, index)
+            link = xml[index:end]
+            if(link.find(' ')>-1):
+                link = link[:link.find(' ')]
+            toReturn.append(link)
+            index = xml.find('http://', end)
+        return toReturn
 
 
 
