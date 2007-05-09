@@ -24,7 +24,9 @@ class FetcherPool:
     def __init__(self, urls):
         self.threadPool = workerPool.WorkerPool(10)
         self.mutexLock = threading.Lock()
-        self.rssPages = []
+        self.links = []
+        self.successPages = []
+        self.failedPages = []
         temp = {}
         for url in urls:
             temp[url] = None
@@ -41,16 +43,44 @@ class FetcherPool:
         self.mutexLock.release()
         return toReturn
 
-    def ReturnLinks(self, links):
+    def ReturnLinks(self, links, url, success):
         self.mutexLock.acquire()
-        self.rssPages += links
+        if(success):
+            self.links += links
+            self.successPages.append(url)
+        else:
+            self.failedPages.append(url)
         self.numDone += 1
         frac = str(self.numDone)+'/'+str(self.numToDo)
         dec = str(float(self.numDone) / (self.numToDo+1))
         print frac, dec
         self.mutexLock.release()
+        if(self.numDone%20==0):
+            self.WriteResults()
+
+    def WriteResults(self):
+        print 'Writing results to disk...'
+        self.mutexLock.acquire()
+        self.WriteToFile(self.successPages, 'success.out')
+        self.WriteToFile(self.failedPages, 'failures.out')
+        self.WriteToFile(self.links, 'links.out')
+        self.successPages, self.failedPages, self.links = [], [], []
+        self.mutexLock.release()
+
+    def WriteToFile(self, data, name):
+        if(len(data)==0):
+            return
+        f = open(name, 'a')
+        f.write('\n'.join(data))
+        f.write('\n')
+        f.close()
+
 
     def run(self):
+        print '******\n******'
+        print len(self.urls), ' pages to fetch.'
+        print '******\n******'
+        time.sleep(2)
         for i in range(10):
             self.threadPool.startWorkerJob('!', RssFetcher(self))
 
@@ -66,21 +96,29 @@ class RssFetcher:
 
     def run(self):
         while(True):
-            url = self.master.GetUrl()
+            url, success = self.master.GetUrl(), False
             if(len(url)==0):
                 break
             try:
                 page = self.FetchPage(url)
                 links = self.ExtractLinks(page)
-                self.master.ReturnLinks(links)
-            except e:
-                print 'Error:', e
+                success = True
+            except ValueError:
+                print 'Could not fetch: ', url, ' ValueError.'
+            except urllib2.URLError:
+                print 'Could not fetch: ', url, ' URLError.'
+            except:
+                print 'Could not fetch: ', url, ' unknown error.'
+            if(success):
+                self.master.ReturnLinks(links, url, True)
+            else:
+                self.master.ReturnLinks([], url, False)
 
     def FetchPage(self, url):
         if(url.find('http')==-1):
             url = 'http://'+url
         request = urllib2.Request(url)
-        request.add_header('User-Agent', 'NewsTerp - jhebert@cs.washington.edu')
+        request.add_header('User-Agent','NewsTerp - jhebert@cs.washington.edu')
         opener = urllib2.build_opener()
         return opener.open(request).read() 
 
@@ -93,6 +131,8 @@ class RssFetcher:
             link = xml[index:end]
             if(link.find(' ')>-1):
                 link = link[:link.find(' ')]
+            if(link.find('<')>-1):
+                link = link[:link.find('<')]
             toReturn.append(link)
             index = xml.find('http://', end)
         return toReturn

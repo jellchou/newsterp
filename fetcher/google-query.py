@@ -30,7 +30,10 @@ class AskGoogle:
                       'most emailed news', 'newspaper', 'washington', 'seattle'
                       'northwest', 'australia', 'england', 'iraq', 'google',
                       'seattle', 'new york', 'times']
-
+        places = open('places.txt').read().split()
+        for item in places:
+            self.queries.append(item+' news')
+        
     def Run(self):
         links = []
         for query in self.queries:

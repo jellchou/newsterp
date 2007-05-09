@@ -1,0 +1,72 @@
+Alabama
+ 	Birmingham
+ 	Montgomery
+ 	Mobile
+
+Alaska
+ 	Anchorage
+ 	Fairbanks
+ 	Juneau
+
+American Samoa
+ 	Tafuna
+ 	Nu’uuli
+ 	Pago Pago
+
+Arizona
+ 	Phoenix
+ 	Tucson
+ 	Mesa
+
+Arkansas
+ 	Little Rock 	Fort Smith 	Fayetteville
+California 	Los Angeles 	San Diego 	San Jose
+Colorado 	Denver 	Colorado Springs 	Aurora
+Connecticut 	Bridgeport 	New Haven 	Hartford
+Delaware 	Wilmington 	Dover 	Newark
+Florida 	Jacksonville 	Miami 	Tampa
+Georgia 	Atlanta 	Augusta 	Columbus
+Guam 	Tamuning 	Mangilao 	Yigo
+Hawaii 	Honolulu1 	Hilo1 	Kailua1
+Idaho 	Boise 	Nampa 	Idaho Falls
+Illinois 	Chicago 	Aurora 	Rockford
+Indiana 	Indianapolis 	Fort Wayne 	Evansville
+Iowa 	Des Moines 	Cedar Rapids 	Davenport
+Kansas 	Wichita 	Overland Park 	Kansas City
+Kentucky 	Louisville 	Lexington 	Owensboro
+Louisiana 	New Orleans2 	Baton Rouge2 	Sheveport
+Maine 	Portland 	Lewiston 	Bangor
+Maryland 	Baltimore 	Frederick 	Gaithersburg
+Massachusetts 	Boston 	Worcester 	Springfield
+Michigan 	Detroit 	Grand Rapids 	Warren
+Minnesota 	Minneapolis 	Saint Paul 	Rochester
+Mississippi 	Jackson 	Gulfport 	Biloxi
+Missouri 	Kansas City 	Saint Louis 	Springfield
+Montana 	Billings 	Missoula 	Great Falls
+Nebraska 	Omaha 	Lincoln 	Bellevue
+Nevada 	Las Vegas 	Henderson 	Reno
+New Hampshire 	Manchester 	Nashua 	Concord
+New Jersey 	Newark 	Jersey City 	Paterson
+New Mexico 	Albuquerque 	Las Cruces 	Santa Fe
+New York 	New York City 	Buffalo 	Rochester
+North Carolina 	Charlotte 	Raleigh 	Greensboro
+North Dakota 	Fargo 	Bismarck 	Grand Forks
+Northern Mariana Islands 	Saipan 	Tinian 	Rota
+Ohio 	Columbus 	Cleveland 	Cincinnati
+Oklahoma 	Oklahoma City 	Tulsa 	Norman
+Oregon 	Portland 	Salem 	Eugene
+Pennsylvania 	Philadelphia 	Pittsburgh 	Allentown
+Puerto Rico 	San Juan 	Bayamón 	Ponce
+Rhode Island 	Providence 	Warwick 	Cranston
+South Carolina 	Columbia 	Charleston 	North Charleston
+South Dakota 	Sioux Falls 	Rapid City 	Aberdeen
+Tennessee 	Memphis 	Nashville 	Knoxville
+Texas 	Houston 	San Antonio 	Dallas
+United States Virgin Islands 	Charlotte Amalie 	Anna's Retreat 	Charlotte Amalie West
+Utah 	Salt Lake City 	Provo 	West Valley City
+Vermont 	Burlington 	Rutland 	South Burlington
+Virginia 	Virginia Beach 	Norfolk 	Chesapeake
+Washington 	Seattle 	Tacoma 	Spokane
+West Virginia 	Charleston 	Huntington 	Parkersburg
+Wisconsin 	Milwaukee 	Madison 	Green Bay
+Wyoming 	Cheyenne 	Casper 	Laramie
