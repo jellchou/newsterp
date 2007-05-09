@@ -102,20 +102,19 @@ class RssFetcher:
 
     def run(self):
         while(True):
-            url, success = self.master.GetUrl(), False
+            url, links = self.master.GetUrl(), []
             if(url==None):
                 break
             try:
                 page = self.FetchPage(url)
                 links = self.ExtractLinks(page)
-                success = True
             except ValueError:
                 print 'Could not fetch: ', url, ' ValueError.'
             except urllib2.URLError:
                 print 'Could not fetch: ', url, ' URLError.'
             except:
                 print 'Could not fetch: ', url, ' unknown error.'
-            self.master.ReturnLinks(links, url, success)
+            self.master.ReturnLinks(links, url)
 
     def FetchPage(self, url):
         userAgent = 'NewsTerp - jhebert@cs.washington.edu'

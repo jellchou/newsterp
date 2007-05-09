@@ -79,9 +79,3 @@ class WorkerPool:
       elif((alive)&(not empty)):
         return False
     return True
-        
-        
-
-
-             for worker in self.workers:
-      if(not(worker.thread.isAlive())):

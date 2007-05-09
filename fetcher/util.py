@@ -94,11 +94,11 @@ def SplitToWords(doc):
 
 def LoadAndSplitFromDir(pathToDir):
     toReturn, files = [], os.listdir(pathToDir)
-        for f in files:
-            try:
-                data = open(pathToDir+'/'+f).read().lower()
-                data = SplitToWords(data, tokens)
-                toReturn.append(data)
-            except IOError:
-                pass
-        return toReturn
+    for f in files:
+        try:
+            data = open(pathToDir+'/'+f).read().lower()
+            data = SplitToWords(data, tokens)
+            toReturn.append(data)
+        except IOError:
+            pass
+    return toReturn
