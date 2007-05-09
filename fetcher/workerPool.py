@@ -2,9 +2,12 @@
 #
 # Copyright 2006 Google, Inc. All Rights Reserved.
 
-import threading, workerThread, Queue
+import time
+import Queue
+import threading
+import workerThread
 
-__author__ = "jhebert@google.com (jhebert@google.com)"
+__author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
 """Class to hold information for a set of workerThreads.
 Still need to solve the problem of when the threads are done working. """
@@ -14,10 +17,8 @@ class WorkerPool:
     self.logging = Queue.Queue()
     self.freeWorkerQueue = Queue.Queue()
     self.jobQueue = Queue.Queue()
-    # A count of how many workers are busy.
-    self.busyCount = 0
-    # An array of workerThread objects.
-    self.workers = []
+    self.busyCount = 0 # A count of how many workers are busy.
+    self.workers = []  # An array of workerThread objects.
     for i in range(numOfThreads):
       try:
         w = workerThread.workerThread(self)
@@ -62,3 +63,25 @@ class WorkerPool:
   def stop(self):
     for w in self.workers:
       w.stop()
+
+  """ This should return once all of the worker threads are done
+  and there are no more jobs to execute. """
+  def wait(self):
+    while(not self.__done()):
+      time.sleep(.5)
+
+  def __done(self):
+    for worker in self.workers:
+      busy, alive = worker.busy, worker.thread.isAlive()
+      empty = worker.workQueue.empty()
+      if((busy)&(alive)):
+        return False
+      elif((alive)&(not empty)):
+        return False
+    return True
+        
+        
+
+
+             for worker in self.workers:
+      if(not(worker.thread.isAlive())):

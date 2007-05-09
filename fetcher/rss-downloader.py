@@ -8,14 +8,20 @@ import httplib
 import urllib2
 import threading
 import workerPool
-
+import util
 socket.setdefaulttimeout(30)
 
 """ This class should iterate over the list of RSS pages and download them.
 Should look for new RSS pages since the last download, or specifically new
 links on them since the last download. """
 
-# TODO: only save unique links
+# TODO: make a second module which downloads these links, classifies as news page
+#       or not, and then if a majority are not news, marks this rss page as a fail.
+#       After this module we should be fairly set in terms of finding news pages.
+#       Also will have a golden list that we always download from.
+#
+# TODO: Then will need to start extracting news articles from HTML pages.
+#       Not really sure how to do that yet.
 
 __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
@@ -24,18 +30,16 @@ class FetcherPool:
     def __init__(self, urls):
         self.threadPool = workerPool.WorkerPool(10)
         self.mutexLock = threading.Lock()
-        self.links = []
+        self.linkSets = []
         self.successPages = []
         self.failedPages = []
-        temp = {}
-        for url in urls:
-            temp[url] = None
-        self.urls = temp.keys()
+        self.failedFeeds = util.LoadFileToHash('rss-blacklist.txt')
+        self.urls = util.FilterListToUnique(urls, self.failedFeeds)
         self.numToDo = len(urls)
         self.numDone = 0
 
     def GetUrl(self):
-        toReturn = ''
+        toReturn = None
         self.mutexLock.acquire()
         if(len(self.urls)>0):
             toReturn = self.urls[0]
@@ -43,31 +47,35 @@ class FetcherPool:
         self.mutexLock.release()
         return toReturn
 
-    def ReturnLinks(self, links, url, success):
+    def ReturnLinks(self, links, url):
         self.mutexLock.acquire()
-        if(success):
-            self.links += links
+        self.linkSets.append('\t'.join([url]+links))
+        if(len(links)>0):
             self.successPages.append(url)
         else:
             self.failedPages.append(url)
         self.numDone += 1
-        frac = str(self.numDone)+'/'+str(self.numToDo)
-        dec = str(float(self.numDone) / (self.numToDo+1))
-        print frac, dec
+        self.PrintStatus()
         self.mutexLock.release()
         if(self.numDone%20==0):
             self.WriteResults()
+
+    def PrintStatus(self):
+        frac = str(self.numDone)+'/'+str(self.numToDo)
+        dec = str(float(self.numDone) / (self.numToDo+1))
+        print frac, dec
 
     def WriteResults(self):
         print 'Writing results to disk...'
         self.mutexLock.acquire()
         self.WriteToFile(self.successPages, 'success.out')
         self.WriteToFile(self.failedPages, 'failures.out')
-        self.WriteToFile(self.links, 'links.out')
-        self.successPages, self.failedPages, self.links = [], [], []
+        self.WriteToFile(self.linkSets, 'possible-news.out')
+        self.successPages, self.failedPages, self.linkSets = [], [], []
         self.mutexLock.release()
 
     def WriteToFile(self, data, name):
+        data = util.FilterListToUnique(data)
         if(len(data)==0):
             return
         f = open(name, 'a')
@@ -85,9 +93,7 @@ class FetcherPool:
             self.threadPool.startWorkerJob('!', RssFetcher(self))
 
     def wait(self):
-        while(len(self.urls)>0):
-            time.sleep(.5)
-        time.sleep(1)
+        self.threadPool.wait()
 
 
 class RssFetcher:
@@ -97,7 +103,7 @@ class RssFetcher:
     def run(self):
         while(True):
             url, success = self.master.GetUrl(), False
-            if(len(url)==0):
+            if(url==None):
                 break
             try:
                 page = self.FetchPage(url)
@@ -109,18 +115,11 @@ class RssFetcher:
                 print 'Could not fetch: ', url, ' URLError.'
             except:
                 print 'Could not fetch: ', url, ' unknown error.'
-            if(success):
-                self.master.ReturnLinks(links, url, True)
-            else:
-                self.master.ReturnLinks([], url, False)
+            self.master.ReturnLinks(links, url, success)
 
     def FetchPage(self, url):
-        if(url.find('http')==-1):
-            url = 'http://'+url
-        request = urllib2.Request(url)
-        request.add_header('User-Agent','NewsTerp - jhebert@cs.washington.edu')
-        opener = urllib2.build_opener()
-        return opener.open(request).read() 
+        userAgent = 'NewsTerp - jhebert@cs.washington.edu'
+        return util.FetchPage(url, userAgent)
 
     def ExtractLinks(self, xml):
         toReturn = []

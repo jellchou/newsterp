@@ -8,8 +8,7 @@ import urllib2
 import httplib
 import threading
 import workerPool
-       
-socket.setdefaulttimeout(30)
+
 
 
 """ This module will query google through Mark's tunnel to find
@@ -43,13 +42,7 @@ class AskGoogle:
                 print len(links), ' links.'
         print '\n'.join(links)
         print len(links), ' links.'
-        return self.FilterLinks(links)
-
-    def FilterLinks(self, links):
-        toReturn = {}
-        for link in links:
-            toReturn[link] = None
-        return toReturn.keys()
+        return util.FilterListToUnique(links)
 
     def SendQuery(self, query, start):
         try:
@@ -88,15 +81,12 @@ class FetchPool:
         self.resultCount = 0
         self.numThreads = 20
         self.threadPool = workerPool.WorkerPool(self.numThreads)
-        temp = {}
-        for link in links:
-            temp[link] = None
-        self.urls = temp.keys()
+        self.urls = util.FilterListToUnique(links)
         self.numToDo = len(self.urls)
         self.numDone = 0
 
     def GetUrl(self):
-        toReturn = ''
+        toReturn = None
         self.mutexLock.acquire()
         if(len(self.urls)>0):
             toReturn = self.urls[0]
@@ -138,9 +128,7 @@ class FetchPool:
         self.threadPool.stop()
 
     def wait(self):
-        while(len(self.urls)>0):
-            time.sleep(.5)
-        time.sleep(2)
+        self.threadPool.wait()
 
 
 class PageFetcher:
@@ -153,7 +141,7 @@ class PageFetcher:
         while(True):
             results = []
             url = self.fetchPool.GetUrl()
-            if(url==''):
+            if(url==None):
                 break
             try:
                 self.FetchPage(url)
@@ -169,21 +157,13 @@ class PageFetcher:
                 print 'Could not fetch: ', url, ' unknown error.'
             self.fetchPool.AddLinkResults(results)
 
-    def FetchPage(self, urlToFetch):
-        if(urlToFetch.find('http')==-1):
-            urlToFetch = 'http://'+urlToFetch
-        request = urllib2.Request(urlToFetch)
-        request.add_header('User-Agent', 'NewsTerp - jhebert@cs.washington.edu')
-        opener = urllib2.build_opener()
-        self.page = opener.open(request).read() 
-        self.baseUrl = urlToFetch
+    def FetchPage(self, url):
+        userAgent = 'NewsTerp - jhebert@cs.washington.edu'
+        self.page = util.FetchPage(url, userAgent)
+        self.baseUrl = url
 
     def IsRSS(self):
-        if(self.page.find('<rss version')>-1):
-            return True
-        elif(self.page.find('<?xml version')>-1):
-            return True
-        return False
+        return util.IsRSS(self.page)
 
     def ExtractLinks(self):
         toReturn = []
