@@ -15,24 +15,15 @@ socket.setdefaulttimeout(30)
 Should look for new RSS pages since the last download, or specifically new
 links on them since the last download. """
 
-# TODO: make a second module which downloads these links, classifies as news page
-#       or not, and then if a majority are not news, marks this rss page as a fail.
-#       After this module we should be fairly set in terms of finding news pages.
-#       Also will have a golden list that we always download from.
-#
-# TODO: Then will need to start extracting news articles from HTML pages.
-#       Not really sure how to do that yet.
-
-
-
 __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
 
 class FetcherPool:
-    def __init__(self, urls):
+    def __init__(self, urls, golden):
         self.threadPool = workerPool.WorkerPool(10)
         self.mutexLock = threading.Lock()
         self.linkSets = []
+        self.golden = golden
         self.successPages = []
         self.failedPages = []
         self.failedFeeds = util.LoadFileToHash('rss-blacklist.txt')
@@ -52,7 +43,7 @@ class FetcherPool:
     def ReturnLinks(self, links, url):
         self.mutexLock.acquire()
         if(len(links)>0):
-            toAppend = '\t'.join([url+'!!!']+links)
+            toAppend = '\t'.join([url]+links)
             self.linkSets.append(toAppend)
             self.successPages.append(url)
         else:
@@ -73,7 +64,10 @@ class FetcherPool:
         self.mutexLock.acquire()
         self.WriteToFile(self.successPages, 'success.out')
         self.WriteToFile(self.failedPages, 'failures.out')
-        self.WriteToFile(self.linkSets, 'possible-news.out')
+        if(self.golden):
+            self.WriteToFile(self.linkSets, 'golden-news.out')
+        else:
+            self.WriteToFile(self.linkSets, 'pyrite-news.out')
         self.successPages, self.failedPages, self.linkSets = [], [], []
         self.mutexLock.release()
 
@@ -94,9 +88,11 @@ class FetcherPool:
         time.sleep(2)
         for i in range(10):
             self.threadPool.startWorkerJob('!', RssFetcher(self))
-
-    def wait(self):
         self.threadPool.wait()
+        self.threadPool.stop()
+        self.WriteResults()
+
+
 
 
 class RssFetcher:
@@ -105,10 +101,13 @@ class RssFetcher:
 
     def run(self):
         while(True):
-            url, links = self.master.GetUrl().strip(), []
+            url, links = self.master.GetUrl(), []
             if(url==None):
                 break
+            elif(len(url)<3):
+                break
             try:
+                url = url.strip()
                 page = self.FetchPage(url)
                 links = self.ExtractLinks(page)
             except ValueError:
@@ -153,10 +152,10 @@ class RssFetcher:
 
 
 def main():
-    pages = open('rss.out').read().split('\n')
-    f = FetcherPool(pages)
+    #pages = open('rss.out').read().split('\n')
+    pages = open('golden-list.txt').read().split('\n')
+    f = FetcherPool(pages, True)
     f.run()
-    f.wait()
 
 
 

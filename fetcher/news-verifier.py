@@ -27,6 +27,17 @@ class NewsVerifier:
     def Init(self):
         self.classifier.LoadModel('model.test')
 
+    def RunGolden(self):
+        toFetch = open('golden-news.out').read().split('\n')
+        self.fetcherPool.urlsToFetch = toFetch
+        self.fetcherPool.run()
+
+    def RunPyrite(self):
+        toFetch = open('possible-news.out').read().split('\n')
+        self.fetcherPool.urlsToFetch = toFetch
+        self.fetcherPool.run()
+    
+
     
 class FetcherPool:
     def __init__(self, classifier):
@@ -45,13 +56,16 @@ class FetcherPool:
         self.mutexLock.release()
         return toReturn
 
-    def ReturnResults(self):
+    def ReturnResults(self, pages, numPossible):
         self.mutexLock.acquire()
+        # TODO: do something with the results.
         self.mutexLock.release()
 
     def run(self)
         for i in range(self.numThreads):
             self.threadPool.startWorkerJob('!', FetcherAgent(self, self.classifier))
+        self.threadPool.wait()
+
 
                                            
 class FetcherAgent:
@@ -61,21 +75,28 @@ class FetcherAgent:
 
     def run(self):
         while(True):
-            url, success = self.master.GetWorkItem(), False
-            if(url==None):
+            job, toReturn = self.master.GetWorkItem(), []
+            if(job==None):
                 break
-            try:
-                page = self.FetchPage(url)
-                doc = util.SplitToWords(page)
-                isNews = self.classifier.ClassifyDoc(doc)
-                success = True
-            except ValueError:
-                print 'Could not fetch: ', url, ' ValueError.'
-            except urllib2.URLError:
-                print 'Could not fetch: ', url, ' URLError.'
-            except:
-                print 'Could not fetch: ', url, ' unknown error.'
-            self.master.ReturnLinks(links, url, success)
+            items = job.split('\t')
+            if(len(items)==1):
+                urls = [jobs]
+            else:
+                urls = items[1:]
+            for url in urls:
+                try:
+                    page = self.FetchPage(url)
+                    doc = util.SplitToWords(page)
+                    isNews = self.classifier.ClassifyDoc(doc)
+                    if(isNews):
+                        toReturn.append(page)
+                except ValueError:
+                    print 'Could not fetch: ', url, ' ValueError.'
+                except urllib2.URLError:
+                    print 'Could not fetch: ', url, ' URLError.'
+                except:
+                    print 'Could not fetch: ', url, ' unknown error.'
+            self.master.ReturnResults(toReturn, len(items))
 
 
     def FetchPage(self, url):
