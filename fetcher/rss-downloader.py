@@ -23,6 +23,8 @@ links on them since the last download. """
 # TODO: Then will need to start extracting news articles from HTML pages.
 #       Not really sure how to do that yet.
 
+
+
 __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
 
@@ -49,8 +51,9 @@ class FetcherPool:
 
     def ReturnLinks(self, links, url):
         self.mutexLock.acquire()
-        self.linkSets.append('\t'.join([url]+links))
         if(len(links)>0):
+            toAppend = '\t'.join([url+'!!!']+links)
+            self.linkSets.append(toAppend)
             self.successPages.append(url)
         else:
             self.failedPages.append(url)
@@ -102,7 +105,7 @@ class RssFetcher:
 
     def run(self):
         while(True):
-            url, links = self.master.GetUrl(), []
+            url, links = self.master.GetUrl().strip(), []
             if(url==None):
                 break
             try:
@@ -131,7 +134,19 @@ class RssFetcher:
                 link = link[:link.find(' ')]
             if(link.find('<')>-1):
                 link = link[:link.find('<')]
-            toReturn.append(link)
+            if(link.find('[')>-1):
+                link = link[:link.find('[')]
+            if(link.find(';')>-1):
+                link = link[:link.find(';')]
+            if(link.find(')')>-1):
+                link = link[:link.find(')')]
+            if(link.find('\t')>-1):
+                link = link[:link.find('\t')]
+            if(link.find('\n')>-1):
+                link = link[:link.find('\n')]
+            link = link.strip()
+            if(len(link)>1):
+                toReturn.append(link)
             index = xml.find('http://', end)
         return toReturn
 
