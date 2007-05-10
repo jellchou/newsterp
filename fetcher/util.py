@@ -28,7 +28,6 @@ class StopList:
             items.append((-self.tokens[token], token))
         items.sort()
         return [item[1] for item in items[:n]]
-        
 
 
 def FetchPage(url, userAgent):
@@ -97,7 +96,7 @@ def LoadAndSplitFromDir(pathToDir):
     for f in files:
         try:
             data = open(pathToDir+'/'+f).read().lower()
-            data = SplitToWords(data, tokens)
+            data = SplitToWords(data)
             toReturn.append(data)
         except IOError:
             pass

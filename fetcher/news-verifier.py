@@ -3,9 +3,10 @@
 #
 
 import urllib2
+import threading
 import util
 import workerPool
-import bayes-classifier
+import bayesClassifier
 
 
 """ This class will download a set the set of links found from
@@ -16,13 +17,12 @@ will be lodged for this RSS page.
 
 __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 
-# TODO: need to multi-thread the downloading of links.
 
 
 class NewsVerifier:
     def __init__(self):
-        self.classifier = BayesClassifier()
-        self.fetcherPool = FetcherPool()
+        self.classifier = bayesClassifier.BayesClassifier()
+        self.fetcherPool = FetcherPool(self.classifier)
 
     def Init(self):
         self.classifier.LoadModel('model.test')
@@ -30,13 +30,17 @@ class NewsVerifier:
     def RunGolden(self):
         toFetch = open('golden-news.out').read().split('\n')
         self.fetcherPool.urlsToFetch = toFetch
+        self.noVerify = True
         self.fetcherPool.run()
 
     def RunPyrite(self):
         toFetch = open('possible-news.out').read().split('\n')
         self.fetcherPool.urlsToFetch = toFetch
+        self.noVerify = False
         self.fetcherPool.run()
-    
+
+    def Run(self):
+        self.RunGolden()
 
     
 class FetcherPool:
@@ -46,11 +50,12 @@ class FetcherPool:
         self.numThreads = 20
         self.threadPool = workerPool.WorkerPool(self.numThreads)
         self.mutexLock = threading.Lock()
+        self.noVerify = False
 
     def GetWorkItem(self):
         toReturn = None
         self.mutexLock.acquire()
-        if(len(self.urlsToFetch>0)):
+        if(len(self.urlsToFetch)>0):
             toReturn = self.urlsToFetch[0]
             self.urlsToFetch = self.urlsToFetch[1:]
         self.mutexLock.release()
@@ -61,7 +66,7 @@ class FetcherPool:
         # TODO: do something with the results.
         self.mutexLock.release()
 
-    def run(self)
+    def run(self):
         for i in range(self.numThreads):
             self.threadPool.startWorkerJob('!', FetcherAgent(self, self.classifier))
         self.threadPool.wait()
@@ -78,17 +83,14 @@ class FetcherAgent:
             job, toReturn = self.master.GetWorkItem(), []
             if(job==None):
                 break
-            items = job.split('\t')
-            if(len(items)==1):
-                urls = [jobs]
-            else:
-                urls = items[1:]
+            urls = job.split('\t')
             for url in urls:
                 try:
                     page = self.FetchPage(url)
                     doc = util.SplitToWords(page)
-                    isNews = self.classifier.ClassifyDoc(doc)
-                    if(isNews):
+                    if(self.master.noVerify):
+                        toReturn.append(page)
+                    elif(self.classifier.ClassifyDoc(doc)):
                         toReturn.append(page)
                 except ValueError:
                     print 'Could not fetch: ', url, ' ValueError.'
@@ -102,3 +104,11 @@ class FetcherAgent:
     def FetchPage(self, url):
         userAgent = 'NewsTerp - jhebert@cs.washington.edu'
         return util.FetchPage(url, userAgent)
+
+
+
+def main():
+    n = NewsVerifier()
+    n.Run()
+
+main()

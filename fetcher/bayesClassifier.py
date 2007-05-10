@@ -40,7 +40,7 @@ class BayesClassifier:
                 val1 += self.features[word][0]
                 val2 += self.features[word][1]
             else:
-                print 'Missing:', word
+                #print 'Missing:', word
                 pass
         if(val1 > val2):
             return 0
@@ -60,4 +60,4 @@ def main():
     b.LoadModel('model.test')
     test(b)
 
-main()
+#main()
