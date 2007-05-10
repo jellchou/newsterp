@@ -64,6 +64,9 @@ class FetcherPool:
     def ReturnResults(self, pages, numPossible):
         self.mutexLock.acquire()
         # TODO: do something with the results.
+        # TODO: also need to be using original rss url here?
+        #       output: <rss url, page url, html page> all split by
+        # a new line? make sure to remove newlines from page.
         self.mutexLock.release()
 
     def run(self):
