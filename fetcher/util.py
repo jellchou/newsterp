@@ -110,17 +110,21 @@ def LoadAndSplitFromDir(pathToDir):
 
 def EscapeDelimit(page, start, end):
     toReturn = []
-    prevEnd = -1
+    prevEnd = -len(end)
     startIndex = page.find(start)
-    enderIndex = page.find(end, startIndex+1)
+    enderIndex = page.find(end, startIndex+len(start))
+    if(startIndex==-1):
+        return page
+    if(enderIndex==-1):
+        return page[:startIndex]
     while(enderIndex > 0):
-        toReturn.append(page[prevEnd+1:startIndex])
+        toReturn.append(page[prevEnd+len(end):startIndex])
         prevEnd = enderIndex
-        startIndex = page.find(start, enderIndex+1)
+        startIndex = page.find(start, enderIndex+len(end))
         if(startIndex==-1):
-            toReturn.append(page[enderIndex+1:])
+            toReturn.append(page[enderIndex+len(end):])
             break
-        enderIndex = page.find(end, startIndex+1)
+        enderIndex = page.find(end, startIndex+len(start))
     return ''.join(toReturn)
 
 
