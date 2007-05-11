@@ -114,8 +114,8 @@ class RssFetcher:
                 print 'Could not fetch: ', url, ' ValueError.'
             except urllib2.URLError:
                 print 'Could not fetch: ', url, ' URLError.'
-            except:
-                print 'Could not fetch: ', url, ' unknown error.'
+            #except:
+            #    print 'Could not fetch: ', url, ' unknown error.'
             self.master.ReturnLinks(links, url)
 
     def FetchPage(self, url):
@@ -127,7 +127,7 @@ class RssFetcher:
         index = xml.find('http://')
         while(index > -1):
             charDelim = xml[index-1]
-            end = xml.find(charDelim, index)
+            end = xml.find(charDelim, index+1)
             link = xml[index:end]
             if(link.find(' ')>-1):
                 link = link[:link.find(' ')]
@@ -135,8 +135,8 @@ class RssFetcher:
                 link = link[:link.find('<')]
             if(link.find('[')>-1):
                 link = link[:link.find('[')]
-            if(link.find(';')>-1):
-                link = link[:link.find(';')]
+            #if(link.find(';')>-1):
+            #link = link[:link.find(';')]
             if(link.find(')')>-1):
                 link = link[:link.find(')')]
             if(link.find('\t')>-1):
@@ -146,6 +146,7 @@ class RssFetcher:
             link = link.strip()
             if(len(link)>1):
                 toReturn.append(link)
+                end = index + len(link)+1
             index = xml.find('http://', end)
         return toReturn
 

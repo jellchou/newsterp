@@ -29,14 +29,12 @@ class NewsVerifier:
 
     def RunGolden(self):
         toFetch = open('golden-news.out').read().split('\n')
-        self.fetcherPool.urlsToFetch = toFetch
-        self.fetcherPool.noVerify = True
+        self.fetcherPool.SetUrls(toFetch, True)
         self.fetcherPool.run()
 
     def RunPyrite(self):
         toFetch = open('possible-news.out').read().split('\n')
-        self.fetcherPool.urlsToFetch = toFetch
-        self.fetcherPool.noVerify = False
+        self.fetcherPool.SetUrls(toFetch, False)
         self.fetcherPool.run()
 
     def Run(self):
@@ -47,11 +45,17 @@ class FetcherPool:
     def __init__(self, classifier):
         self.classifier = classifier
         self.urlsToFetch = []
-        self.numThreads = 20
+        self.numThreads = 30
         self.numDone = 0
+        self.numToDo = 0
         self.threadPool = workerPool.WorkerPool(self.numThreads)
         self.mutexLock = threading.Lock()
         self.noVerify = False
+
+    def SetUrls(self, urls, noVerify):
+        self.numToDo = len(urls)
+        self.urlsToFetch = urls
+        self.noVerify = noVerify
 
     def GetWorkItem(self):
         toReturn = None
@@ -66,7 +70,7 @@ class FetcherPool:
         self.mutexLock.acquire()
         self.numDone += 1
         frac =  str(len(pages)) +  '/' + str(numPossible)
-        print 'Done: ', self.numDone, ':', frac
+        print 'Done: ', self.numDone, '/', self.numToDo, ':', frac
         if(len(pages)>0):
             if(self.noVerify):
                 print 'Golden!'
@@ -102,10 +106,11 @@ class FetcherAgent:
                 break
             items = job.split('\t') 
             rssPage, urls = items[0], util.FilterListToUnique(items[1:])
-            urls = 
+            print ' Working on: ', rssPage
             for url in urls:
                 try:
-                    print '  Fetching: ', url
+                    url = url.replace('&amp;', '&')
+                    url = url.replace('amp;', '&')
                     page = self.FetchPage(url).replace('\n', '\t')
                     doc = util.SplitToWords(page)
                     if(self.master.noVerify):
@@ -113,9 +118,13 @@ class FetcherAgent:
                     elif(self.classifier.ClassifyDoc(doc)):
                         toReturn.append(url+'\t'+page)
                 except ValueError:
-                    print ' Could not fetch: ', url, ' ValueError.'
-                except urllib2.URLError:
-                    print ' Could not fetch: ', url, ' URLError.'
+                    print ' Could not fetch: ', url, ' from: ', rssPage,  ' ValueError.'
+                except urllib2.URLError, e:
+                    print ' Could not fetch: ', url, ' from: ', rssPage, ' URLError.'
+                    #print e.code
+                    #data = e.read()
+                    #print len(data)
+             
                 except:
                     print ' Could not fetch: ', url, ' unknown error.'
             self.master.ReturnResults(rssPage, toReturn, len(items))

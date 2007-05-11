@@ -36,7 +36,12 @@ def FetchPage(url, userAgent):
     request = urllib2.Request(url)
     request.add_header('User-Agent', userAgent)
     opener = urllib2.build_opener()
-    return opener.open(request).read() 
+    data = opener.open(request).read()
+    data = data.replace('&amp;', '&')
+    data = data.replace('&quot;', '"')
+    data = data.replace('&gt;', '>')
+    data = data.replace('&lt;', '<')
+    return data
 
 def IsRSS(page):
     if(page.find('<rss version')>-1):
