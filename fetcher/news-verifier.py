@@ -48,6 +48,7 @@ class FetcherPool:
     def __init__(self, classifier, txtClassifier):
         self.classifier = classifier
         self.txtClassifier = txtClassifier
+        self.blacklist = util.LoadFileToHash('rss-blacklist.txt')
         self.urlsToFetch = []
         self.numThreads = 30
         self.numDone = 0
@@ -91,13 +92,16 @@ class FetcherPool:
             self.threadPool.startWorkerJob('!', FetcherAgent(self, self.classifier))
         self.threadPool.wait()
 
+    def Blacklist(self, url):
+        self.mutexLock.acquire()
+        self.blacklist[url] = None
+        self.mutexLock.release()
 
                                            
 class FetcherAgent:
     def __init__(self, pool, classifier):
         self.master = pool
         self.classifier = classifier        
-        self.blacklist = util.LoadFileToHash('rss-blacklist.txt')
 
     def run(self):
         while(True):
@@ -109,8 +113,10 @@ class FetcherAgent:
             print ' Working on: ', rssPage
             for url in urls:
                 try:
-                    if(url in self.blacklist):
+                    if(url in self.master.blacklist):
                         continue
+                    else:
+                        self.master.Blacklist(url)
                     url = url.replace('&amp;', '&')
                     url = url.replace('amp;', '&')
                     fileType = url[-3:].lower()
@@ -142,7 +148,8 @@ class FetcherAgent:
                     #print e.code
                     #data = e.read()
                     #print len(data)
-             
+                except socket.timeout:
+                    print ' Could not fetch: ', url, ' from: ', rssPage, ' socket timeout.'
                 #except:
                 #    print ' Could not fetch: ', url, ' unknown error.'
             self.master.ReturnResults(rssPage, toReturn, len(items))
