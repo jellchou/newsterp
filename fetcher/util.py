@@ -11,7 +11,7 @@ __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 import os
 import socket
 import urllib2
-socket.setdefaulttimeout(30)
+socket.setdefaulttimeout(10)
 
 class StopList:
     def __init__(self):
@@ -95,9 +95,10 @@ def LoadAndSplitFromDir(pathToDir):
     toReturn, files = [], os.listdir(pathToDir)
     for f in files:
         try:
-            data = open(pathToDir+'/'+f).read().lower()
-            data = SplitToWords(data)
-            toReturn.append(data)
+            data = open(pathToDir+'/'+f).read().lower().split('\n')
+            for line in data:
+                line = SplitToWords(line)
+                toReturn.append(line)
         except IOError:
             pass
     return toReturn

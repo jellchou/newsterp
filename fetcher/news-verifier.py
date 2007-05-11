@@ -30,13 +30,13 @@ class NewsVerifier:
     def RunGolden(self):
         toFetch = open('golden-news.out').read().split('\n')
         self.fetcherPool.urlsToFetch = toFetch
-        self.noVerify = True
+        self.fetcherPool.noVerify = True
         self.fetcherPool.run()
 
     def RunPyrite(self):
         toFetch = open('possible-news.out').read().split('\n')
         self.fetcherPool.urlsToFetch = toFetch
-        self.noVerify = False
+        self.fetcherPool.noVerify = False
         self.fetcherPool.run()
 
     def Run(self):
@@ -48,6 +48,7 @@ class FetcherPool:
         self.classifier = classifier
         self.urlsToFetch = []
         self.numThreads = 20
+        self.numDone = 0
         self.threadPool = workerPool.WorkerPool(self.numThreads)
         self.mutexLock = threading.Lock()
         self.noVerify = False
@@ -61,12 +62,25 @@ class FetcherPool:
         self.mutexLock.release()
         return toReturn
 
-    def ReturnResults(self, pages, numPossible):
+    def ReturnResults(self, rssPage, pages, numPossible):
         self.mutexLock.acquire()
-        # TODO: do something with the results.
-        # TODO: also need to be using original rss url here?
-        #       output: <rss url, page url, html page> all split by
-        # a new line? make sure to remove newlines from page.
+        self.numDone += 1
+        frac =  str(len(pages)) +  '/' + str(numPossible)
+        print 'Done: ', self.numDone, ':', frac
+        if(len(pages)>0):
+            if(self.noVerify):
+                print 'Golden!'
+                newsType = 'golden'
+            else:
+                print 'Pyrite!'
+                newsType = 'pyrite'
+            fileName = hash(rssPage)
+            if(fileName < 0):
+                fileName = -fileName
+            fileName = str(fileName)
+            f = open('../fetched-pages/html/'+newsType+'/'+fileName, 'a')
+            f.write('\n'.join(pages+['']))
+            f.close()
         self.mutexLock.release()
 
     def run(self):
@@ -86,22 +100,25 @@ class FetcherAgent:
             job, toReturn = self.master.GetWorkItem(), []
             if(job==None):
                 break
-            urls = job.split('\t')
+            items = job.split('\t') 
+            rssPage, urls = items[0], util.FilterListToUnique(items[1:])
+            urls = 
             for url in urls:
                 try:
-                    page = self.FetchPage(url)
+                    print '  Fetching: ', url
+                    page = self.FetchPage(url).replace('\n', '\t')
                     doc = util.SplitToWords(page)
                     if(self.master.noVerify):
-                        toReturn.append(page)
+                        toReturn.append(url+'\t'+page)
                     elif(self.classifier.ClassifyDoc(doc)):
-                        toReturn.append(page)
+                        toReturn.append(url+'\t'+page)
                 except ValueError:
-                    print 'Could not fetch: ', url, ' ValueError.'
+                    print ' Could not fetch: ', url, ' ValueError.'
                 except urllib2.URLError:
-                    print 'Could not fetch: ', url, ' URLError.'
+                    print ' Could not fetch: ', url, ' URLError.'
                 except:
-                    print 'Could not fetch: ', url, ' unknown error.'
-            self.master.ReturnResults(toReturn, len(items))
+                    print ' Could not fetch: ', url, ' unknown error.'
+            self.master.ReturnResults(rssPage, toReturn, len(items))
 
 
     def FetchPage(self, url):
