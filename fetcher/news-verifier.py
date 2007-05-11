@@ -96,7 +96,8 @@ class FetcherPool:
 class FetcherAgent:
     def __init__(self, pool, classifier):
         self.master = pool
-        self.classifier = classifier
+        self.classifier = classifier        
+        self.blacklist = util.LoadFileToHash('rss-blacklist.txt')
 
     def run(self):
         while(True):
@@ -108,6 +109,8 @@ class FetcherAgent:
             print ' Working on: ', rssPage
             for url in urls:
                 try:
+                    if(url in self.blacklist):
+                        continue
                     url = url.replace('&amp;', '&')
                     url = url.replace('amp;', '&')
                     fileType = url[-3:].lower()
@@ -123,7 +126,7 @@ class FetcherAgent:
                     page = util.EscapeDelimit(page, '<STYLE', '</STYLE>', f)
                     page = util.EscapeDelimit(page, '<', '>', f)
                     page = util.CollapseWhitespace(page)
-                    txt=self.master.txtClassifer.ClassifyDoc([page])
+                    txt=self.master.txtClassifier.ClassifyDoc([page])
                     if(not txt):
                         print 'This doc is not text!'
                         continue
@@ -140,8 +143,8 @@ class FetcherAgent:
                     #data = e.read()
                     #print len(data)
              
-                except:
-                    print ' Could not fetch: ', url, ' unknown error.'
+                #except:
+                #    print ' Could not fetch: ', url, ' unknown error.'
             self.master.ReturnResults(rssPage, toReturn, len(items))
 
 
@@ -156,3 +159,9 @@ def main():
     n.Run()
 
 main()
+
+
+
+
+        self.failedFeeds = util.LoadFileToHash('rss-blacklist.txt')
+        self.urls = util.FilterListToUnique(urls, self.failedFeeds)
