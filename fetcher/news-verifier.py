@@ -112,6 +112,7 @@ class FetcherAgent:
                     url = url.replace('&amp;', '&')
                     url = url.replace('amp;', '&')
                     page = self.FetchPage(url).replace('\n', '\t')
+                    page = util.EscapeDelimit(page, '<', '>')
                     doc = util.SplitToWords(page)
                     if(self.master.noVerify):
                         toReturn.append(url+'\t'+page)

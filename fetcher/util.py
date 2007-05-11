@@ -107,3 +107,22 @@ def LoadAndSplitFromDir(pathToDir):
         except IOError:
             pass
     return toReturn
+
+def EscapeDelimit(page, start, end):
+    toReturn = []
+    prevEnd = -1
+    startIndex = page.find(start)
+    enderIndex = page.find(end, startIndex+1)
+    while(enderIndex > 0):
+        toReturn.append(page[prevEnd+1:startIndex])
+        prevEnd = enderIndex
+        startIndex = page.find(start, enderIndex+1)
+        if(startIndex==-1):
+            toReturn.append(page[enderIndex+1:])
+            break
+        enderIndex = page.find(end, startIndex+1)
+    return ''.join(toReturn)
+
+
+
+    
