@@ -21,7 +21,7 @@ __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 class AskGoogle:
     ''' For queries to run we need the proxy server running. Ask Jack about this. '''
     def __init__(self):
-        # TODO: list of states, countries.
+        # TODO: list of countries.
         self.queries=['news', 'local news', 'global news', 'international news',
                       'weather', 'business', 'tech', 'sports', 'fashion',
                       'Europe', 'Asia', 'US', 'cbs rss', 'abc', 'komo', 'kiro'

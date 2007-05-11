@@ -12,7 +12,7 @@ textual corpora. """
 __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 
 
-
+# TODO: move this file to bayesLearner.py
 
 class BayesLearner:
 
@@ -21,6 +21,7 @@ class BayesLearner:
         self.posPath = ''
         self.negPath = ''
         self.StopList = util.StopList()
+        self.type = 'txt'
 
     def AddExample(self, doc, val):
         for word in doc:
@@ -30,14 +31,18 @@ class BayesLearner:
             self.features[word][val] += 1
 
     def LearnModel(self):
+        print 'Learning Model ...'
         positive = self.LoadExamples(self.posPath)
         negative = self.LoadExamples(self.negPath)
         for doc in positive:
-            self.AddExample(doc, 1)
+            for token in doc:
+                self.AddExample(token, 1)
         for doc in negative:
-            self.AddExample(doc, 0)
+            for token in doc:
+                self.AddExample(token, 0)
     
     def SaveModel(self, fileName):
+        print 'Saving model to: ', fileName
         toWrite, f = [], open(fileName, 'w')
         for feature in self.features:
             line = '\t'.join([feature]+[str(a) for a in self.features[feature]])
@@ -45,18 +50,25 @@ class BayesLearner:
         f.write('\n'.join(toWrite))
         f.close()
 
-    def LoadExamples(self, dir):
-        return util.LoadAndSplitFromDir(dir)
+    def LoadExamples(self, path):
+        print 'Loading data from: ', path
+        if(self.type == 'news'):
+            return util.LoadAndSplitFromDir(path)
+        else:
+            return open(path).read()
     
 
 
 def main():
     b = BayesLearner()
-    b.posPath = '/home/jhebert/code/java/newsterp/articles/univ-bridge'
-    b.negPath = '/home/jhebert/code/java/newsterp/fetcher/'
+    #b.posPath = '/home/jhebert/code/java/newsterp/articles/univ-bridge'
+    #b.negPath = '/home/jhebert/code/java/newsterp/fetcher/'
+    b.posPath = './models/pos-text.txt'
+    b.negPath = './models/neg-text.txt'
+
     b.LearnModel()
     print b.StopList.GetTopN(60)
-    b.SaveModel('model.test')
+    b.SaveModel('txt-vs-bin.model')
     #print b.features
 
 

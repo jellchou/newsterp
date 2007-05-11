@@ -103,9 +103,11 @@ def LoadAndSplitFromDir(pathToDir):
     for f in files:
         try:
             data = open(pathToDir+'/'+f).read().lower().split('\n')
+            toAdd = []
             for line in data:
                 line = SplitToWords(line)
-                toReturn.append(line)
+                toAdd += line
+            toReturn.append(toAdd)
         except IOError:
             pass
     return toReturn

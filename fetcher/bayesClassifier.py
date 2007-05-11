@@ -15,6 +15,7 @@ __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 class BayesClassifier:
     def __init__(self):
         self.features = {}
+        self.type = 'txt'
 
     def LoadModel(self, fileName):
         data = open(fileName).read().split('\n')
@@ -35,6 +36,8 @@ class BayesClassifier:
 
     def ClassifyDoc(self, doc):
         val1, val2 = 0.0, 0.0
+        if(self.type == 'txt'):
+            doc = ''.join(doc)
         for word in doc:
             if(word in self.features):
                 val1 += self.features[word][0]
@@ -49,9 +52,10 @@ class BayesClassifier:
 
 def test(bayesClassifier):
     path = '/home/jhebert/code/java/newsterp/articles/univ-bridge'
-    items = util.LoadAndSplitFromDir(path)
-    for item in items:
-        print bayesClassifier.ClassifyDoc(item)
+    docs = util.LoadAndSplitFromDir(path)
+    for doc in docs:
+        #print 'Item: ', doc
+        print bayesClassifier.ClassifyDoc(doc)
 
 
 

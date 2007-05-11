@@ -17,17 +17,17 @@ will be lodged for this RSS page.
 
 __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 
-# TODO: if my delimiter returned a list of tokens and stripped
-#       those with fewer than 4 words or so, it would remove
-#       all those header links.
-
+# TODO: have this also classifiy news docs!
 
 class NewsVerifier:
     def __init__(self):
+        self.txtClassifier = bayesClassifier.BayesClassifier()
         self.classifier = bayesClassifier.BayesClassifier()
-        self.fetcherPool = FetcherPool(self.classifier)
+        self.fetcherPool = FetcherPool(self.classifier,
+                                       self.txtClassifier)
 
     def Init(self):
+        self.txtClassifier.LoadModel('txt-vs-bin.model')
         self.classifier.LoadModel('model.test')
 
     def RunGolden(self):
@@ -45,8 +45,9 @@ class NewsVerifier:
 
     
 class FetcherPool:
-    def __init__(self, classifier):
+    def __init__(self, classifier, txtClassifier):
         self.classifier = classifier
+        self.txtClassifier = txtClassifier
         self.urlsToFetch = []
         self.numThreads = 30
         self.numDone = 0
@@ -122,6 +123,10 @@ class FetcherAgent:
                     page = util.EscapeDelimit(page, '<STYLE', '</STYLE>', f)
                     page = util.EscapeDelimit(page, '<', '>', f)
                     page = util.CollapseWhitespace(page)
+                    txt=self.master.txtClassifer.ClassifyDoc([page])
+                    if(not txt):
+                        print 'This doc is not text!'
+                        continue
                     doc = util.SplitToWords(page)
                     if(self.master.noVerify):
                         toReturn.append(url+'\t'+page)
