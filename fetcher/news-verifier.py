@@ -17,6 +17,9 @@ will be lodged for this RSS page.
 
 __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 
+# TODO: if my delimiter returned a list of tokens and stripped
+#       those with fewer than 4 words or so, it would remove
+#       all those header links.
 
 
 class NewsVerifier:
@@ -73,15 +76,10 @@ class FetcherPool:
         print 'Done: ', self.numDone, '/', self.numToDo, ':', frac
         if(len(pages)>0):
             if(self.noVerify):
-                print 'Golden!'
                 newsType = 'golden'
             else:
-                print 'Pyrite!'
                 newsType = 'pyrite'
-            fileName = hash(rssPage)
-            if(fileName < 0):
-                fileName = -fileName
-            fileName = str(fileName)
+            fileName = str(abs(hash(rssPage)))
             f = open('../fetched-pages/html/'+newsType+'/'+fileName, 'a')
             f.write('\n'.join(pages+['']))
             f.close()
@@ -111,10 +109,19 @@ class FetcherAgent:
                 try:
                     url = url.replace('&amp;', '&')
                     url = url.replace('amp;', '&')
+                    fileType = url[-3:].lower()
+                    if((fileType=='gif')|(fileType=='jpg')):
+                        continue
+                    f = lambda x : len(x.split())>3
                     page = self.FetchPage(url).replace('\n', '\t')
-                    page = util.EscapeDelimit(page, '<script>', '</script>')
-                    page = util.EscapeDelimit(page, '<!--', '--!>')
-                    page = util.EscapeDelimit(page, '<', '>')
+                    page = util.EscapeDelimit(page, '<script', '</script>',f )
+                    page = util.EscapeDelimit(page, '<SCRIPT', '</SCRIPT>', f)
+                    page = util.EscapeDelimit(page, '<noscript', '</noscript>', f)
+                    page = util.EscapeDelimit(page, '<NOSCRIPT', '</NOSCRIPT>', f)
+                    page = util.EscapeDelimit(page, '<style', '</style>', f)
+                    page = util.EscapeDelimit(page, '<STYLE', '</STYLE>', f)
+                    page = util.EscapeDelimit(page, '<', '>', f)
+                    page = util.CollapseWhitespace(page)
                     doc = util.SplitToWords(page)
                     if(self.master.noVerify):
                         toReturn.append(url+'\t'+page)

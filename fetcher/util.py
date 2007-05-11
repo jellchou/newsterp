@@ -37,10 +37,12 @@ def FetchPage(url, userAgent):
     request.add_header('User-Agent', userAgent)
     opener = urllib2.build_opener()
     data = opener.open(request).read()
-    data = data.replace('&amp;', '&')
+    data = data.replace('&nbsp;', ' ')
     data = data.replace('&quot;', '"')
+    data = data.replace('&amp;', '&')
     data = data.replace('&gt;', '>')
     data = data.replace('&lt;', '<')
+
     return data
 
 def IsRSS(page):
@@ -108,7 +110,7 @@ def LoadAndSplitFromDir(pathToDir):
             pass
     return toReturn
 
-def EscapeDelimit(page, start, end):
+def EscapeDelimit(page, start, end, f = lambda x: True):
     toReturn = []
     prevEnd = -len(end)
     startIndex = page.find(start)
@@ -118,15 +120,20 @@ def EscapeDelimit(page, start, end):
     if(enderIndex==-1):
         return page[:startIndex]
     while(enderIndex > 0):
-        toReturn.append(page[prevEnd+len(end):startIndex])
+        toAdd = page[prevEnd+len(end):startIndex]
+        if(f(toAdd)):
+            toReturn.append(toAdd)
+            toReturn.append(' ')
         prevEnd = enderIndex
         startIndex = page.find(start, enderIndex+len(end))
         if(startIndex==-1):
-            toReturn.append(page[enderIndex+len(end):])
+            toAdd = page[enderIndex+len(end):]
+            if(f(toAdd)):
+                toReturn.append(toAdd)
             break
         enderIndex = page.find(end, startIndex+len(start))
     return ''.join(toReturn)
 
-
-
+def CollapseWhitespace(page):
+    return ' '.join(page.split())
     
