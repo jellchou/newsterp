@@ -119,7 +119,7 @@ class RssFetcher:
             self.master.ReturnLinks(links, url)
 
     def FetchPage(self, url):
-        userAgent = 'NewsTerp - jhebert@cs.washington.edu'
+        userAgent = 'NewsTerp - jhebert_at_cs washington edu'
         return util.FetchPage(url, userAgent)
 
     def ExtractLinks(self, xml):

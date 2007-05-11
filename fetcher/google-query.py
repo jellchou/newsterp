@@ -158,7 +158,7 @@ class PageFetcher:
             self.fetchPool.AddLinkResults(results)
 
     def FetchPage(self, url):
-        userAgent = 'NewsTerp - jhebert@cs.washington.edu'
+        userAgent = 'NewsTerp - jhebert_at_cs washington edu'
         self.page = util.FetchPage(url, userAgent)
         self.baseUrl = url
 
