@@ -18,6 +18,8 @@ links on them since the last download. """
 __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
 
+# TODO: was a bracket on the end of a link.
+
 class FetcherPool:
     def __init__(self, urls, golden):
         self.threadPool = workerPool.WorkerPool(10)

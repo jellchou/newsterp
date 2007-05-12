@@ -2,7 +2,9 @@
 #
 #
 
+import socket
 import urllib2
+import httplib
 import threading
 import util
 import workerPool
@@ -51,8 +53,9 @@ class FetcherPool:
         self.txtClassifier = txtClassifier
         self.blacklist = util.LoadFileToHash('rss-blacklist.txt')
         self.urlsToFetch = []
-        self.numThreads = 30
+        self.numThreads = 20
         self.numDone = 0
+        self.done = {}
         self.numToDo = 0
         self.threadPool = workerPool.WorkerPool(self.numThreads)
         self.mutexLock = threading.Lock()
@@ -98,7 +101,18 @@ class FetcherPool:
         self.blacklist[url] = None
         self.mutexLock.release()
 
-                                           
+    def HasBeenDone(self, page):
+        num = hash(page)
+        self.mutexLock.acquire()
+        if(num in self.done):
+            toReturn = True
+        else:
+            self.done[num] = None
+            toReturn = False
+        self.mutexLock.release()
+        return toReturn
+
+
 class FetcherAgent:
     def __init__(self, pool, classifier):
         self.master = pool
@@ -137,6 +151,8 @@ class FetcherAgent:
                     if(not txt):
                         print 'This doc is not text!'
                         continue
+                    if(self.master.HasBeenDone(page)):
+                        continue
                     doc = util.SplitToWords(page)
                     if(self.master.noVerify):
                         toReturn.append(url+'\t'+page)
@@ -146,14 +162,18 @@ class FetcherAgent:
                 except ValueError:
                     print ' Could not fetch: ', url, ' from: ', rssPage,  ' ValueError.'
                 except urllib2.URLError, e:
-                    print ' Could not fetch: ', url, ' from: ', rssPage, ' URLError.'
-                    #print e.code
-                    #data = e.read()
-                    #print len(data)
+                    reason = '\n URLError'
+                    if('code' in dir(e)):
+                        reason =  '\n URLError : ' + str(e.code)
+                    elif('reason' in dir(e)):
+                        reason = '\n URLError : ' + str(e.reason)
+                    else:
+                        print dir(e)
+                    print ' Could not fetch: ', url, '\n from: ', rssPage, reason
                 except socket.timeout:
-                    print ' Could not fetch: ', url, ' from: ', rssPage, ' socket timeout.'
-                #except:
-                #    print ' Could not fetch: ', url, ' unknown error.'
+                    print ' Could not fetch: ', url, '\n from: ', rssPage, '\n socket timeout.'
+                except httplib.InvalidURL:
+                    pass
             self.master.ReturnResults(rssPage, toReturn, len(items))
 
 
