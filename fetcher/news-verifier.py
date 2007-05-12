@@ -20,6 +20,7 @@ will be lodged for this RSS page.
 __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 
 # TODO: have this also classifiy news docs!
+#       Just need to mark pos and neg, build the model
 
 class NewsVerifier:
     def __init__(self):
