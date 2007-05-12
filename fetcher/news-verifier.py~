@@ -54,7 +54,7 @@ class FetcherPool:
         self.txtClassifier = txtClassifier
         self.blacklist = util.LoadFileToHash('rss-blacklist.txt')
         self.urlsToFetch = []
-        self.numThreads = 5
+        self.numThreads = 20
         self.numDone = 0
         self.done = {}
         self.numToDo = 0
