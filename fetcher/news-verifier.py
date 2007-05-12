@@ -36,12 +36,13 @@ class NewsVerifier:
         self.fetcherPool.run()
 
     def RunPyrite(self):
-        toFetch = open('possible-news.out').read().split('\n')
+        toFetch = open('pyrite-news.out').read().split('\n')
         self.fetcherPool.SetUrls(toFetch, False)
         self.fetcherPool.run()
 
     def Run(self):
-        self.RunGolden()
+        #self.RunGolden()
+        self.RunPyrite()
 
     
 class FetcherPool:
@@ -139,8 +140,9 @@ class FetcherAgent:
                     doc = util.SplitToWords(page)
                     if(self.master.noVerify):
                         toReturn.append(url+'\t'+page)
-                    elif(self.classifier.ClassifyDoc(doc)):
-                        toReturn.append(url+'\t'+page)
+                    #elif(self.classifier.ClassifyDoc(doc)):
+                    # TODO: train this classifier.
+                    toReturn.append(url+'\t'+page)
                 except ValueError:
                     print ' Could not fetch: ', url, ' from: ', rssPage,  ' ValueError.'
                 except urllib2.URLError, e:
@@ -167,8 +169,3 @@ def main():
 
 main()
 
-
-
-
-        self.failedFeeds = util.LoadFileToHash('rss-blacklist.txt')
-        self.urls = util.FilterListToUnique(urls, self.failedFeeds)
