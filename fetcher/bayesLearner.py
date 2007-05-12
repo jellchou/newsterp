@@ -12,16 +12,17 @@ textual corpora. """
 __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 
 
-# TODO: move this file to bayesLearner.py
+# TODO: don't I need to track the number of positive and
+#       negative documents in total to normalize?
 
 class BayesLearner:
 
-    def __init__(self):
+    def __init__(self, typeName):
         self.features = {}
         self.posPath = ''
         self.negPath = ''
         self.StopList = util.StopList()
-        self.type = 'txt'
+        self.type = typeName
 
     def AddExample(self, doc, val):
         for word in doc:
@@ -34,12 +35,12 @@ class BayesLearner:
         print 'Learning Model ...'
         positive = self.LoadExamples(self.posPath)
         negative = self.LoadExamples(self.negPath)
+        print 'Done loading data.'
         for doc in positive:
-            for token in doc:
-                self.AddExample(token, 1)
+            print 'Doc:', doc
+            self.AddExample(doc, 1)
         for doc in negative:
-            for token in doc:
-                self.AddExample(token, 0)
+            self.AddExample(doc, 0)
     
     def SaveModel(self, fileName):
         print 'Saving model to: ', fileName
@@ -53,22 +54,28 @@ class BayesLearner:
     def LoadExamples(self, path):
         print 'Loading data from: ', path
         if(self.type == 'news'):
-            return util.LoadAndSplitFromDir(path)
+            toReturn = []
+            lines = open(path).read().split('\n')
+            for line in lines:
+                toAdd = util.SplitToWords(line)
+                #print 'Adding:', toAdd
+                toReturn.append(toAdd)
+            return toReturn
         else:
             return open(path).read()
     
 
 
 def main():
-    b = BayesLearner()
-    #b.posPath = '/home/jhebert/code/java/newsterp/articles/univ-bridge'
-    #b.negPath = '/home/jhebert/code/java/newsterp/fetcher/'
-    b.posPath = './models/pos-text.txt'
-    b.negPath = './models/neg-text.txt'
+    #b = BayesLearner('txt')
+    b = BayesLearner('news')
+    b.posPath = './models/pos-news.txt'
+    b.negPath = './models/neg-news.txt'
+    #b.negPath = './models/neg-text.txt'
 
     b.LearnModel()
     print b.StopList.GetTopN(60)
-    b.SaveModel('txt-vs-bin.model')
+    b.SaveModel('news.model')
     #print b.features
 
 
