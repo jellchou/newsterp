@@ -44,8 +44,8 @@ class NewsVerifier:
         self.fetcherPool.run()
 
     def Run(self):
-        #self.RunGolden()
-        self.RunPyrite()
+        self.RunGolden()
+        #self.RunPyrite()
 
     
 class FetcherPool:
@@ -54,7 +54,7 @@ class FetcherPool:
         self.txtClassifier = txtClassifier
         self.blacklist = util.LoadFileToHash('rss-blacklist.txt')
         self.urlsToFetch = []
-        self.numThreads = 20
+        self.numThreads = 5
         self.numDone = 0
         self.done = {}
         self.numToDo = 0
