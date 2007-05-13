@@ -69,6 +69,34 @@ public class TaggedSentence {
 			return rv + "]";
 		}
 
+		public boolean equals(Object aObj) {
+			if (!(aObj instanceof Chunk)) return false;
+
+			Chunk c = (Chunk)aObj;
+
+			if (c.mType != mType) return false;
+
+			TaggedWord[] our_w = getWords(), their_w = c.getWords();
+
+			if (our_w.length != their_w.length) return false;
+
+			for (int i = 0; i < our_w.length; i++) {
+				if (!our_w[i].equals(their_w[i])) return false;
+			}
+
+			return true;
+		}
+		public int hashCode() {
+			int code = mType.hashCode();
+
+			for (TaggedWord w : getWords()) {
+				code ^= w.hashCode();
+				code = code << 1;
+			}
+
+			return code;
+		}
+
 		private TaggedSentence mParent;
 		private int mFirstIdx, mLastIdx;
 		private ChunkType mType;
@@ -162,6 +190,17 @@ public class TaggedSentence {
 		public PartOfSpeech getPOS() { return mPOS; }
 
 		public String toString() { return mWord + "/" + mPOS; }
+
+		public boolean equals(Object aObj) {
+			if (!(aObj instanceof TaggedWord)) return false;
+
+			TaggedWord w = (TaggedWord)aObj;
+
+			return (w.mPOS.equals(mPOS)) && (w.mWord.equals(mWord));
+		}
+		public int hashCode() {
+			return mWord.hashCode() ^ mPOS.hashCode();
+		}
 
 		private String mWord;
 		private PartOfSpeech mPOS;

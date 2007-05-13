@@ -5,9 +5,9 @@
  * CSE 472 Spring 2007 final project
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.lang.reflect.Array;
 
+import java.util.*;
 import java.io.*;
 
 import opennlp.tools.lang.english.*;
@@ -87,7 +87,7 @@ public class Main {
 		TaggedArticle[] articles = new TaggedArticle[aArgs.length - idx];
 
 		/* chop up and tag all of our articles. */
-		for (; idx < aArgs.length; idx++) {
+		for (int n = 0; idx < aArgs.length; idx++, n++) {
 			System.out.println("Processing file `" + aArgs[idx] + "'...");
 
 			ArrayList<String> paras = new ArrayList<String>();
@@ -140,6 +140,7 @@ public class Main {
 			System.out.print("Tokenizing and tagging... *");
 
 			TaggedArticle art = new TaggedArticle(aArgs[idx]);
+			articles[n] = art;
 
 			for (String sent : untagged_sents) {
 				System.out.print("\b|");
@@ -163,16 +164,60 @@ public class Main {
 
 			//System.out.println(art);
 
-			// do fancy stuff here.
+			// do per-article fancy stuff here.
 			System.out.println("All NPs in article: ");
 
 			int i = 0;
 
 			for (TaggedSentence s : art.getSentences()) {
+				TaggedSentence.Chunk[] cks = s.getChunks(ChunkType.NP);
+
 				System.out.println("Sentence " + i + ": " +
-					Arrays.toString(s.getChunks(ChunkType.NP)));
+					Arrays.toString(cks));
 				i++;
 			}
+		}
+
+		// do per-article-set fancy stuff here.
+		System.out.println("Most popular 5 NPs in article set:");
+
+		HashMap<TaggedSentence.Chunk, Integer> pop_index = 
+			new HashMap<TaggedSentence.Chunk, Integer>();
+
+		for (TaggedArticle a : articles) {
+			for (TaggedSentence s : a.getSentences()) {
+				for (TaggedSentence.Chunk ck : s.getChunks(ChunkType.NP)) {
+					Integer ck_ct = null;
+
+					if ((ck_ct = pop_index.get(ck)) != null) {
+						pop_index.put(ck, new Integer(ck_ct.intValue() + 1));
+					} else {
+						pop_index.put(ck, new Integer(1));
+					}
+				}
+			}
+		}
+
+		// don't ask why Java doesn't let you make genericized arrays. just
+		// accept that this line works, and move on.
+		Map.Entry<TaggedSentence.Chunk, Integer>[] pop_entries =
+			(Map.Entry<TaggedSentence.Chunk, Integer>[]) new Map.Entry[0];
+
+		pop_entries = pop_index.entrySet().toArray(pop_entries);
+
+		Arrays.sort(pop_entries, 
+			new Comparator< Map.Entry<TaggedSentence.Chunk, Integer> > () {
+				public int 
+					compare(Map.Entry<TaggedSentence.Chunk, Integer> aA,
+							Map.Entry<TaggedSentence.Chunk, Integer> aB) {
+					return aA.getValue().compareTo(aB.getValue());
+				}
+			}
+		);
+
+		for (int i = pop_entries.length - 1; i > pop_entries.length - 6; i--) {
+			System.out.println(pop_entries[i].getKey() + " (" + 
+				pop_entries[i].getValue() + ")");
 		}
 	}
 }
