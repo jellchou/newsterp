@@ -3,6 +3,7 @@
 # Copyright 2006 Google, Inc. All Rights Reserved.
 
 import sys
+import traceback
 import threading
 import Queue
 
@@ -42,7 +43,16 @@ class workerThread:
       self.busy = True
       status = 'workerThread is running:'+toAppend
       self.threadPool.logging.put(status)
-      item.run()
+      try:
+        item.run()
+      except:
+        if(flag == 'quit'):
+          sys.exit(0)
+        else:
+          print "Exception in user code:"
+          print '-'*60
+          traceback.print_exc(file=sys.stdout)
+          print '-'*60
       self.busy = False
       status = 'workerThread done running:'+toAppend
       self.threadPool.logging.put(status)

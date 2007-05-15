@@ -22,7 +22,11 @@ __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 # TODO: have this also classifiy news docs!
 #       Just need to mark pos and neg, build the model
 
-# TODO: some fraction per rss link are > 1 !!!
+
+
+# TODO: BadStatusLine error
+
+
 
 class NewsVerifier:
     def __init__(self):
@@ -81,8 +85,9 @@ class FetcherPool:
     def ReturnResults(self, rssPage, pages, numPossible):
         self.mutexLock.acquire()
         self.numDone += 1
-        frac =  str(len(pages)) +  '/' + str(numPossible)
-        print 'Done: ', self.numDone, '/', self.numToDo, ':', frac
+        frac1 =  str(len(pages)) +  '/' + str(numPossible)
+        frac2 = str(self.numDone) + '/' + str(self.numToDo)
+        print 'Done: ', frac2, ':', frac1, rssPage
         if(len(pages)>0):
             if(self.noVerify):
                 newsType = 'golden'
@@ -98,6 +103,7 @@ class FetcherPool:
         for i in range(self.numThreads):
             self.threadPool.startWorkerJob('!', FetcherAgent(self, self.classifier))
         self.threadPool.wait()
+        self.threadPool.stop()
 
     def Blacklist(self, url):
         self.mutexLock.acquire()
@@ -128,7 +134,6 @@ class FetcherAgent:
                 break
             items = job.split('\t') 
             rssPage, urls = items[0], util.FilterListToUnique(items[1:])
-            print ' Working on: ', rssPage
             for url in urls:
                 try:
                     if(url in self.master.blacklist):
@@ -157,8 +162,8 @@ class FetcherAgent:
                     if(self.master.HasBeenDone(page)):
                         continue
                     doc = util.SplitToWords(page)
-                    if(self.master.noVerify):
-                        toReturn.append(url+'\t'+page)
+                    #if(self.master.noVerify):
+                    #    toReturn.append(url+'\t'+page)
                     #elif(self.classifier.ClassifyDoc(doc)):
                     # TODO: train this classifier.
                     toReturn.append(url+'\t'+page)
@@ -176,6 +181,8 @@ class FetcherAgent:
                 except socket.timeout:
                     print ' Could not fetch: ', url, '\n from: ', rssPage, '\n socket timeout.'
                 except httplib.InvalidURL:
+                    pass
+                except httplib.BadStatusLine:
                     pass
             self.master.ReturnResults(rssPage, toReturn, len(items))
 

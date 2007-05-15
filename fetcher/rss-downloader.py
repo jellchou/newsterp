@@ -18,7 +18,6 @@ links on them since the last download. """
 __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
 
-# TODO: was a bracket on the end of a link.
 
 class FetcherPool:
     def __init__(self, urls, golden):
@@ -58,7 +57,7 @@ class FetcherPool:
             self.WriteResults()
 
     def PrintStatus(self):
-        frac = str(self.numDone)+'/'+str(self.numToDo)
+        frac = str(self.numToDo-len(self.urls))+'/'+str(self.numToDo)
         dec = str(float(self.numDone) / (self.numToDo+1))
         print frac, dec
 
@@ -140,7 +139,7 @@ class RssFetcher:
             charDelim = xml[index-1]
             end = xml.find(charDelim, index+1)
             link = xml[index:end]
-            breakers = [' ','<','[',']',')','(','\t','\n']
+            breakers = [' ','<','[',']',')','(','\t','\n','"']
             for char in breakers:                
                 if(link.find(char)>-1):
                     link = link[:link.find(char)]
@@ -148,7 +147,7 @@ class RssFetcher:
             if(len(link)>1):
                 toReturn.append(link)
                 end = index + len(link)+1
-            index = xml.find('http://', end)
+            index = xml.find('http://', index+1)
         return toReturn
 
 
