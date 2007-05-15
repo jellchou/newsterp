@@ -22,6 +22,8 @@ __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 # TODO: have this also classifiy news docs!
 #       Just need to mark pos and neg, build the model
 
+# TODO: some fraction per rss link are > 1 !!!
+
 class NewsVerifier:
     def __init__(self):
         self.txtClassifier = bayesClassifier.BayesClassifier()
@@ -52,7 +54,7 @@ class FetcherPool:
     def __init__(self, classifier, txtClassifier):
         self.classifier = classifier
         self.txtClassifier = txtClassifier
-        self.blacklist = util.LoadFileToHash('rss-blacklist.txt')
+        self.blacklist = util.LoadFileToHash('blacklist.txt')
         self.urlsToFetch = []
         self.numThreads = 5
         self.numDone = 0

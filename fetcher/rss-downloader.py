@@ -28,10 +28,11 @@ class FetcherPool:
         self.golden = golden
         self.successPages = []
         self.failedPages = []
-        self.failedFeeds = util.LoadFileToHash('rss-blacklist.txt')
+        self.failedFeeds = util.LoadFileToHash('blacklist.txt')
         self.urls = util.FilterListToUnique(urls, self.failedFeeds)
         self.numToDo = len(urls)
         self.numDone = 0
+        self.ClearResults()
 
     def GetUrl(self):
         toReturn = None
@@ -82,6 +83,14 @@ class FetcherPool:
         f.write('\n')
         f.close()
 
+    def ClearResults(self):
+        if(self.golden):
+            f = open('golden-news.out' ,'w')
+        else:
+            f = open('pyrite-news.out' ,'w')
+        f.close()
+        
+
 
     def run(self):
         print '******\n******'
@@ -131,20 +140,10 @@ class RssFetcher:
             charDelim = xml[index-1]
             end = xml.find(charDelim, index+1)
             link = xml[index:end]
-            if(link.find(' ')>-1):
-                link = link[:link.find(' ')]
-            if(link.find('<')>-1):
-                link = link[:link.find('<')]
-            if(link.find('[')>-1):
-                link = link[:link.find('[')]
-            #if(link.find(';')>-1):
-            #link = link[:link.find(';')]
-            if(link.find(')')>-1):
-                link = link[:link.find(')')]
-            if(link.find('\t')>-1):
-                link = link[:link.find('\t')]
-            if(link.find('\n')>-1):
-                link = link[:link.find('\n')]
+            breakers = [' ','<','[',']',')','(','\t','\n']
+            for char in breakers:                
+                if(link.find(char)>-1):
+                    link = link[:link.find(char)]
             link = link.strip()
             if(len(link)>1):
                 toReturn.append(link)
