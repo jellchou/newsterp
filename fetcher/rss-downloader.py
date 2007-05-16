@@ -19,6 +19,10 @@ __author__ = "jhebert@cs.washington.edu (Jack Hebert)"
 
 
 
+# TODO: move all URL error handling to util.
+# TODO: try and make it do redirects as I feel like
+#       it is missing some stuff it should get.
+
 class FetcherPool:
     def __init__(self, urls, golden):
         self.threadPool = workerPool.WorkerPool(10)
@@ -153,8 +157,8 @@ class RssFetcher:
 
 
 def main():
-    #pages = open('rss.out').read().split('\n')
-    pages = open('golden-list.txt').read().split('\n')
+    pages = open('rss.out').read().split('\n')
+    #pages = open('golden-list.txt').read().split('\n')
     f = FetcherPool(pages, True)
     f.run()
 
