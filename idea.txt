@@ -1,4 +1,22 @@
 
+Jack Hebert
+5/16/07
+
+Things to do:
+1. Cluster news articles - Not super important. Would help, but can probably pass for now.
+2. Entity resolution - Somewhat important. Should boost relation recall by resolving pronouns.
+3. Output relation tuples per article - SUPER IMPORTANT!!!
+4. Wordnet spreading, PP+ADJ splitting - Fairly important, should help us merge relations.
+5. Article merging, collisions from (5) suggest merging - Fairly important.
+6. Advanced fact merging, re-phrasing - Important for later.
+
+
+
+
+
+
+
+
 
 
 References:
