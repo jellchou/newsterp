@@ -179,7 +179,8 @@ public class Main {
 		}
 
 		// do per-article-set fancy stuff here.
-		System.out.println("Most popular 5 NPs in article set:");
+		int numToShow = 350;
+		System.out.println("Most popular" + numToShow + "NPs in article set:");
 
 		HashMap<TaggedSentence.Chunk, Integer> pop_index = 
 			new HashMap<TaggedSentence.Chunk, Integer>();
@@ -215,7 +216,8 @@ public class Main {
 			}
 		);
 
-		for (int i = pop_entries.length - 1; i > pop_entries.length - 6; i--) {
+		int lowerBound = Math.max(0, pop_entries.length - 1 - numToShow);
+		for (int i = pop_entries.length - 1; i > lowerBound; i--) {
 			System.out.println(pop_entries[i].getKey() + " (" + 
 				pop_entries[i].getValue() + ")");
 		}
