@@ -23,7 +23,7 @@ public class ChunkerAdaptor {
 	void chunkify(TaggedSentence aSent) {
 		/* grab a word list from the sentence and break it into words and
 		 * tags for OpenNLP. */
-		TaggedSentence.TaggedWord[] words = aSent.getWords();
+		TaggedWord[] words = aSent.getWords();
 
 		String[] clean_words = new String[words.length];
 		String[] clean_tags = new String[words.length];

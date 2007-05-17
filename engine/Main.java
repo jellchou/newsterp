@@ -9,6 +9,7 @@ import java.lang.reflect.Array;
 
 import java.util.*;
 import java.io.*;
+import java.net.URL;
 
 import opennlp.tools.lang.english.*;
 
@@ -19,17 +20,31 @@ public class Main {
 	public static void usage() {
 		System.err.println(
 			"Usage: java Main [-nlp <dir>] <file1> <file2> ... <fileN>\n" +
-			"\t-nlp <dir>:\t OpenNLP Tools root directory\n"
+			"\t-nlp <dir>:\t OpenNLP Tools root directory\n" +
+			"\t-wn <dir>:\t WordNet dictionary location (absolute path)\n"
 		);
 	}
 
 	public static void main(String[] aArgs) {
 		int idx = 0;
 		String nlp_path = ".";
+		URL wn_path = null;
+		try {
+			wn_path = new URL("file:///usr/temp_store/newsterp/WordNet-3.0/dict");
+		} catch (Exception e) {}
 
 		while (idx < aArgs.length) {
 			if (aArgs[idx].equals("-nlp")) {
 				nlp_path = aArgs[idx + 1];
+				idx += 2;
+				continue;
+			} else if (aArgs[idx].equals("-wn")) {
+				try {
+					wn_path = new URL(aArgs[idx + 1]);
+				} catch (Exception e) {
+					System.err.println("Malformed WordNet path URL (" + e + "); exiting...");
+					return;
+				}
 				idx += 2;
 				continue;
 			} else if (aArgs[idx].equals("-h")) {
@@ -47,40 +62,16 @@ public class Main {
 			return;
 		}
 
-		SentenceDetector sd;
-		Tokenizer tok;
-		PosTagger tgr;
-		TreebankChunker chk;
-
 		/* build OpenNLP processing objects */
-		try {
-			System.out.println("Building sentence detector...");
-
-			sd = new SentenceDetector(
-				nlp_path + "/models/english/sentdetect/EnglishSD.bin.gz"
-			);
-
-			System.out.println("Building tokenizer...");
-
-			tok = new Tokenizer(
-				nlp_path + "/models/english/tokenize/EnglishTok.bin.gz"
-			);
-
-			System.out.println("Building POS tagger...");
-
-			tgr = new PosTagger(
+		if (!NLPToolkitManager.init(
+				nlp_path + "/models/english/sentdetect/EnglishSD.bin.gz",
+				nlp_path + "/models/english/tokenize/EnglishTok.bin.gz",
 				nlp_path + "/models/english/parser/tag.bin.gz",
-				new POSDictionary(nlp_path + "/models/english/parser/tagdict"));
-
-			System.out.println("Building chunker...");
-
-			chk = new TreebankChunker(
-				nlp_path + "/models/english/chunker/EnglishChunk.bin.gz"
-			);
-		} catch (Exception e) {
-			System.out.println("Couldn't create OpenNLP objects (" + e + 
-				"); exiting");
-			return;
+				nlp_path + "/models/english/parser/tagdict",
+				nlp_path + "/models/english/chunker/EnglishChunk.bin.gz",
+				wn_path)) {
+			System.err.println("Error creating NLP objects, exiting...");
+			return;		
 		}
 
 		/* provide space to store the processed articles... */
@@ -88,94 +79,9 @@ public class Main {
 
 		/* chop up and tag all of our articles. */
 		for (int n = 0; idx < aArgs.length; idx++, n++) {
-			System.out.println("Processing file `" + aArgs[idx] + "'...");
-
-			ArrayList<String> paras = new ArrayList<String>();
-			ArrayList<String> untagged_sents = new ArrayList<String>();
-
-			System.out.print("Reading...");
-
-			// read file.
 			try {
-				StringBuffer para = new StringBuffer();
-				BufferedReader rdr = new BufferedReader(
-					new FileReader(aArgs[idx]));
-
-				for (String line = ""; line != null; line = rdr.readLine()) {
-					if (line.equals("")) {
-						if (para.length() != 0) {
-							paras.add(para.toString());
-							para.setLength(0);
-							System.out.print('.');
-						}
-					} else {
-						para.append(line).append(" ");
-					}
-				}
-
-				if (para.length() != 0) {
-					paras.add(para.toString());
-					System.out.print('.');
-				}
-
-				System.out.println(" done (" + paras.size() + " paras).");
-			} catch (IOException e) {
-				System.out.println("Error while reading (" + e +
-					"); skipping...");
-
-				continue;
-			}
-
-			// sentence-detect.
-			System.out.print("Detecting sentences...");
-
-			for (String para : paras) {
-				untagged_sents.addAll(Arrays.asList(sd.sentDetect(para)));
-			}
-
-			System.out.println(" done (" + untagged_sents.size() + 
-				" sentences).");
-
-			// tokenize and tag.
-			System.out.print("Tokenizing and tagging... *");
-
-			TaggedArticle art = new TaggedArticle(aArgs[idx]);
-			articles[n] = art;
-
-			for (String sent : untagged_sents) {
-				System.out.print("\b|");
-				String[] tokens = tok.tokenize(sent);
-
-				System.out.print("\b-");
-				TaggedSentence tagged = new TaggedSentence(tgr, tokens);
-
-				art.append(tagged);
-			}
-
-			System.out.println("\bdone.");
-
-			// chunk.
-			System.out.print("Chunking... ");
-			
-			ChunkerAdaptor ca = new ChunkerAdaptor(chk);
-			ca.chunkify(art);
-
-			System.out.println("done.");
-
-			//System.out.println(art);
-
-			// do per-article fancy stuff here.
-			System.out.println("All NPs in article: ");
-
-			int i = 0;
-
-			for (TaggedSentence s : art.getSentences()) {
-				TaggedSentence.Chunk[] cks = s.getChunks(ChunkType.NP);
-
-				System.out.println("Sentence " + i + ": " +
-					Arrays.toString(cks));
-				i++;
-			}
+				articles[n] = new TaggedArticle(aArgs[idx], aArgs[idx]);
+			} catch (IOException e) {}
 		}
 
 		// do per-article-set fancy stuff here.
@@ -185,8 +91,18 @@ public class Main {
 		HashMap<TaggedSentence.Chunk, Integer> pop_index = 
 			new HashMap<TaggedSentence.Chunk, Integer>();
 
+		int a_i = 0, s_i = 0;
+
 		for (TaggedArticle a : articles) {
+			s_i = 0;
+
 			for (TaggedSentence s : a.getSentences()) {
+				Relation r = null;
+
+				if ((r = new RelationExtractor().extract(s)) != null)
+					System.out.println("Extracted relation for article " + a_i + 
+						", sentence " + s_i + ": " + r);
+
 				for (TaggedSentence.Chunk ck : s.getChunks(ChunkType.NP)) {
 					Integer ck_ct = null;
 
@@ -196,7 +112,11 @@ public class Main {
 						pop_index.put(ck, new Integer(1));
 					}
 				}
+
+				s_i++;
 			}
+
+			a_i++;
 		}
 
 		// don't ask why Java doesn't let you make genericized arrays. just

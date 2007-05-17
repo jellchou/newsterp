@@ -12,10 +12,11 @@ import java.util.ListIterator;
 import opennlp.tools.lang.english.*;
 
 import opennlp.tools.sentdetect.SentenceDetectorME;
+import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.postag.POSDictionary;
 
 public class TaggedSentence {
-	public TaggedSentence(PosTagger aTagger, String[] aWords) {
+	public TaggedSentence(POSTaggerME aTagger, String[] aWords) {
 		if (aTagger == null) 
 			throw new IllegalArgumentException("can't tag with a null tagger");
 
@@ -114,6 +115,8 @@ public class TaggedSentence {
 		return rv;
 	}
 
+	public boolean isChunked() { return mChunks != null; }
+
 	/* notable chunk-list invariant: the chunk list is kept in ascending order
 	 * by start word index.  this allows us to make judgments such as "the
 	 * subject is the first NP in the sentence". */
@@ -174,36 +177,11 @@ public class TaggedSentence {
 
 		for (int i = 0; i < mSentence.length; i++) {
 			sb.append(' ');
-			sb.append(mSentence[i].mWord + "/" + mSentence[i].mPOS);
+			sb.append(mSentence[i].getWord() + "/" + mSentence[i].getPOS());
 		}
 
 		sb.deleteCharAt(0);
 		return sb.toString();
-	}
-
-	public class TaggedWord {
-		TaggedWord(String aWord, PartOfSpeech aPOS) {
-			mWord = aWord; mPOS = aPOS;
-		}
-
-		public String getWord() { return mWord; }
-		public PartOfSpeech getPOS() { return mPOS; }
-
-		public String toString() { return mWord + "/" + mPOS; }
-
-		public boolean equals(Object aObj) {
-			if (!(aObj instanceof TaggedWord)) return false;
-
-			TaggedWord w = (TaggedWord)aObj;
-
-			return (w.mPOS.equals(mPOS)) && (w.mWord.equals(mWord));
-		}
-		public int hashCode() {
-			return mWord.hashCode() ^ mPOS.hashCode();
-		}
-
-		private String mWord;
-		private PartOfSpeech mPOS;
 	}
 
 	private TaggedWord[] mSentence;
