@@ -31,6 +31,7 @@ public class NewsRepoReader {
 	} catch(Exception e) {
 	    System.out.println(e.toString());
 	}
+	System.out.println("Found: "+this.newsFiles.size()+" files.");
     }
 
     private void AddFiles(String path) {
@@ -42,7 +43,7 @@ public class NewsRepoReader {
 	    for(int i=0; i<children.length; i++) {
 		String name = children[i];
 		if(!name.startsWith("."))
-		    this.AddFiles(name);
+		    this.AddFiles(path+"/"+name);
 	    }
 	}
     }
@@ -69,5 +70,15 @@ public class NewsRepoReader {
 	}
 	return null;
     }
+
+
+    //public static void main(String[]  args){
+    //	String path = "../fetched-pages/html/";
+    //	NewsRepoReader rpo = new NewsRepoReader(path);
+    //NewsRepoArticle art = rpo.GetNextArticle();
+    //System.out.println(art.getUrl());
+    //System.out.println(art.getArticle());
+    //System.out.println(art.getLine());
+    //}
 
 }

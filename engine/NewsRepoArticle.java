@@ -18,7 +18,7 @@ public class NewsRepoArticle {
 	    this.articleText = "";
 	} else {
 	    this.url = line.substring(0, index);
-	    this.url = line.substring(index+1);
+	    this.articleText = line.substring(index+1);
 	}
     }
 
