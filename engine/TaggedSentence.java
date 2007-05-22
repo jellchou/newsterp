@@ -162,7 +162,7 @@ public class TaggedSentence {
 		 * case where hasPrevious() is false -- thus, we haven't iterated over
 		 * any elements, so there were no elements to iterate over.  in other 
 		 * words, if we have a previous element, go back to it. */
-		if (i.hasPrevious()) i.previous();
+		// if (i.hasPrevious()) i.previous();
 
 		/* and insert. */
 		i.add(new Chunk(this, aBeginIdx, aEndIdx, aType));

@@ -19,9 +19,11 @@ import opennlp.tools.postag.POSDictionary;
 public class Main {
 	public static void usage() {
 		System.err.println(
-			"Usage: java Main [-nlp <dir>] <file1> <file2> ... <fileN>\n" +
+			"Usage: java Main [-nlp <dir>] [-wn <dir>] [-nnp <n>] <file1>\n" +
+				"\t\t<file2> ... <fileN>\n" +
 			"\t-nlp <dir>:\t OpenNLP Tools root directory\n" +
-			"\t-wn <dir>:\t WordNet dictionary location (absolute path)\n"
+			"\t-wn <dir>:\t WordNet dictionary location (absolute path)\n" +
+			"\t-nnp <n>: Number of most-popular NPs to print\n"
 		);
 	}
 
@@ -29,6 +31,7 @@ public class Main {
 		int idx = 0;
 		String nlp_path = ".";
 		URL wn_path = null;
+		int numToShow = 350;
 		try {
 			wn_path = new URL("file:///usr/temp_store/newsterp/WordNet-3.0/dict");
 		} catch (Exception e) {}
@@ -45,6 +48,10 @@ public class Main {
 					System.err.println("Malformed WordNet path URL (" + e + "); exiting...");
 					return;
 				}
+				idx += 2;
+				continue;
+			} else if (aArgs[idx].equals("-nnp")) {
+				numToShow = Integer.parseInt(aArgs[idx+1]);
 				idx += 2;
 				continue;
 			} else if (aArgs[idx].equals("-h")) {
@@ -98,11 +105,9 @@ public class Main {
 		// TODO: convert arrayList back to array?
 
 		// do per-article-set fancy stuff here.
-		int numToShow = 350;
-		System.out.println("Most popular" + numToShow + " NPs in article set:");
-
 		HashMap<TaggedSentence.Chunk, Integer> pop_index = 
 			new HashMap<TaggedSentence.Chunk, Integer>();
+		RelationExtractor re = new BaselineRelationExtractor();
 
 		int a_i = 0, s_i = 0;
 
@@ -112,7 +117,7 @@ public class Main {
 			for (TaggedSentence s : a.getSentences()) {
 				Relation r = null;
 
-				if ((r = new RelationExtractor().extract(s)) != null)
+				if ((r = re.extract(s)) != null)
 					System.out.println("Extracted relation for article " + a_i + 
 						", sentence " + s_i + ": " + r);
 
@@ -149,6 +154,9 @@ public class Main {
 			}
 		);
 
+		System.out.println("Most popular " + numToShow + 
+			" NPs in article set:");
+		
 		int lowerBound = Math.max(0, pop_entries.length - 1 - numToShow);
 		for (int i = pop_entries.length - 1; i > lowerBound; i--) {
 			System.out.println(pop_entries[i].getKey() + " (" + 
