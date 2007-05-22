@@ -23,6 +23,7 @@ public enum PartOfSpeech {
 	COLON			(":",		"colon"),
 	OPEN_DQUOTE		("``",		"open double quote"),
 	CLOSE_DQUOTE	("''",		"close double quote"),
+	CASH_MONEY		("$",		"dollar sign"),
 
 	/* ===== closed-class words ===== */
 

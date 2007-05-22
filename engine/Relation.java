@@ -7,11 +7,11 @@
 
 public class Relation {
 	public Relation() {
-		mSubject = mObject = mPredicate = null;
+		mSubject = mObject = null;
+		mPredicate = null;
 	}
 
-	public Relation(TaggedSentence.Chunk aSubject, 
-			TaggedSentence.Chunk aPredicate, TaggedSentence.Chunk aObject) {
+	public Relation(Entity aSubject, Predicate aPredicate, Entity aObject) {
 		mSubject = aSubject;
 		mObject = aObject;
 		mPredicate = aPredicate;
@@ -24,7 +24,6 @@ public class Relation {
 	}
 
 
-    private TaggedSentence.Chunk mSubject;
-    private TaggedSentence.Chunk mObject;
-    private TaggedSentence.Chunk mPredicate;	        
+    private Entity mSubject, mObject;
+    private Predicate mPredicate;	        
 }

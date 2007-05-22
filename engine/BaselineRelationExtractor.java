@@ -18,6 +18,9 @@ public class BaselineRelationExtractor implements RelationExtractor {
 
 		if (nps.length == 0 || vps.length == 0) return null;
 
-		return new Relation(nps[0], vps[0], nps.length == 1 ? null : nps[1]);
+		return new Relation(
+			new BaseEntity(nps[0].getWords()), 
+			new Predicate(vps[0].getWords()),
+			nps.length == 1 ? null : new BaseEntity(nps[1].getWords()));
 	}
 }
