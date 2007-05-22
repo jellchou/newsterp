@@ -23,5 +23,8 @@ public class Relation {
 		return mSubject + "." + mPredicate + "(" + ((mObject != null) ? mObject : "") + ")";
 	}
 
-	private TaggedSentence.Chunk mSubject, mObject, mPredicate;
+
+    private TaggedSentence.Chunk mSubject;
+    private TaggedSentence.Chunk mObject;
+    private TaggedSentence.Chunk mPredicate;	        
 }

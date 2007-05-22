@@ -17,6 +17,7 @@ public class NewsRepoReader {
     private int fileIndex;
     private BufferedReader reader;
 
+
     public NewsRepoReader(String filePath) {
 	this.newsFiles = new ArrayList<String>();
 	this.AddFiles(filePath);
@@ -71,14 +72,20 @@ public class NewsRepoReader {
 	return null;
     }
 
+    public int GetNumberOfArticle() {
+	return this.newsFiles.size();
+    }
 
-    //public static void main(String[]  args){
-    //	String path = "../fetched-pages/html/";
-    //	NewsRepoReader rpo = new NewsRepoReader(path);
-    //NewsRepoArticle art = rpo.GetNextArticle();
-    //System.out.println(art.getUrl());
-    //System.out.println(art.getArticle());
-    //System.out.println(art.getLine());
-    //}
+    
+    /*
+    public static void main(String[]  args){
+    	String path = "../fetched-pages/html/";
+    	NewsRepoReader rpo = new NewsRepoReader(path);
+	NewsRepoArticle art = rpo.GetNextArticle();
+	System.out.println(art.getUrl());
+	System.out.println(art.getArticle());
+	System.out.println(art.getLine());
+    }
+    */
 
 }

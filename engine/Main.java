@@ -75,25 +75,38 @@ public class Main {
 		}
 
 		/* provide space to store the processed articles... */
-		TaggedArticle[] articles = new TaggedArticle[aArgs.length - idx];
+		//TaggedArticle[] articles = new TaggedArticle[aArgs.length - idx];
+		ArrayList<TaggedArticle> articleList = new ArrayList<TaggedArticle>();
 
 		/* chop up and tag all of our articles. */
 		for (int n = 0; idx < aArgs.length; idx++, n++) {
 			try {
-				articles[n] = new TaggedArticle(aArgs[idx], aArgs[idx]);
+			    NewsRepoReader reader = new NewsRepoReader(aArgs[idx]);
+			    NewsRepoArticle article = reader.GetNextArticle();
+			    int count = 0;
+			    while(article != null) {
+			    	count += 1;
+			    	System.out.println("*****************************");
+			    	System.out.println(count+"/"+reader.GetNumberOfArticle());
+			    	articleList.add(new TaggedArticle(article.getUrl(), article.getArticle()));
+			    	article = reader.GetNextArticle();
+			    }
+			    //articles[n] = new TaggedArticle(aArgs[idx], aArgs[idx]);
 			} catch (IOException e) {}
 		}
 
+		// TODO: convert arrayList back to array?
+
 		// do per-article-set fancy stuff here.
 		int numToShow = 350;
-		System.out.println("Most popular" + numToShow + "NPs in article set:");
+		System.out.println("Most popular" + numToShow + " NPs in article set:");
 
 		HashMap<TaggedSentence.Chunk, Integer> pop_index = 
 			new HashMap<TaggedSentence.Chunk, Integer>();
 
 		int a_i = 0, s_i = 0;
 
-		for (TaggedArticle a : articles) {
+		for (TaggedArticle a : articleList) {
 			s_i = 0;
 
 			for (TaggedSentence s : a.getSentences()) {

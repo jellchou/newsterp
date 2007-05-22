@@ -11,48 +11,23 @@ import java.util.*;
 import java.util.ArrayList;
 
 public class TaggedArticle {
-	public TaggedArticle(String aID, String aFileName) throws IOException {
-		mID = aID;
-		mSentences = new ArrayList<TaggedSentence>();
+	public TaggedArticle(String aID, String aText) throws IOException {
+		this.mID = aID;
+		this.mSentences = new ArrayList<TaggedSentence>();
 		NLPToolkitManager tkm = NLPToolkitManager.getInstance();
 
-		System.out.println("Processing file `" + aFileName + "'...");
+		System.out.println("Processing file `" + aID + "'...");
 
-		ArrayList<String> paras = new ArrayList<String>();
 		ArrayList<String> untagged_sents = new ArrayList<String>();
 
-		System.out.print("Reading...");
 
-		// read file.
-		StringBuffer para = new StringBuffer();
-		BufferedReader rdr = new BufferedReader(
-			new FileReader(aFileName));
-
-		for (String line = ""; line != null; line = rdr.readLine()) {
-			if (line.equals("")) {
-				if (para.length() != 0) {
-					paras.add(para.toString());
-					para.setLength(0);
-					System.out.print('.');
-				}
-			} else {
-				para.append(line).append(" ");
-			}
-		}
-
-		if (para.length() != 0) {
-			paras.add(para.toString());
-			System.out.print('.');
-		}
-
-		System.out.println(" done (" + paras.size() + " paras).");
 
 		// sentence-detect.
 		System.out.print("Detecting sentences...");
 
-		for (String para_s : paras) {
-			untagged_sents.addAll(Arrays.asList(tkm.getSD().sentDetect(para_s)));
-		}
+
+		untagged_sents.addAll(Arrays.asList(tkm.getSD().sentDetect(aText)));
+
 
 		System.out.println(" done (" + untagged_sents.size() + 
 			" sentences).");
