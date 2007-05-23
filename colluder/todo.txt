@@ -1,0 +1,41 @@
+
+
+
+TODO:
+
+[ Base Architecture ]
+1. Read in a list of relations -  tagged to a sentence / article.
+2. read in a list of stopwords
+3. Inverted index of relations.
+4. From Inverted index emit sentences/articles to merge.
+5. Collect total merge list.
+6. 
+
+
+[ Improve coverage. ]
+3. filter out stopwords from relations
+4. Wordnet expansion.
+5. Stemming algorithm?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------
+Done:
+
+
+
+
