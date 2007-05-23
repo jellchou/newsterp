@@ -1,5 +1,9 @@
 
 
+This module needs to take a list of relations marked by origin
+and determine a final list of which origins are talking about
+the same topic and which relations are defining them well.
+
 
 TODO:
 
@@ -9,21 +13,13 @@ TODO:
 3. Inverted index of relations.
 4. From Inverted index emit sentences/articles to merge.
 5. Collect total merge list.
-6. 
+6. Determine important relations.
 
 
 [ Improve coverage. ]
 3. filter out stopwords from relations
 4. Wordnet expansion.
 5. Stemming algorithm?
-
-
-
-
-
-
-
-
 
 
 
