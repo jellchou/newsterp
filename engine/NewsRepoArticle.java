@@ -12,7 +12,7 @@ public class NewsRepoArticle {
     private String articleText;
 
     public NewsRepoArticle(String line) {
-	int index = line.indexOf('\t');
+	int index = line.indexOf(' ');
 	if(index == -1) {
 	    this.url = "";
 	    this.articleText = "";
