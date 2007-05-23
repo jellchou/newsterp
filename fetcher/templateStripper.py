@@ -35,35 +35,35 @@ class TemplateStripper:
         toReturn=[]
         for doc in self.docs:
             words,window = doc.split(),[]
-            skipCount=0
+            skipCount,currArticle=0,[]    
             for word in words:
                 window.append(word)
                 gram = ' '.join(window)
                 if(self.grams[gram]*2>len(self.docs)):
                     skipCount=self.nLength
-                    print 'Skipping:',window[0]
+                    #print 'Skipping:',window[0]
                 elif(skipCount==0):
                     if(len(window)==self.nLength):
-                        toReturn.append(window[0])
+                        currArticle.append(window[0])
                 else:
-                    print 'Skipping:',window[0]
+                    #print 'Skipping:',window[0]
                     skipCount-=1
                 window=window[-(self.nLength-1):]
             while(len(window)>0):
                 gram = ' '.join(window)
                 if(self.grams[gram]*2>len(self.docs)):
                     skipCount=len(window)
-                    print 'Skipping:',window[0]
+                    #print 'Skipping:',window[0]
                 elif(skipCount==0):
-                    toReturn.append(window[0])
+                    currArticle.append(window[0])
                 else:
-                    print 'Skipping:',window[0]
+                    #print 'Skipping:',window[0]
                     skipCount-=1
                 window=window[1:]
-            toReturn.append('\n')
+            toReturn.append(' '.join(currArticle))
         return toReturn
-
  
+
     def PrintStripGrams(self):
         for gram in self.grams:
             count=self.grams[gram]
@@ -76,21 +76,22 @@ class TemplateStripper:
         self.grams = {}
 
 
-
 def main():
-    t=TemplateStripper()
-    files=os.listdir('../fetched-pages/test/')
+    dirPath = '../fetched-pages/golden/'
+    files = os.listdir(dirPath)
     for f in files:
+        t=TemplateStripper()        
         data=''
         try:
-            data=open('../fetched-pages/test/'+f).read()
+            data=open(dirPath+f).read()
         except:
             continue
         if(len(data)>0):
             for line in data.split('\n'):
                 t.AddDoc(line)
-    #t.PrintStripGrams()
-    print ' '.join(t.OutputDocs())
+        f=open(dirPath+f+'-stripped','w')
+        f.write('\n'.join(t.OutputDocs()))
+        f.close()
 
 
 
