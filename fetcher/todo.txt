@@ -1,0 +1,22 @@
+
+
+
+TODO:
+
+
+1. Run template stripper over extracted news articles.
+2. Extract lots of articles to the PFS.
+3. Better duplicate article removing.2
+
+
+
+
+---------------------------------
+Done:
+
+
+Query google for news rss feeds.
+Download lots of articles from rss feeds.
+Download lots of articles from known news sources.
+Write template stripper.
+
