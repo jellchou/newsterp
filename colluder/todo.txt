@@ -16,13 +16,15 @@ TODO:
 
 
 [ Improve coverage. ]
-3. filter out stopwords from relations
 4. Wordnet expansion.
-5. Stemming algorithm?
 
 
 
 
+Pipeline?
+7. Collude relation, output token:relationID for each colluded token.
+8. Total of token:<relationIDs>
+9. Output 
 
 
 
@@ -32,5 +34,7 @@ TODO:
 Done:
 
 
+5. Stemming algorithm? (Porter)
+3. filter out stopwords from relations
 2. read in a list of stopwords
 

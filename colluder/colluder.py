@@ -12,6 +12,8 @@ class Colluder:
         self.stopWorder = stopWorder.StopWorder()
         self.stemmer = porterStemmer.PorterStemmer()
         self.inputFileName = ''
+        self.relationCount = 0
+        self.index = {}
 
     def Init(self):
         self.stopWorder.Init()
@@ -20,11 +22,19 @@ class Colluder:
     def run(self):
         data = open(self.inputFileName).read().split('\n')
         for relation in data:
-            relation1 = relation
-            relation2 = self.RemoveStopWords(relation)
-            relation3 = self.StemWords(relation)
-            relation4 = self.StemWords(relation2)
-            
+            self.relationCount = self.relationCount+1
+            r1 = relation
+            r2 = self.RemoveStopWords(relation)
+            r3 = self.StemWords(relation)
+            r4 = self.StemWords(relation2)
+            for r in [r1, r2, r3, r4]:
+                for word in r:
+                    if(not(word in self.index)):
+                        self.index[word]=[]
+                    currList = self.index[word]
+                    if(currList[-1]!=self.relationCount):
+                        currList.append(self.relationCount)
+        # TODO: output index to file.
 
     def GenerateRelations(self, relation):
         toReturn = []
@@ -37,6 +47,7 @@ class Colluder:
     def StemWords(self, relation):
         toReturn = self.stemmer.stem(relation, 0, len(relation))
         return toReturn
+
 
 
 
