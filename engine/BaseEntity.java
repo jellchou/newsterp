@@ -16,15 +16,10 @@ public class BaseEntity implements Entity {
 		String rv = "";
 
 		for (TaggedWord w : mWords) {
-			rv += " " + w;
+			rv += " " + w.getWord();
 		}
 
 		return rv.substring(1);
-	}
-
-	public double similarity(Entity aCompareTo) {
-		/* STUB: write a decent implementation of this. */
-		return 1.0d;
 	}
 
 	public void resolve(Entity[] aResolutionContext) {

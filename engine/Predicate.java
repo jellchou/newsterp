@@ -18,7 +18,7 @@ public class Predicate {
 		String rv = "";
 
 		for (TaggedWord w : mWords) {
-			rv += " " + w;
+			rv += " " + w.getWord();
 		}
 
 		return rv.substring(1);

@@ -33,7 +33,14 @@ public class Main {
 		URL wn_path = null;
 		int numToShow = 350;
 		try {
-			wn_path = new URL("file:///usr/temp_store/newsterp/WordNet-3.0/dict");
+			wn_path = new URL(
+				"file:///usr/temp_store/newsterp/WordNet-3.0/dict");
+
+			String pwd = System.getProperty("user.dir");
+
+			if (pwd != null) {
+				wn_path = new File(pwd).toURL();
+			}
 		} catch (Exception e) {}
 
 		while (idx < aArgs.length) {
@@ -111,15 +118,28 @@ public class Main {
 
 		int a_i = 0, s_i = 0;
 
+		ArrayList<RelationSet> rel_sets = new ArrayList<RelationSet>();
+
 		for (TaggedArticle a : articleList) {
 			s_i = 0;
 
-			for (TaggedSentence s : a.getSentences()) {
-				Relation r = null;
+			RelationSet set = new RelationSet(a.getID());
 
-				if ((r = re.extract(s)) != null)
-					System.out.println("Extracted relation for article " + a_i + 
-						", sentence " + s_i + ": " + r);
+			for (TaggedSentence s : a.getSentences()) {
+				Relation[] r = null;
+
+				if ((r = re.extract(s)) != null && r.length != 0) {
+					System.out.println("Extracted relations for article " + a_i + 
+						", sentence " + s_i + ": " + Arrays.toString(r));
+					for (Relation rel : r) {
+						set.add(rel);
+					}
+				}
+
+				if (s.getChunks(ChunkType.CONJP).length != 0) {
+					System.out.println(a_i + ":" + s_i + " (" + s + 
+						") has a CONJP.");
+				}
 
 				for (TaggedSentence.Chunk ck : s.getChunks(ChunkType.NP)) {
 					Integer ck_ct = null;
@@ -131,8 +151,11 @@ public class Main {
 					}
 				}
 
+
 				s_i++;
 			}
+
+			rel_sets.add(set);
 
 			a_i++;
 		}
@@ -161,6 +184,21 @@ public class Main {
 		for (int i = pop_entries.length - 1; i > lowerBound; i--) {
 			System.out.println(pop_entries[i].getKey() + " (" + 
 				pop_entries[i].getValue() + ")");
+		}
+
+		// dump relation sets to a file.
+		try {
+			FileWriter rsf = new FileWriter("relations.dat");
+
+			for (RelationSet rs : rel_sets) {
+				rsf.write(rs.toSerialRep());
+			}
+
+			rsf.write("\n");
+
+			rsf.close();
+		} catch (IOException e) {
+			System.err.println("Warning: couldn't dump relation sets...");
 		}
 	}
 }

@@ -56,6 +56,7 @@ public class TaggedArticle {
 		System.out.println("done.");
 
 		// do per-article fancy stuff here.
+		/*
 		System.out.println("All NPs in article: ");
 
 		int i = 0;
@@ -67,6 +68,7 @@ public class TaggedArticle {
 				Arrays.toString(cks));
 			i++;
 		}
+		*/
 	}
 
 	public String getID() { return mID; }

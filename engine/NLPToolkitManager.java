@@ -16,7 +16,7 @@ import opennlp.tools.postag.POSDictionary;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.chunker.ChunkerME;
 
-//import edu.mit.jwi.dict.*;
+import edu.mit.jwi.dict.*;
 
 public class NLPToolkitManager {
     public static boolean init(
@@ -48,7 +48,7 @@ public class NLPToolkitManager {
 	public TokenizerME getTokenizer() { return mTokenizer; }
 	public POSTaggerME getTagger() { return mTagger; }
 	public ChunkerME getChunker() { return mChunker; }
-	//public Dictionary getDictionary() { return mDict; }
+	public Dictionary getDictionary() { return mDict; }
 
 	private NLPToolkitManager(
 			String aSentenceDetectorDB,
@@ -81,7 +81,7 @@ public class NLPToolkitManager {
 
 		System.out.println("Building WordNet database...");
 
-		//mDict = new Dictionary(mWordNetDB);
+		mDict = new Dictionary(mWordNetDB);
 	}
 
 	private String mSentenceDetectorDB, mTokenizerDB, mTagDB, mTagDict, 
@@ -92,7 +92,7 @@ public class NLPToolkitManager {
 	TokenizerME mTokenizer;
 	POSTaggerME mTagger;
 	ChunkerME mChunker;
-	//Dictionary mDict;
+	Dictionary mDict;
 
     private static NLPToolkitManager smInstance;
 }

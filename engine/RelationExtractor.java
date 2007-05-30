@@ -6,5 +6,5 @@
  */
 
 public interface RelationExtractor {
-	public Relation extract(TaggedSentence aSent);
+	public Relation[] extract(TaggedSentence aSent);
 }

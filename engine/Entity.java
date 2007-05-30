@@ -6,7 +6,5 @@
  */
 
 public interface Entity {
-	double similarity(Entity aCompareTo);
-
 	void resolve(Entity[] aResolutionContext);
 }

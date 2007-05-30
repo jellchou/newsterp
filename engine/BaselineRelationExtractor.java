@@ -8,7 +8,9 @@
 public class BaselineRelationExtractor implements RelationExtractor {
 	public BaselineRelationExtractor() {}
 
-	public Relation extract(TaggedSentence aSent) {
+	public Relation[] extract(TaggedSentence aSent) {
+		Relation[] rv = new Relation[1];
+
 		TaggedSentence.Chunk[] nps, vps;
 
 		if (!aSent.isChunked()) return null;
@@ -18,9 +20,12 @@ public class BaselineRelationExtractor implements RelationExtractor {
 
 		if (nps.length == 0 || vps.length == 0) return null;
 
-		return new Relation(
+		rv[0] = new Relation(
 			new BaseEntity(nps[0].getWords()), 
 			new Predicate(vps[0].getWords()),
-			nps.length == 1 ? null : new BaseEntity(nps[1].getWords()));
+			nps.length == 1 ? null : new BaseEntity(nps[1].getWords()),
+			new Entity[0]);
+
+		return rv;
 	}
 }
