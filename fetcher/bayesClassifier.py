@@ -51,17 +51,23 @@ class BayesClassifier:
             return 1
 
 def test(bayesClassifier):
-    path = '/home/jhebert/code/java/newsterp/articles/univ-bridge'
-    docs = util.LoadAndSplitFromDir(path)
+    path = '../fetched-pages/golden/1062690752-stripped'
+    #docs = util.LoadAndSplitFromDir(path)
+    docs = open(path).read().split('\n')
     for doc in docs:
+        index = doc.find(' ')
+        if(index==-1):
+            continue
+        url = doc[:index]
         #print 'Item: ', doc
-        print bayesClassifier.ClassifyDoc(doc)
+        print bayesClassifier.ClassifyDoc(doc), ':', url
 
 
 
 def main():
     b = BayesClassifier()
-    b.LoadModel('model.test')
+    b.LoadModel('text.model')
     test(b)
 
-#main()
+if(__name__ == '__main__'):
+    main()

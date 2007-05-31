@@ -23,8 +23,10 @@ class BayesLearner:
         self.negPath = ''
         self.StopList = util.StopList()
         self.type = typeName
+        self.totalCount = [1, 1]
 
     def AddExample(self, doc, val):
+        self.totalCount[val] += 1
         for word in doc:
             self.StopList.AddWord(word)
             if(not (word in self.features)):
@@ -36,9 +38,11 @@ class BayesLearner:
         positive = self.LoadExamples(self.posPath)
         negative = self.LoadExamples(self.negPath)
         print 'Done loading data.'
+        print 'Learning positive...'
         for doc in positive:
-            print 'Doc:', doc
+            #print 'Doc:', doc
             self.AddExample(doc, 1)
+        print 'Learning negative...'
         for doc in negative:
             self.AddExample(doc, 0)
     
@@ -62,20 +66,20 @@ class BayesLearner:
                 toReturn.append(toAdd)
             return toReturn
         else:
-            return open(path).read()
+            return open(path).read().split('\n')
     
 
 
 def main():
-    #b = BayesLearner('txt')
-    b = BayesLearner('news')
+    b = BayesLearner('txt')
+    #b = BayesLearner('news')
     b.posPath = './models/pos-news.txt'
-    b.negPath = './models/neg-news.txt'
-    #b.negPath = './models/neg-text.txt'
+    #b.negPath = './models/neg-news.txt'
+    b.negPath = './models/neg-text.txt'
 
     b.LearnModel()
     print b.StopList.GetTopN(60)
-    b.SaveModel('news.model')
+    b.SaveModel('text.model')
     #print b.features
 
 
