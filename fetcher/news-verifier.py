@@ -60,7 +60,7 @@ class FetcherPool:
         self.txtClassifier = txtClassifier
         self.blacklist = util.LoadFileToHash('blacklist.txt')
         self.urlsToFetch = []
-        self.numThreads = 5
+        self.numThreads = 30
         self.numDone = 0
         self.done = {}
         self.numToDo = 0
@@ -156,7 +156,7 @@ class FetcherAgent:
                     page = util.EscapeDelimit(page, '<', '>', f)
                     page = util.CollapseWhitespace(page)
                     txt=self.master.txtClassifier.ClassifyDoc([page])
-                    if(not txt):
+                    if(txt==0):
                         print 'This doc is not text!'
                         continue
                     if(self.master.HasBeenDone(page)):

@@ -51,7 +51,7 @@ class BayesClassifier:
             return 1
 
 def test(bayesClassifier):
-    path = '../fetched-pages/golden/1062690752-stripped'
+    path = '../fetched-pages/golden/1062690752'
     #docs = util.LoadAndSplitFromDir(path)
     docs = open(path).read().split('\n')
     for doc in docs:
@@ -66,7 +66,7 @@ def test(bayesClassifier):
 
 def main():
     b = BayesClassifier()
-    b.LoadModel('text.model')
+    b.LoadModel('txt-vs-bin.model')
     test(b)
 
 if(__name__ == '__main__'):
