@@ -47,7 +47,11 @@ class RelationReader:
             return self.ReadNextRelation()
         else:
             end = line.find('+')
-            return Relation(line[1:end-1], self.currentArticle)
+            r = Relation(line[1:end-1], self.currentArticle)
+            if(r.success):
+                return r
+            else:
+                return None
 
 
 def main():

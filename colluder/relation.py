@@ -13,6 +13,11 @@ __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 class Relation:
     def __init__(self, dataLine, articleURL):
         items = dataLine.split(',')
+        if(len(items)<3):
+            self.success = False
+            return
+        else:
+            self.success = True
         self.np1 = items[0]
         self.relation = items[1]
         self.np2 = items[2]

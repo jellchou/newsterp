@@ -12,7 +12,8 @@ class Colluder:
     def __init__(self):
         self.stopWorder = stopWorder.StopWorder()
         self.stemmer = porterStemmer.PorterStemmer()
-        self.inputFileName = '../engine/relations.dat'
+        #self.inputFileName = '../engine/relations.dat'
+        self.inputFileName = 'relations2.dat'
         self.relationReader = RelationReader()
         self.relationCount = 0
         self.index = {}
