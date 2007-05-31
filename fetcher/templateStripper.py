@@ -17,6 +17,8 @@ class TemplateStripper:
     def IsADup(self, doc):
         doc = doc.lower()
         doc = doc.strip()
+        index = doc.find(' ')
+        doc = doc[index+1:]
         doc = doc.replace(' ', '')
         doc = doc.replace('\t','')
         doc = doc.replace('\n','')
