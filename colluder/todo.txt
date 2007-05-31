@@ -8,8 +8,6 @@ the same topic and which relations are defining them well.
 TODO:
 
 [ Base Architecture ]
-1. Read in a list of relations -  tagged to a sentence / article.
-3. Inverted index of relations.
 4. From Inverted index emit sentences/articles to merge.
 5. Collect total merge list.
 6. Determine important relations.
@@ -19,9 +17,7 @@ TODO:
 4. Wordnet expansion.
 
 
-
-
-Pipeline?
+[ Pipeline? ]
 7. Collude relation, output token:relationID for each colluded token.
 8. Total of token:<relationIDs>
 9. Output 
@@ -34,6 +30,8 @@ Pipeline?
 Done:
 
 
+3. Inverted index of relations.
+1. Read in a list of relations -  tagged to a sentence / article.
 5. Stemming algorithm? (Porter)
 3. filter out stopwords from relations
 2. read in a list of stopwords
