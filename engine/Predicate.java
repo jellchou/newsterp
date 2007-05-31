@@ -18,6 +18,18 @@ public class Predicate {
 		String rv = "";
 
 		for (TaggedWord w : mWords) {
+			rv += " " + w;
+		}
+
+		return rv.substring(1);
+	}
+
+	public String toSerialRep() {
+		if (mWords == null) return "(null)";
+
+		String rv = "";
+
+		for (TaggedWord w : mWords) {
 			rv += " " + w.getWord();
 		}
 

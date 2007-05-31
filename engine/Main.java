@@ -136,10 +136,11 @@ public class Main {
 					}
 				}
 
-				if (s.getChunks(ChunkType.CONJP).length != 0) {
+				/*if (s.getChunks(ChunkType.SBAR).length != 0) {
 					System.out.println(a_i + ":" + s_i + " (" + s + 
-						") has a CONJP.");
-				}
+						"; " + Arrays.toString(s.getChunks()) + 
+						") has an SBAR.");
+				}*/
 
 				for (TaggedSentence.Chunk ck : s.getChunks(ChunkType.NP)) {
 					Integer ck_ct = null;

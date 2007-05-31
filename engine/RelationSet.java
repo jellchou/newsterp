@@ -22,7 +22,7 @@ public class RelationSet {
 		String rv = "set \"" + mID + "\";\n";
 
 		for (Relation r : mRelations) {
-			rv += r.toSerialRep();
+			rv += r.toSerialRep() + ";\n";
 		}
 
 		rv += "endset;\n";

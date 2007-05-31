@@ -29,8 +29,9 @@ public class Relation {
 
 	public String toSerialRep() {
 		if (mSubject == null || mPredicate == null) return ";\n";
-		return "(" + mSubject + "," + mPredicate + "," + mObject + ")+" +
-			Arrays.toString(mAnnotations) + ";\n";
+		return "(" + mSubject.toSerialRep() + "," + mPredicate.toSerialRep() + 
+			"," + ((mObject != null) ? mObject.toSerialRep() : "") + ")+" + 
+			Arrays.toString(mAnnotations);
 	}
 
     private Entity mSubject, mObject;

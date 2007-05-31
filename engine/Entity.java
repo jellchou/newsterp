@@ -6,5 +6,7 @@
  */
 
 public interface Entity {
-	void resolve(Entity[] aResolutionContext);
+	String toSerialRep();
+
+	Entity resolve(Entity[] aResolutionContext);
 }

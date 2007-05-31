@@ -16,14 +16,27 @@ public class BaseEntity implements Entity {
 		String rv = "";
 
 		for (TaggedWord w : mWords) {
+			rv += " " + w;
+		}
+
+		return rv.substring(1);
+	}
+
+	public String toSerialRep() {		
+		if (mWords == null) return "(null)";
+
+		String rv = "";
+
+		for (TaggedWord w : mWords) {
 			rv += " " + w.getWord();
 		}
 
 		return rv.substring(1);
 	}
 
-	public void resolve(Entity[] aResolutionContext) {
+	public Entity resolve(Entity[] aResolutionContext) {
 		/* do nothing; base entities are already resolved... */
+		return this;
 	}
 
 	private TaggedWord[] mWords;
