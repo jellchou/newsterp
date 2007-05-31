@@ -12,8 +12,24 @@ class TemplateStripper:
         self.grams = {}
         self.docs = []
         self.nLength = 3
+        self.done = {}
+
+    def IsADup(self, doc):
+        doc = doc.lower()
+        doc = doc.strip()
+        doc = doc.replace(' ', '')
+        doc = doc.replace('\t','')
+        doc = doc.replace('\n','')
+        doc = doc[:300]
+        h = hash(doc)
+        if(h in self.done):
+            return True
+        self.done[h] = None
+        return False
 
     def AddDoc(self, doc):
+        if(self.IsADup(doc)):
+            return
         self.docs.append(doc)
         words,window = doc.split(), []
         for word in words:
@@ -77,9 +93,17 @@ class TemplateStripper:
 
 
 def main():
-    dirPath = '../fetched-pages/golden/'
+    #dirPath = '../fetched-pages/golden/'
+    dirPath = '../fetched-pages/pyrite/'
     files = os.listdir(dirPath)
     for f in files:
+        if(f.find('.')>-1):
+            continue
+        if(f.find('-')>-1):
+            continue
+        if(f.find('~')>-1):
+            continue
+        print 'Stripping:', f
         t=TemplateStripper()        
         data=''
         try:

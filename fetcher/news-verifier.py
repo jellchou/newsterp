@@ -94,7 +94,7 @@ class FetcherPool:
             else:
                 newsType = 'pyrite'
             fileName = str(abs(hash(rssPage)))
-            f = open('../fetched-pages/html/'+newsType+'/'+fileName, 'a')
+            f = open('../fetched-pages/'+newsType+'/'+fileName, 'a')
             f.write('\n'.join(pages+['']))
             f.close()
         self.mutexLock.release()
