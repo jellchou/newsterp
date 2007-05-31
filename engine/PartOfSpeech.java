@@ -24,6 +24,8 @@ public enum PartOfSpeech {
 	OPEN_DQUOTE		("``",		"open double quote"),
 	CLOSE_DQUOTE	("''",		"close double quote"),
 	CASH_MONEY		("$",		"dollar sign"),
+	POUND			("#",		"pound sign"),
+	SYMBOL			("SYM",		"miscellaneous symbol"),
 
 	/* ===== closed-class words ===== */
 
@@ -52,6 +54,9 @@ public enum PartOfSpeech {
 
 	/* clitics: */
 	POSS_CL			("POS",		"possessive ending ['s]"),
+
+	/* quantifiers, etc.: */
+	PREDET			("PDT",		"predeterminer [all, some, no]"),
 
 	/* ===== open-class words ===== */
 
@@ -92,7 +97,13 @@ public enum PartOfSpeech {
 
 	/* existential there ("there is a hole in the sky through which things
 	 * can fly...") */
-	EX_THERE		("EX",		"existential there");
+	EX_THERE		("EX",		"existential there"),
+
+	/* list markers */
+	LIST_MARKER		("LS",		"list marker"),
+
+	/* foreign words */
+	FOREIGN			("FW",		"foreign word");
 
 	private final String mTag;
 	private final String mLongType;

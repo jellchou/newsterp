@@ -11,16 +11,22 @@ import java.util.*;
 import java.util.ArrayList;
 
 public class TaggedArticle {
+	/* bug workaround: NLP throughput becomes unreasonably bad around 200
+	 * articles processed.  restart all our NLP machinery every 200 articles. */
+	private static int mArticlesProcessed = 0;
+
 	public TaggedArticle(String aID, String aText) throws IOException {
 		this.mID = aID;
 		this.mSentences = new ArrayList<TaggedSentence>();
 		NLPToolkitManager tkm = NLPToolkitManager.getInstance();
 
+		if (++mArticlesProcessed % 200 == 0) {
+			tkm.restart();
+		}
+
 		System.out.println("Processing file `" + aID + "'...");
 
 		ArrayList<String> untagged_sents = new ArrayList<String>();
-
-
 
 		// sentence-detect.
 		System.out.print("Detecting sentences...");

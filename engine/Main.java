@@ -129,8 +129,8 @@ public class Main {
 				Relation[] r = null;
 
 				if ((r = re.extract(s)) != null && r.length != 0) {
-					System.out.println("Extracted relations for article " + a_i + 
-						", sentence " + s_i + ": " + Arrays.toString(r));
+					/*System.out.println("Extracted relations for article " + a_i + 
+						", sentence " + s_i + ": " + Arrays.toString(r));*/
 					for (Relation rel : r) {
 						set.add(rel);
 					}

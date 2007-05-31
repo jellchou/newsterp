@@ -68,11 +68,12 @@ public class BaselineRelationExtractor implements RelationExtractor {
 				/* conjunction phrase; if there's a full sentence (subject and
 				   predicate) already, then assume that the conjoined objects
 				   are entire sentences. */
-				main_rels.add(new Relation(
-					new BaseEntity(subj.getWords()),
-					new Predicate(pred.getWords()),
-					(obj != null) ? new BaseEntity(obj.getWords()) : null, 
-					new Entity[0]));
+				if (subj != null && obj != null)
+					main_rels.add(new Relation(
+						new BaseEntity(subj.getWords()),
+						new Predicate(pred.getWords()),
+						(obj != null) ? new BaseEntity(obj.getWords()) : null, 
+						new Entity[0]));
 
 				subj = null; pred = null; obj = null;
 			}

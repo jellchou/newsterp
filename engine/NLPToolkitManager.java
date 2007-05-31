@@ -63,6 +63,10 @@ public class NLPToolkitManager {
 		mChunkerDB = aChunkerDB;
 		mWordNetDB = aWordNetDB;
 
+		restart();
+	}
+
+	public void restart() throws IOException {
 		System.out.println("Building sentence detector...");
 
 		mSD = new SentenceDetector(mSentenceDetectorDB);
