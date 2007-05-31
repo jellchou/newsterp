@@ -16,8 +16,13 @@ class BayesClassifier:
     def __init__(self):
         self.features = {}
         self.type = 'txt'
+        self.fileName = ''
+
+    def ToString(self):
+        return ' '.join([ 'Model:', self.fileName])
 
     def LoadModel(self, fileName):
+        self.fileName = fileName
         data = open(fileName).read().split('\n')
         for line in data:
             try:
@@ -60,6 +65,7 @@ def test(bayesClassifier):
             continue
         url = doc[:index]
         #print 'Item: ', doc
+        print 'Classified:', doc
         print bayesClassifier.ClassifyDoc(doc), ':', url
 
 

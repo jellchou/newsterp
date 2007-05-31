@@ -37,7 +37,7 @@ class NewsVerifier:
 
     def Init(self):
         self.txtClassifier.LoadModel('txt-vs-bin.model')
-        self.classifier.LoadModel('model.test')
+        #self.classifier.LoadModel('model.test')
 
     def RunGolden(self):
         toFetch = open('golden-news.out').read().split('\n')
@@ -94,9 +94,20 @@ class FetcherPool:
             else:
                 newsType = 'pyrite'
             fileName = str(abs(hash(rssPage)))
-            f = open('../fetched-pages/'+newsType+'/'+fileName, 'a')
+            pathToFile = '../fetched-pages/'+newsType+'/'+fileName
+            f = open(pathToFile, 'a')
             f.write('\n'.join(pages+['']))
             f.close()
+
+            data=open(pathToFile).read()
+            t = TemplateStripper()
+            for line in data.split('\n'):
+                t.AddDoc(line)
+            f = open(pathToFile, 'w')
+            f.write('\n'.join(t.OutputDocs()))
+            f.close()
+
+            
         self.mutexLock.release()
 
     def run(self):
@@ -155,7 +166,10 @@ class FetcherAgent:
                     page = util.EscapeDelimit(page, '<STYLE', '</STYLE>', f)
                     page = util.EscapeDelimit(page, '<', '>', f)
                     page = util.CollapseWhitespace(page)
-                    txt=self.master.txtClassifier.ClassifyDoc([page])
+                    txt=self.master.txtClassifier.ClassifyDoc(page)
+                    #print 'Classified:', page
+                    #print 'Result:', txt
+                    #print self.master.txtClassifier.ToString()
                     if(txt==0):
                         print 'This doc is not text!'
                         continue
@@ -195,6 +209,7 @@ class FetcherAgent:
 
 def main():
     n = NewsVerifier()
+    n.Init()
     n.Run()
 
 main()
