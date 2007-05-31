@@ -16,6 +16,7 @@ class Colluder:
         self.inputFileName = 'relations2.dat'
         self.relationReader = RelationReader()
         self.relationCount = 0
+        self.relations = {}
         self.index = {}
         self.relationFile = open('out-relationCountIndex.dat', 'w')
 
@@ -25,6 +26,7 @@ class Colluder:
 
     def run(self):
         rel = self.relationReader.ReadNextRelation()
+        print 'Extracting relations and stemming...'
         while(rel != None):
             self.relationCount = self.relationCount+1
             self.SaveRelation(rel)
@@ -42,13 +44,13 @@ class Colluder:
 
     def GenerateRelations(self, relation):
         r1 = relation.RelationAsText()
-        print 'R1:', r1
+        #print 'R1:', r1
         r2 = self.RemoveStopWords(r1)
         #print 'R2:', r2
         r3 = self.StemWords(r1)
         #print 'R3:', r3
         r4 = self.StemWords(r2)
-        print 'R4:', r4
+        #print 'R4:', r4
         return [r1, r2, r3, r4]
 
     def RemoveStopWords(self, relation):
@@ -74,12 +76,42 @@ class Colluder:
         f.close()
 
     def SaveRelation(self, rel):
+        self.relations[self.relationCount] = rel.RelationAsText()
         items = [self.relationCount,rel.RelationAsText(),
                  rel.articleURL]
         items = [str(a) for a in items]
         self.relationFile.write(' : '.join(items))
         self.relationFile.write('\n')
-        
+
+    def FindCollisions(self):
+        toConsider = {}
+        print 'Finding collisions...'
+        for word in self.index:
+            #print 'Word:', word
+            items = self.index[word]
+            #print 'Items:', items
+            for i in range(len(items)):
+                for j in range(len(items)):
+                    if(i==j):
+                        continue
+                    if(not (items[i] in toConsider)):
+                        toConsider[items[i]] = []
+                    toConsider[items[i]].append(items[j])
+                    #print 'Collision:', items[i], items[j]
+        print 'Cleaning them up...'
+        for item in toConsider:
+            set, hits = {}, toConsider[item]
+            for h in hits:
+                set[h]=None
+            toConsider[item]=set.keys()
+        print 'Writing them out...'
+        toWrite = []
+        for item in toConsider:
+            line = [item]+toConsider[item]
+            toWrite.append(' : '.join([str(a) for a in line]))
+        f = open('out-collisions.dat', 'w')
+        f.write('\n'.join(toWrite))
+        f.close()
 
 
 def main():
@@ -88,6 +120,8 @@ def main():
     c.run()
     #c.PrintIndex()
     c.SaveIndex()
+    c.FindCollisions()
+
 
 if(__name__=='__main__'):
     main()
