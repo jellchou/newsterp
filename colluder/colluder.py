@@ -17,6 +17,7 @@ class Colluder:
         self.relationReader = RelationReader()
         self.relationCount = 0
         self.index = {}
+        self.relationFile = open('out-relationCountIndex.dat', 'w')
 
     def Init(self):
         self.stopWorder.Init()
@@ -26,6 +27,7 @@ class Colluder:
         rel = self.relationReader.ReadNextRelation()
         while(rel != None):
             self.relationCount = self.relationCount+1
+            self.SaveRelation(rel)
             r1, r2, r3, r4 = self.GenerateRelations(rel)
             #for r in [r1, r2, r3, r4]:
             for r in [r4]:
@@ -42,9 +44,9 @@ class Colluder:
         r1 = relation.RelationAsText()
         print 'R1:', r1
         r2 = self.RemoveStopWords(r1)
-        print 'R2:', r2
+        #print 'R2:', r2
         r3 = self.StemWords(r1)
-        print 'R3:', r3
+        #print 'R3:', r3
         r4 = self.StemWords(r2)
         print 'R4:', r4
         return [r1, r2, r3, r4]
@@ -61,18 +63,31 @@ class Colluder:
         for word in self.index:
             print word, ' : ', self.index[word]
         
+    def SaveIndex(self):
+        toWrite = []
+        for word in self.index:
+            items = [word, ' : ']+ self.index[word]
+            line = ' '.join([str(a) for a in items])
+            toWrite.append(line)
+        f = open('out-wordToRelation.dat', 'w')
+        f.write('\n'.join(toWrite))
+        f.close()
 
-
-
-
+    def SaveRelation(self, rel):
+        items = [self.relationCount,rel.RelationAsText(),
+                 rel.articleURL]
+        items = [str(a) for a in items]
+        self.relationFile.write(' : '.join(items))
+        self.relationFile.write('\n')
+        
 
 
 def main():
     c = Colluder()
     c.Init()
     c.run()
-    c.PrintIndex()
-
+    #c.PrintIndex()
+    c.SaveIndex()
 
 if(__name__=='__main__'):
     main()
