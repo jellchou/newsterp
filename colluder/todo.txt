@@ -8,10 +8,8 @@ the same topic and which relations are defining them well.
 TODO:
 
 [ Base Architecture ]
-4. From Inverted index emit sentences/articles to merge.
-5. Collect total merge list.
 6. Determine important relations.
-
+   List relations per art pair? 
 
 [ Improve coverage. ]
 4. Wordnet expansion.
@@ -29,7 +27,8 @@ TODO:
 -----------------------------
 Done:
 
-
+5. Collect total merge list.
+4. From Inverted index emit sentences/articles to merge.
 3. Inverted index of relations.
 1. Read in a list of relations -  tagged to a sentence / article.
 5. Stemming algorithm? (Porter)
