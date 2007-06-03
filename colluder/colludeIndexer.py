@@ -144,6 +144,8 @@ class Colluder:
         for url in matchCounts:
             unique = {}
             for item in matchCounts[url]:
+                if((item.find(url)>-1)|(url.find(item)>-1)):
+                    continue
                 if(not item in unique):
                     unique[item] = 0
                 unique[item] += 1
@@ -154,12 +156,12 @@ class Colluder:
             ranked.reverse()
             score = ranked[0][0]
 
-            items = [url, ':',
-                     ''.join(['\n\t'+str(a) for a in ranked[:15]])]
+            items = ['key:', url, ':',
+                     ''.join(['\n\t'+str(a[0])+': '+str(a[1]) for a in ranked[:15]])]
             bigSort.append((score, ' '.join(items)))
         bigSort.sort()
         #bigSort.reverse()
-        print '\n'.join([str(a[1]) for a in bigSort])
+        print '\n\n\n\n'.join([str(a[1]) for a in bigSort])
 
 
 
