@@ -15,6 +15,10 @@ class Relation:
         items = dataLine.split(',')
         if(len(items)<3):
             self.success = False
+            self.np1 = ''
+            self.relation = ''
+            self.np2 = ''
+            self.articleURL = ''
             return
         else:
             self.success = True

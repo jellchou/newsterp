@@ -13,7 +13,8 @@ class Colluder:
         self.stopWorder = stopWorder.StopWorder()
         self.stemmer = porterStemmer.PorterStemmer()
         #self.inputFileName = '../engine/relations.dat'
-        self.inputFileName = 'relations2.dat'
+        #self.inputFileName = 'relations2.dat'
+        self.inputFileName = 'relations3.dat'
         self.relationReader = RelationReader()
         self.relationCount = 0
         self.relations = {}
@@ -35,7 +36,7 @@ class Colluder:
             self.relationCount = self.relationCount+1
             self.SaveRelation(rel)
             url = rel.articleURL
-            if(url in self.blacklist):
+            if((url in self.blacklist)|(rel.articleURL=='')):
                 rel = self.relationReader.ReadNextRelation()
                 continue
             r1, r2, r3, r4 = self.GenerateRelations(rel)

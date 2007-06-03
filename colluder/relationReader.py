@@ -34,13 +34,12 @@ class RelationReader:
         if(self.filePointer == None):
             return None
         line = self.filePointer.readline()
-        if(line!=None):
+
+        if(len(line)>0):
             line = line.strip()
         else:
             return None
-        if(len(line)==0):
-            return None
-        elif(line.find('set ')==0):
+        if(line.find('set ')==0):
             self.currentArticle = line[5:-2]
             return self.ReadNextRelation()
         elif(line.find('endset;')==0):
@@ -51,7 +50,7 @@ class RelationReader:
             if(r.success):
                 return r
             else:
-                return None
+                return Relation('','')
 
 
 def main():
