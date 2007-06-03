@@ -112,9 +112,11 @@ public class Main {
 		// TODO: convert arrayList back to array?
 
 		// do per-article-set fancy stuff here.
-		HashMap<TaggedSentence.Chunk, Integer> pop_index = 
+		HashMap<TaggedSentence.Chunk, Integer> np_pop_index = 
 			new HashMap<TaggedSentence.Chunk, Integer>();
-		RelationExtractor re = new BaselineRelationExtractor();
+		HashMap<TaggedSentence.Chunk, Integer> vp_pop_index = 
+			new HashMap<TaggedSentence.Chunk, Integer>();
+		RelationExtractor re = new Phase1RelationExtractor();
 
 		int a_i = 0, s_i = 0;
 
@@ -142,16 +144,34 @@ public class Main {
 						") has an SBAR.");
 				}*/
 
-				for (TaggedSentence.Chunk ck : s.getChunks(ChunkType.NP)) {
+				for (TaggedSentence.Chunk ck : s.getChunks()) {
 					Integer ck_ct = null;
 
-					if ((ck_ct = pop_index.get(ck)) != null) {
-						pop_index.put(ck, new Integer(ck_ct.intValue() + 1));
-					} else {
-						pop_index.put(ck, new Integer(1));
+					if (ck.getType() == ChunkType.NP) {
+						/* skip wh-determiners (which, that), wh-pronouns
+						   (what, who), and personal pronouns (it, he, she) */
+						TaggedWord[] w = ck.getWords();
+
+						if (w.length == 1 &&
+							(w[0].getPOS() == PartOfSpeech.PERS_PN) ||
+							(w[0].getPOS() == PartOfSpeech.WH_DET) ||
+							(w[0].getPOS() == PartOfSpeech.WH_PN)) continue;
+
+						if ((ck_ct = np_pop_index.get(ck)) != null) {
+							np_pop_index.put(ck, 
+								new Integer(ck_ct.intValue() + 1));
+						} else {
+							np_pop_index.put(ck, new Integer(1));
+						}
+					} else if (ck.getType() == ChunkType.VP) {
+						if ((ck_ct = vp_pop_index.get(ck)) != null) {
+							vp_pop_index.put(ck,
+								new Integer(ck_ct.intValue() + 1));
+						} else {
+							vp_pop_index.put(ck, new Integer(1));
+						}
 					}
 				}
-
 
 				s_i++;
 			}
@@ -163,17 +183,32 @@ public class Main {
 
 		// don't ask why Java doesn't let you make genericized arrays. just
 		// accept that this line works, and move on.
-		Map.Entry<TaggedSentence.Chunk, Integer>[] pop_entries =
+		Map.Entry<TaggedSentence.Chunk, Integer>[] np_pop_entries =
 			(Map.Entry<TaggedSentence.Chunk, Integer>[]) new Map.Entry[0];
 
-		pop_entries = pop_index.entrySet().toArray(pop_entries);
+		np_pop_entries = np_pop_index.entrySet().toArray(np_pop_entries);
 
-		Arrays.sort(pop_entries, 
+		Arrays.sort(np_pop_entries, 
 			new Comparator< Map.Entry<TaggedSentence.Chunk, Integer> > () {
 				public int 
 					compare(Map.Entry<TaggedSentence.Chunk, Integer> aA,
 							Map.Entry<TaggedSentence.Chunk, Integer> aB) {
-					return aA.getValue().compareTo(aB.getValue());
+					return -aA.getValue().compareTo(aB.getValue());
+				}
+			}
+		);
+
+		Map.Entry<TaggedSentence.Chunk, Integer>[] vp_pop_entries =
+			(Map.Entry<TaggedSentence.Chunk, Integer>[]) new Map.Entry[0];
+
+		vp_pop_entries = vp_pop_index.entrySet().toArray(vp_pop_entries);
+
+		Arrays.sort(vp_pop_entries, 
+			new Comparator< Map.Entry<TaggedSentence.Chunk, Integer> > () {
+				public int 
+					compare(Map.Entry<TaggedSentence.Chunk, Integer> aA,
+							Map.Entry<TaggedSentence.Chunk, Integer> aB) {
+					return -aA.getValue().compareTo(aB.getValue());
 				}
 			}
 		);
@@ -181,15 +216,22 @@ public class Main {
 		System.out.println("Most popular " + numToShow + 
 			" NPs in article set:");
 		
-		int lowerBound = Math.max(0, pop_entries.length - 1 - numToShow);
-		for (int i = pop_entries.length - 1; i > lowerBound; i--) {
-			System.out.println(pop_entries[i].getKey() + " (" + 
-				pop_entries[i].getValue() + ")");
+		for (int i = 0; i < numToShow; i++) {
+			System.out.println(np_pop_entries[i].getKey() + " (" + 
+				np_pop_entries[i].getValue() + ")");
+		}
+
+		System.out.println("Most popular " + numToShow + 
+			" VPs in article set:");
+
+		for (int i = 0; i < numToShow; i++) {
+			System.out.println(vp_pop_entries[i].getKey() + " (" +
+				vp_pop_entries[i].getValue() + ")");
 		}
 
 		// dump relation sets to a file.
 		try {
-			FileWriter rsf = new FileWriter("relations.dat");
+			FileWriter rsf = new FileWriter("relations-phase1.dat");
 
 			for (RelationSet rs : rel_sets) {
 				rsf.write(rs.toSerialRep());
