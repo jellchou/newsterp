@@ -23,6 +23,10 @@ class Colluder:
     def Init(self):
         self.stopWorder.Init()
         self.relationReader.Open(self.inputFileName)
+        self.blacklist = {'http://news.yahoo.com/i/1760':None,
+                          'http://news.yahoo.com/i/964':None,
+                          'http://search.yahoo.com/mrss':None}
+                          
 
     def run(self):
         rel = self.relationReader.ReadNextRelation()
@@ -30,7 +34,12 @@ class Colluder:
         while(rel != None):
             self.relationCount = self.relationCount+1
             self.SaveRelation(rel)
+            url = rel.articleURL
+            if(url in self.blacklist):
+                rel = self.relationReader.ReadNextRelation()
+                continue
             r1, r2, r3, r4 = self.GenerateRelations(rel)
+            self.relations[self.relationCount] = (self.relationCount, r2, rel)
             #for r in [r1, r2, r3, r4]:
             for r in [r4]:
                 for word in r.split():
@@ -76,7 +85,6 @@ class Colluder:
         f.close()
 
     def SaveRelation(self, rel):
-        self.relations[self.relationCount] = rel.RelationAsText()
         items = [self.relationCount,rel.RelationAsText(),
                  rel.articleURL]
         items = [str(a) for a in items]
@@ -84,7 +92,7 @@ class Colluder:
         self.relationFile.write('\n')
 
     def FindCollisions(self):
-        toConsider = {}
+        toConsider, matchCounts = {}, {}
         print 'Finding collisions...'
         for word in self.index:
             #print 'Word:', word
@@ -94,10 +102,23 @@ class Colluder:
                 for j in range(len(items)):
                     if(i==j):
                         continue
-                    if(not (items[i] in toConsider)):
-                        toConsider[items[i]] = []
-                    toConsider[items[i]].append(items[j])
-                    #print 'Collision:', items[i], items[j]
+                    r1 = self.relations[items[i]][:2]
+                    r2 = self.relations[items[j]][:2]
+                    if(not (r1 in toConsider)):
+                        toConsider[r1] = []
+                    toConsider[r1].append(r2)
+
+                    u1 = self.relations[items[i]][2].articleURL
+                    u2 = self.relations[items[j]][2].articleURL
+                    if(u1==u2):
+                        continue
+                    if(not (u1 in matchCounts)):
+                        matchCounts[u1]=[]
+                    matchCounts[u1].append(u2)
+                    if(not (u2 in matchCounts)):
+                        matchCounts[u2]=[]
+                    matchCounts[u2].append(u1)
+                    
         print 'Cleaning them up...'
         for item in toConsider:
             set, hits = {}, toConsider[item]
@@ -107,12 +128,41 @@ class Colluder:
         print 'Writing them out...'
         toWrite = []
         for item in toConsider:
-            line = [item]+toConsider[item]
-            toWrite.append(' : '.join([str(a) for a in line]))
+            toWrite.append(str(item)+'\n')
+            toConsider[item].sort()
+            for a in toConsider[item]:
+                toWrite.append('\t'+str(a)+'\n')
         f = open('out-collisions.dat', 'w')
-        f.write('\n'.join(toWrite))
+        f.write(''.join(toWrite))
         f.close()
 
+
+        # count up the matches in match counts per item, reverse sort
+        # print them out too.
+        bigSort = []
+        for url in matchCounts:
+            unique = {}
+            for item in matchCounts[url]:
+                if(not item in unique):
+                    unique[item] = 0
+                unique[item] += 1
+            ranked = []
+            for item in unique:
+                ranked.append((unique[item], item))
+            ranked.sort()
+            ranked.reverse()
+            score = ranked[0][0]
+
+            items = [url, ':',
+                     ''.join(['\n\t'+str(a) for a in ranked[:15]])]
+            bigSort.append((score, ' '.join(items)))
+        bigSort.sort()
+        #bigSort.reverse()
+        print '\n'.join([str(a[1]) for a in bigSort])
+
+
+
+        
 
 def main():
     c = Colluder()

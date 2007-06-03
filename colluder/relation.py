@@ -20,9 +20,11 @@ class Relation:
             self.success = True
         self.np1 = items[0]
         self.relation = items[1]
-        self.np2 = items[2]
+        self.np2 = ' '.join(items[2:])
         self.data = dataLine
         self.articleURL = articleURL
+        if(self.articleURL[-1]=='/'):
+            self.articleURL = self.articleURL[:-1]
 
     def ToString(self):
         return ''.join([self.articleURL, ' : ', self.np1, ':',
