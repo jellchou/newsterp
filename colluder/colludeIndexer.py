@@ -20,6 +20,7 @@ class Colluder:
         self.relations = {}
         self.index = {}
         self.relationFile = open('out-relationCountIndex.dat', 'w')
+        self.magicMatchNumber = 2
 
     def Init(self):
         self.stopWorder.Init()
@@ -42,7 +43,7 @@ class Colluder:
             r1, r2, r3, r4 = self.GenerateRelations(rel)
             self.relations[self.relationCount] = (self.relationCount, r2, rel)
             #for r in [r1, r2, r3, r4]:
-            for r in [r4]:
+            for r in [r2]:
                 for word in r.split():
                     if(not(word in self.index)):
                         self.index[word]=[self.relationCount]
@@ -92,9 +93,20 @@ class Colluder:
         self.relationFile.write(' : '.join(items))
         self.relationFile.write('\n')
 
+    def GoodMatch(self, r1, r2):
+        words, count = {}, 0
+        for word in r1.split():
+            words[word] = None
+        for word in r2.split():
+            if(word in words):
+                count+= 1
+        return (count > self.magicMatchNumber)
+
+    # TODO: break down this god-awful method.
     def FindCollisions(self):
         toConsider, matchCounts = {}, {}
         print 'Finding collisions...'
+        print 'Keeping relation-matchs with at least', self.magicMatchNumber, 'words in common.'
         for word in self.index:
             #print 'Word:', word
             items = self.index[word]
@@ -105,6 +117,11 @@ class Colluder:
                         continue
                     r1 = self.relations[items[i]][:2]
                     r2 = self.relations[items[j]][:2]
+                    # TODO: if these don't really match, just continue.
+                    if(not self.GoodMatch(r1[1], r2[1])):
+                        continue
+
+                    
                     if(not (r1 in toConsider)):
                         toConsider[r1] = []
                     toConsider[r1].append(r2)
@@ -152,15 +169,17 @@ class Colluder:
             ranked = []
             for item in unique:
                 ranked.append((unique[item], item))
+            if(len(ranked)==0):
+                continue
             ranked.sort()
             ranked.reverse()
             score = ranked[0][0]
 
-            items = ['key:', url, ':',
-                     ''.join(['\n\t'+str(a[0])+': '+str(a[1]) for a in ranked[:15]])]
+            items = ['key:', url,
+                     ''.join(['\n\t'+str(a[0])+': '+str(a[1]) for a in ranked[:150]])]
             bigSort.append((score, ' '.join(items)))
         bigSort.sort()
-        #bigSort.reverse()
+        bigSort.reverse()
         print '\n\n\n\n'.join([str(a[1]) for a in bigSort])
 
 

@@ -7,6 +7,9 @@ the same topic and which relations are defining them well.
 
 TODO:
 
+10. Filter relation matches < 2 words matching.
+
+
 [ Base Architecture ]
 6. Determine important relations.
    List relations per art pair? 
