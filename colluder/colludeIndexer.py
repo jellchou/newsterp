@@ -41,9 +41,10 @@ class Colluder:
                 rel = self.relationReader.ReadNextRelation()
                 continue
             r1, r2, r3, r4 = self.GenerateRelations(rel)
-            self.relations[self.relationCount] = (self.relationCount, r2, rel)
+            rToUse = r4
+            self.relations[self.relationCount] = (self.relationCount, rToUse, rel)
             #for r in [r1, r2, r3, r4]:
-            for r in [r2]:
+            for r in [rToUse]:
                 for word in r.split():
                     if(not(word in self.index)):
                         self.index[word]=[self.relationCount]

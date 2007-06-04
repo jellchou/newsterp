@@ -52,7 +52,7 @@ class Marker:
             good=self.GetImportantRelations(article)
             print 'Article:', article
             print '\n'.join(['\t'+str(a) for a in good])
-            print '\n'*3
+            print '\n'*2
 
     def GetImportantRelations(self, article):
         """ This needs to mark which relations overlap most. """
@@ -68,7 +68,7 @@ class Marker:
         toSort = [(hits[a], a) for a in hits]
         toSort.sort()
         toSort.reverse()
-        return [str(a) for a in toSort]
+        return [str(a[0])+':'+str(a[1]) for a in toSort]
 
 
     def GoodMatch(self, r1, r2):
