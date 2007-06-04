@@ -9,7 +9,7 @@ import threading
 import util
 import workerPool
 import bayesClassifier
-
+from templateStripper import TemplateStripper
 
 """ This class will download a set the set of links found from
 each RSS feed and for each page guess if it is a news article.

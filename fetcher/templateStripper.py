@@ -69,7 +69,7 @@ class TemplateStripper:
                 window=window[-(self.nLength-1):]
             while(len(window)>0):
                 gram = ' '.join(window)
-                if(self.grams[gram]*2>len(self.docs)):
+                if(self.grams[gram]*3>len(self.docs)):
                     skipCount=len(window)
                     #print 'Skipping:',window[0]
                 elif(skipCount==0):

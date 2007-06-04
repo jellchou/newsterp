@@ -157,8 +157,8 @@ class RssFetcher:
 
 
 def main():
-    pages = open('rss.out').read().split('\n')
-    #pages = open('golden-list.txt').read().split('\n')
+    #pages = open('rss.out').read().split('\n')
+    pages = open('golden-list.txt').read().split('\n')
     f = FetcherPool(pages, True)
     f.run()
 
