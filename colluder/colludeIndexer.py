@@ -157,7 +157,7 @@ class Colluder:
 
         # count up the matches in match counts per item, reverse sort
         # print them out too.
-        bigSort = []
+        bigSort, toWrite = [], []
         for url in matchCounts:
             unique = {}
             for item in matchCounts[url]:
@@ -176,11 +176,15 @@ class Colluder:
             score = ranked[0][0]
 
             items = ['key:', url,
-                     ''.join(['\n\t'+str(a[0])+': '+str(a[1]) for a in ranked[:150]])]
+                     ''.join(['\n\t'+str(a[0])+': '+str(a[1]) for a in ranked])]
+            toWrite.append('\t'.join([url]+[str(a[1]) for a in ranked if a[0]>1]))
             bigSort.append((score, ' '.join(items)))
         bigSort.sort()
         bigSort.reverse()
         print '\n\n\n\n'.join([str(a[1]) for a in bigSort])
+        f = open('out-articleMatches.dat', 'w')
+        f.write('\n'.join(toWrite))
+        f.close()
 
 
 
