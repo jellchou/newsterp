@@ -35,7 +35,10 @@ class Relation:
                         self.relation, ':', self.np2])
 
     def RelationAsText(self):
-        return ' '.join([self.np1, self.relation, self.np2])
+        toReturn = ' '.join([self.np1, self.relation, self.np2])
+        for char in '();.&#$':
+            toReturn = toReturn.replace(char, '')
+        return toReturn
 
     def CanMerge(self, relation):
         """ Can they be merged? """

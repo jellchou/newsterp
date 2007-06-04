@@ -20,7 +20,7 @@ class Colluder:
         self.relations = {}
         self.index = {}
         self.relationFile = open('out-relationCountIndex.dat', 'w')
-        self.magicMatchNumber = 2
+        self.magicMatchNumber = 3
 
     def Init(self):
         self.stopWorder.Init()
@@ -175,6 +175,9 @@ class Colluder:
             ranked.sort()
             ranked.reverse()
             score = ranked[0][0]
+
+            # Filter out aritcles with more that 150 matches!
+            ranked = [a for a in ranked if a[0]<150]
 
             items = ['key:', url,
                      ''.join(['\n\t'+str(a[0])+': '+str(a[1]) for a in ranked])]
