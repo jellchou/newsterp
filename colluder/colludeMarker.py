@@ -12,6 +12,7 @@ from relationReader import RelationReader
 
 class Marker:
     def __init__(self):
+        #self.inputFileName = 'relations2.dat'
         self.inputFileName = 'relations3.dat'
         self.relationReader = RelationReader()
         self.stopWorder = stopWorder.StopWorder()
@@ -56,8 +57,14 @@ class Marker:
 
     def MarkAllGoodRelations(self):
         print 'Marking all good relations...'
-        toSort = []
+        toSort, toWrite = [], []
+        count, oldPercent = 0, None
         for article in self.articleMatches:
+            count += 1
+            percent=int(100*float(count) / len(self.articleMatches))
+            if(percent != oldPercent):
+                print str(percent)+'% done.'
+                oldPercent = percent
             maxCount, matches = self.GetImportantRelations(article)
             toSort.append((maxCount, article, matches))
 
@@ -65,9 +72,13 @@ class Marker:
         toSort.reverse()
         for item in toSort:
             count, article, matches = item
-            print 'Article:', article
-            print '\n'.join(['\t'+str(a) for a in matches])
-            print '\n'*2
+            toWrite.append('Article: '+str(article))
+            toWrite.append('\n'.join(['\t'+str(a) for a in matches]))
+            toWrite.append('\n'*2)
+        f = open('out-finalOutput.dat', 'w')
+        f.write('\n'.join(toWrite))
+        f.close()
+        print '\n'.join(toWrite)
 
     def GetImportantRelations(self, article):
         """ This needs to mark which relations overlap most. """
