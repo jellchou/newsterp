@@ -21,7 +21,7 @@ class Relation:
         self.relation = text
         end2 = dataLine.find('hrs:', end)
         self.sentenceNumber = dataLine[end+8:end2]
-        self.originalSentence = dataLine[end2:-1]
+        self.originalSentence = dataLine[end2+4:-2]
         self.articleURL = articleURL
         #print 'Article:', self.articleURL
         if(self.articleURL[-1]=='/'):
