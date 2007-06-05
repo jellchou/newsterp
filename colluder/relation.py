@@ -22,7 +22,7 @@ class Relation:
         end2 = dataLine.find('hrs:', end)
         self.sentenceNumber = dataLine[end+8:end2]
         self.originalSentence = dataLine[end2+4:-2]
-        self.articleURL = articleURL
+        self.articleURL = articleURL.replace('"', '')
         #print 'Article:', self.articleURL
         if(self.articleURL[-1]=='/'):
             self.articleURL = self.articleURL[:-1]
