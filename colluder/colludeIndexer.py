@@ -57,7 +57,7 @@ class Colluder:
 
 
     def GenerateRelations(self, relation):
-        r1 = relation.RelationAsText()
+        r1 = relation.RelationAsText().lower()
         #print 'R1:', r1
         r2 = self.RemoveStopWords(r1)
         #print 'R2:', r2
@@ -118,6 +118,8 @@ class Colluder:
                 print str(percent)+'% done.'
                 oldPercent = percent
             print 'Word:', word
+            if(len(word)<2):
+                continue
             items = self.index[word]
             for i in range(len(items)):
                 for j in range(len(items)):
