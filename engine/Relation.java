@@ -6,36 +6,68 @@
  */
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Relation {
 	public Relation() {
-		mSubject = mObject = null;
+		mSubject = null;
+		mObjects = new Entity[0];
 		mPredicate = null;
+		mAnnotations = new LinkedList<Annotation>();
 	}
 
-	public Relation(Entity aSubject, Predicate aPredicate, Entity aObject,
-			Entity[] aAnnotations) {
+	public Relation(Entity aSubject, Predicate aPredicate, Entity[] aObjects,
+			Annotation[] aAnnotations) {
 		mSubject = aSubject;
-		mObject = aObject;
+		mObjects = aObjects;
 		mPredicate = aPredicate;
-		mAnnotations = aAnnotations;
+		mAnnotations = new LinkedList<Annotation>(Arrays.asList(aAnnotations));
+	}
+
+	public void annotate(Annotation aAnno) {
+		mAnnotations.add(aAnno);
+	}
+
+	private String objsToSerialRep() {
+		String rv = "";
+
+		if (mObjects == null || mObjects.length == 0) return "";
+
+		for (Entity obj : mObjects) {
+			rv += "," + obj.toSerialRep();
+		}
+
+		return rv.substring(1);
+	}
+
+	private String annosToSerialRep() {
+		String rv = "";
+
+		if (mAnnotations == null || mAnnotations.size() == 0) return "";
+
+		for (Annotation anno : mAnnotations) {
+			rv += "," + anno.toSerialRep();
+		}
+
+		return rv.substring(1);
 	}
 
 	public String toString() {
 		if (mSubject == null || mPredicate == null) return "(null relation)";
 
-		return mSubject + "." + mPredicate + "(" + ((mObject != null) ? mObject : "") + ")";
+		return mSubject + "." + mPredicate + "(" + objsToSerialRep() + 
+			")";
 	}
 
 	public String toSerialRep() {
 		if (mSubject == null || mPredicate == null) return ";\n";
 		return "(" + mSubject.toSerialRep() + "," + mPredicate.toSerialRep() + 
-			"," + ((mObject != null) ? mObject.toSerialRep() : "") + ")+" + 
-			Arrays.toString(mAnnotations);
+			"," + objsToSerialRep() + ")+[" + annosToSerialRep() + "]";
 	}
 
-    private Entity mSubject, mObject;
-	private Entity[] mAnnotations;
+    private Entity mSubject;
+	private Entity[] mObjects;
+	private LinkedList<Annotation> mAnnotations;
 
     private Predicate mPredicate;	        
 }

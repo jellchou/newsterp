@@ -10,8 +10,22 @@ public class BaseEntity implements Entity {
 		mWords = aWords;
 	}
 
+	public boolean equals(Object aOther) {
+		if (!(aOther instanceof BaseEntity)) return false;
+
+		BaseEntity other = (BaseEntity)aOther;
+
+		if (mWords.length != other.mWords.length) return false;
+
+		for (int i = 0; i < mWords.length; i++) {
+			if (!mWords[i].equals(other.mWords[i])) return false;
+		}
+
+		return true;
+	}
+
 	public String toString() {
-		if (mWords == null) return "(null)";
+		if (mWords == null || mWords.length == 0) return "(null)";
 
 		String rv = "";
 
@@ -23,7 +37,7 @@ public class BaseEntity implements Entity {
 	}
 
 	public String toSerialRep() {		
-		if (mWords == null) return "(null)";
+		if (mWords == null || mWords.length == 0) return "(null)";
 
 		String rv = "";
 

@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class Phase1RelationExtractor implements RelationExtractor {
 	public Phase1RelationExtractor() {}
 
-	private Relation[] extractFromClause(TaggedSentence.Chunk[] aChunks) {
+	Relation[] extractFromClause(TaggedSentence.Chunk[] aChunks) {
 		ArrayList<Relation> main_rels = new ArrayList<Relation>();
 		TaggedSentence.Chunk subj = null, pred = null, obj = null;
 
@@ -50,11 +50,19 @@ public class Phase1RelationExtractor implements RelationExtractor {
 					main_rels.addAll(Arrays.asList(subord_rels));
 				} else {
 					for (Relation subord_rel : subord_rels) {
+						Entity[] objs;
+
+						if (obj != null) {
+							objs = new Entity[1];
+							objs[0] = new RelationEntity(subord_rel);
+						} else {
+							objs = new Entity[0];
+						}
+
 						main_rels.add(new Relation(
 							new BaseEntity(subj.getWords()),
 							new Predicate(pred.getWords()),
-							new RelationEntity(subord_rel), 
-							new Entity[0])); 
+							objs, new Annotation[0])); 
 					}
 				}
 
@@ -68,12 +76,21 @@ public class Phase1RelationExtractor implements RelationExtractor {
 				/* conjunction phrase; if there's a full sentence (subject and
 				   predicate) already, then assume that the conjoined objects
 				   are entire sentences. */
-				if (subj != null && obj != null)
+				if (subj != null && obj != null) {
+					Entity[] objs;
+
+					if (obj == null) {
+						objs = new Entity[0];
+					} else {
+						objs = new Entity[1];
+						objs[0] = new BaseEntity(obj.getWords());
+					}
+
 					main_rels.add(new Relation(
 						new BaseEntity(subj.getWords()),
 						new Predicate(pred.getWords()),
-						(obj != null) ? new BaseEntity(obj.getWords()) : null, 
-						new Entity[0]));
+						objs, new Annotation[0]));
+				}
 
 				subj = null; pred = null; obj = null;
 			}
@@ -81,11 +98,19 @@ public class Phase1RelationExtractor implements RelationExtractor {
 
 		/* if a relation ran to the end, dump it into main_rels. */
 		if (subj != null && pred != null) {
+			Entity[] objs;
+
+			if (obj != null) {
+				objs = new Entity[1];
+				objs[0] = new BaseEntity(obj.getWords());
+			} else {
+				objs = new Entity[0];
+			}
+
 			main_rels.add(new Relation(
 				new BaseEntity(subj.getWords()),
 				new Predicate(pred.getWords()),
-				(obj != null) ? new BaseEntity(obj.getWords()) : null, 
-				new Entity[0]));
+				objs, new Annotation[0]));
 		}
 
 		return main_rels.toArray(new Relation[0]);

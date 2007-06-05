@@ -21,6 +21,8 @@ public class Main {
 		System.err.println(
 			"Usage: java Main [-nlp <dir>] [-wn <dir>] [-nnp <n>] <file1>\n" +
 				"\t\t<file2> ... <fileN>\n" +
+			"\t-p1:\t use phase 1 extractor\n" +
+			"\t-p2:\t use phase 2 extractor (default)\n" +
 			"\t-nlp <dir>:\t OpenNLP Tools root directory\n" +
 			"\t-wn <dir>:\t WordNet dictionary location (absolute path)\n" +
 			"\t-nnp <n>: Number of most-popular NPs to print\n"
@@ -42,6 +44,7 @@ public class Main {
 				wn_path = new File(pwd).toURL();
 			}
 		} catch (Exception e) {}
+		int extr_phase = 2;
 
 		while (idx < aArgs.length) {
 			if (aArgs[idx].equals("-nlp")) {
@@ -60,6 +63,14 @@ public class Main {
 			} else if (aArgs[idx].equals("-nnp")) {
 				numToShow = Integer.parseInt(aArgs[idx+1]);
 				idx += 2;
+				continue;
+			} else if (aArgs[idx].equals("-p1")) {
+				extr_phase = 1;
+				idx++;
+				continue;
+			} else if (aArgs[idx].equals("-p2")) {
+				extr_phase = 2;
+				idx++;
 				continue;
 			} else if (aArgs[idx].equals("-h")) {
 				usage();
@@ -116,7 +127,13 @@ public class Main {
 			new HashMap<TaggedSentence.Chunk, Integer>();
 		HashMap<TaggedSentence.Chunk, Integer> vp_pop_index = 
 			new HashMap<TaggedSentence.Chunk, Integer>();
-		RelationExtractor re = new Phase1RelationExtractor();
+		RelationExtractor re;
+
+		if (extr_phase == 1) {
+			re = new Phase1RelationExtractor();
+		} else {
+			re = new Phase2RelationExtractor();
+		}
 
 		int a_i = 0, s_i = 0;
 
@@ -134,6 +151,7 @@ public class Main {
 					/*System.out.println("Extracted relations for article " + a_i + 
 						", sentence " + s_i + ": " + Arrays.toString(r));*/
 					for (Relation rel : r) {
+						rel.annotate(new SentenceNoAnnotation(s_i));
 						set.add(rel);
 					}
 				}
@@ -231,7 +249,8 @@ public class Main {
 
 		// dump relation sets to a file.
 		try {
-			FileWriter rsf = new FileWriter("relations-phase1.dat");
+			FileWriter rsf = new FileWriter("relations-phase" + extr_phase + 
+				".dat");
 
 			for (RelationSet rs : rel_sets) {
 				rsf.write(rs.toSerialRep());
