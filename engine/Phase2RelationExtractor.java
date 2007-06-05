@@ -103,8 +103,12 @@ public class Phase2RelationExtractor implements RelationExtractor {
 		Dictionary dict = NLPToolkitManager.getInstance().getDictionary();
 
 		for (String stem : stems) {
-			IIndexWord idx = dict.getIndexWord(stem, 
-				pred_core.getPOS().getWNPOS());
+			edu.mit.jwi.item.PartOfSpeech pos =
+				pred_core.getPOS().getWNPOS();
+
+			if (pos == null) continue;
+
+			IIndexWord idx = dict.getIndexWord(stem, pos);
 
 			if (idx != null) {
 				for (IWordID id : idx.getWordIDs()) {
