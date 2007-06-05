@@ -33,8 +33,8 @@ class Relation:
                 self.articleURL = self.articleURL[:-1]
         except:
             self.articleURL = ''
-            print 'Line:', dataLine
-            print 'ArticleURL:', articleURL
+            #print 'Line:', dataLine
+            #print 'ArticleURL:', articleURL
 
     def ToString(self):
         return ''.join([self.articleURL, ' : ', self.relation])
