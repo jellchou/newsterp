@@ -28,8 +28,13 @@ class Relation:
         self.originalSentence = dataLine[end2+4:-2]
         self.articleURL = articleURL.replace('"', '')
         #print 'Article:', self.articleURL
-        if(self.articleURL[-1]=='/'):
-            self.articleURL = self.articleURL[:-1]
+        try:
+            if(self.articleURL[-1]=='/'):
+                self.articleURL = self.articleURL[:-1]
+        except:
+            self.articleURL = ''
+            print 'Line:', dataLine
+            print 'ArticleURL:', articleURL
 
     def ToString(self):
         return ''.join([self.articleURL, ' : ', self.relation])

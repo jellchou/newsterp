@@ -14,14 +14,14 @@ class Marker:
     def __init__(self):
         #self.inputFileName = 'relations2.dat'
         #self.inputFileName = 'relations3.dat'
-        #self.inputFileName = 'eval-relations-phase2.dat'
-        self.inputFileName = '../ok-relations-phase1.dat'
+        self.inputFileName = 'eval-relations-phase2.dat'
+        #self.inputFileName = '../ok-relations-phase1.dat'
         self.relationReader = RelationReader()
         self.stopWorder = stopWorder.StopWorder()
         self.stemmer = porterStemmer.PorterStemmer()
         self.articleMatches = {}
         self.articleToRelation = {}
-        self.magicMatchNumber = 2
+        self.magicMatchNumber = 1
         self.maxSentencesPerSummary = 6
 
     def Init(self):
@@ -42,20 +42,20 @@ class Marker:
             if(len(line)<3):
                 continue
             items = line.split('\t')
-            key, rest = items[0], items[1:]
+            key, rest = items[0].strip(), items[1:]
             self.articleMatches[key] = rest
 
     def GetArticleToRelations(self):
         print 'Getting article to relation map...'
         rel = self.relationReader.ReadNextRelation()
         while(rel != None):
-            url = rel.articleURL
-            relationText = rel.RelationAsText().lower() # stopword?
+            url = rel.articleURL.strip()
+            relationText = rel.RelationAsText().lower()
             relationText = self.stopWorder.CleanText(relationText)
             relationText = self.stemmer.stem(relationText,0,len(relationText)-1)
             if(not (url in self.articleToRelation)):
                 self.articleToRelation[url] = []
-                dataItem  = (rel.SentenceNumber(), rel.RelationSentence())
+            dataItem  = (rel.SentenceNumber(), rel.RelationSentence())
             self.articleToRelation[url].append((relationText, dataItem))
             rel = self.relationReader.ReadNextRelation()
 
@@ -88,6 +88,7 @@ class Marker:
         """ This needs to mark which relations overlap most. """
         hits, maxCount = {}, 0
         # Loops should probably be structure the other way.
+        #print '\n\n\nArticle:', article
         for rp1 in self.articleToRelation[article]:
             r1, r1orig = rp1
             relationCount = 0
@@ -96,13 +97,19 @@ class Marker:
                     r2, r2orig = rp2
                     relationCount += 1
                     if(self.GoodMatch(r1, r2)):
+                        #print '\tMatch:', r1, ':::', r2
                         if(not(r1orig in hits)):
+                            #print 'Adding:', r1orig
                             hits[r1orig] = 0
+                        #print 'Incrementing:', r1orig
                         hits[r1orig] += 1
+                    #else:
+                    #    print '\tMiss:', r1,':::', r2
             if(r1orig in hits):
                 #hits[r1orig] = float(hits[r1orig]) / relationCount
                 if(hits[r1orig] > maxCount):
                     maxCount = hits[r1orig]
+        #print 'Hits:', hits
         toSort = [(hits[a], a) for a in hits]
         toSort.sort()
         toSort.reverse()
@@ -116,9 +123,9 @@ class Marker:
 
     def GoodMatch(self, r1, r2):
         words, count = {}, 0
-        for word in r1.split():
+        for word in r1.lower().split():
             words[word] = None
-        for word in r2.split():
+        for word in r2.lower().split():
             if(word in words):
                 count += 1
         return (count > self.magicMatchNumber)

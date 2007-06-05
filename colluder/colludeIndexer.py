@@ -15,8 +15,8 @@ class Colluder:
         #self.inputFileName = '../engine/relations.dat'
         #self.inputFileName = 'relations2.dat'
         #self.inputFileName = 'relations3.dat'
-        #self.inputFileName = 'eval-relations-phase2.dat'
-        self.inputFileName = '../ok-relations-phase1.dat'
+        self.inputFileName = 'eval-relations-phase2.dat'
+        #self.inputFileName = '../ok-relations-phase1.dat'
         self.relationReader = RelationReader()
         self.relationCount = 0
         self.relations = {}
@@ -160,9 +160,9 @@ class Colluder:
             toConsider[item].sort()
             for a in toConsider[item]:
                 toWrite.append('\t'+str(a)+'\n')
-        #f = open('out-collisions.dat', 'w')
-        #f.write(''.join(toWrite))
-        #f.close()
+        f = open('out-collisions.dat', 'w')
+        f.write(''.join(toWrite))
+        f.close()
 
 
         # count up the matches in match counts per item, reverse sort
