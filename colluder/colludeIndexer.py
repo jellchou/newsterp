@@ -15,7 +15,8 @@ class Colluder:
         #self.inputFileName = '../engine/relations.dat'
         #self.inputFileName = 'relations2.dat'
         #self.inputFileName = 'relations3.dat'
-        self.inputFileName = 'eval-relations-phase2.dat'
+        #self.inputFileName = 'eval-relations-phase2.dat'
+        self.inputFileName = '/homes/iws/jhebert/ok-relations-phase1.dat'
         self.relationReader = RelationReader()
         self.relationCount = 0
         self.relations = {}
@@ -109,7 +110,13 @@ class Colluder:
         toConsider, matchCounts = {}, {}
         print 'Finding collisions...'
         print 'Keeping relation-matchs with at least', self.magicMatchNumber, 'words in common.'
+        count, oldPercent = 0, None
         for word in self.index:
+            count +=1
+            percent=int(100*float(count) / len(self.index))
+            if(percent != oldPercent):
+                print str(percent)+'% done.'
+                oldPercent = percent
             #print 'Word:', word
             items = self.index[word]
             #print 'Items:', items
@@ -119,7 +126,7 @@ class Colluder:
                         continue
                     r1 = self.relations[items[i]][:2]
                     r2 = self.relations[items[j]][:2]
-                    # TODO: if these don't really match, just continue.
+                    # if these don't really match, just continue.
                     if(not self.GoodMatch(r1[1], r2[1])):
                         continue
 

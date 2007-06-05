@@ -15,6 +15,7 @@ class Marker:
         #self.inputFileName = 'relations2.dat'
         #self.inputFileName = 'relations3.dat'
         self.inputFileName = 'eval-relations-phase2.dat'
+        self.inputFileName = '/homes/iws/jhebert/ok-relations-phase1.dat'
         self.relationReader = RelationReader()
         self.stopWorder = stopWorder.StopWorder()
         self.stemmer = porterStemmer.PorterStemmer()
