@@ -117,7 +117,7 @@ class Colluder:
             if(percent != oldPercent):
                 print str(percent)+'% done.'
                 oldPercent = percent
-            print 'Word:', word
+            #print 'Word:', word
             if(len(word)<2):
                 continue
             items = self.index[word]

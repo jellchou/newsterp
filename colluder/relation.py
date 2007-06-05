@@ -20,7 +20,11 @@ class Relation:
             text = text.replace(char, ' ')
         self.relation = text
         end2 = dataLine.find('hrs:', end)
-        self.sentenceNumber = dataLine[end+8:end2]
+        try:
+            self.sentenceNumber = int(dataLine[end+8:end2-1])
+        except:
+            print 'Failed parsing:', dataLine
+            print 'Got it down to:', dataLine[end+8:end2]
         self.originalSentence = dataLine[end2+4:-2]
         self.articleURL = articleURL.replace('"', '')
         #print 'Article:', self.articleURL
@@ -38,3 +42,6 @@ class Relation:
 
     def RelationSentence(self):
         return self.originalSentence
+
+    def SentenceNumber(self):
+        return self.sentenceNumber

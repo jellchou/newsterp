@@ -14,7 +14,7 @@ class Marker:
     def __init__(self):
         #self.inputFileName = 'relations2.dat'
         #self.inputFileName = 'relations3.dat'
-        self.inputFileName = 'eval-relations-phase2.dat'
+        #self.inputFileName = 'eval-relations-phase2.dat'
         self.inputFileName = '../ok-relations-phase1.dat'
         self.relationReader = RelationReader()
         self.stopWorder = stopWorder.StopWorder()
@@ -22,6 +22,7 @@ class Marker:
         self.articleMatches = {}
         self.articleToRelation = {}
         self.magicMatchNumber = 2
+        self.maxSentencesPerSummary = 6
 
     def Init(self):
         print 'Initing CollusionMarker...'
@@ -54,7 +55,8 @@ class Marker:
             relationText = self.stemmer.stem(relationText,0,len(relationText)-1)
             if(not (url in self.articleToRelation)):
                 self.articleToRelation[url] = []
-            self.articleToRelation[url].append((relationText, rel.RelationSentence()))
+                dataItem  = (rel.SentenceNumber(), rel.RelationSentence())
+            self.articleToRelation[url].append((relationText, dataItem))
             rel = self.relationReader.ReadNextRelation()
 
     def MarkAllGoodRelations(self):
@@ -104,7 +106,12 @@ class Marker:
         toSort = [(hits[a], a) for a in hits]
         toSort.sort()
         toSort.reverse()
-        return (maxCount, [str(a[0])+': '+str(a[1]) for a in toSort])
+        # Take only the most important seeming sentences.
+        toSort = toSort[:self.maxSentencesPerSummary]
+        # Then sort these sentences by their sentence number in the article.
+        summarySentences = [(a[1][0], (a[0], a[1][1])) for a in toSort]
+        summarySentences.sort()
+        return (maxCount, [str(a[1][0])+': '+str(a[1][1]) for a in summarySentences])
 
 
     def GoodMatch(self, r1, r2):
