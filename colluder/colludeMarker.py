@@ -13,7 +13,8 @@ from relationReader import RelationReader
 class Marker:
     def __init__(self):
         #self.inputFileName = 'relations2.dat'
-        self.inputFileName = 'relations3.dat'
+        #self.inputFileName = 'relations3.dat'
+        self.inputFileName = 'eval-relations-phase2.dat'
         self.relationReader = RelationReader()
         self.stopWorder = stopWorder.StopWorder()
         self.stemmer = porterStemmer.PorterStemmer()
@@ -52,7 +53,7 @@ class Marker:
             relationText = self.stemmer.stem(relationText,0,len(relationText)-1)
             if(not (url in self.articleToRelation)):
                 self.articleToRelation[url] = []
-            self.articleToRelation[url].append((relationText, rel.RelationAsText()))
+            self.articleToRelation[url].append((relationText, rel.RelationSentence()))
             rel = self.relationReader.ReadNextRelation()
 
     def MarkAllGoodRelations(self):

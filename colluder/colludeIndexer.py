@@ -14,7 +14,8 @@ class Colluder:
         self.stemmer = porterStemmer.PorterStemmer()
         #self.inputFileName = '../engine/relations.dat'
         #self.inputFileName = 'relations2.dat'
-        self.inputFileName = 'relations3.dat'
+        #self.inputFileName = 'relations3.dat'
+        self.inputFileName = 'eval-relations-phase2.dat'
         self.relationReader = RelationReader()
         self.relationCount = 0
         self.relations = {}

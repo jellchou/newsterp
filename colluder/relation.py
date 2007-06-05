@@ -12,40 +12,29 @@ __author__ = 'jhebert@cs.washington.edu (Jack Hebert)'
 
 class Relation:
     def __init__(self, dataLine, articleURL):
-        items = dataLine.split(',')
-        if(len(items)<3):
-            self.success = False
-            self.np1 = ''
-            self.relation = ''
-            self.np2 = ''
-            self.articleURL = ''
-            return
-        else:
-            self.success = True
-        self.np1 = items[0]
-        self.relation = items[1]
-        self.np2 = ' '.join(items[2:])
-        self.data = dataLine
+        end = dataLine.find(')+[snum:')
+        self.success = not (end==-1)
+            
+        text = dataLine[:end]
+        for char in ',.()[]':
+            text = text.replace(char, ' ')
+        self.relation = text
+        end2 = dataLine.find('hrs:', end)
+        self.sentenceNumber = dataLine[end+8:end2]
+        self.originalSentence = dataLine[end2:-1]
         self.articleURL = articleURL
+        #print 'Article:', self.articleURL
         if(self.articleURL[-1]=='/'):
             self.articleURL = self.articleURL[:-1]
 
     def ToString(self):
-        return ''.join([self.articleURL, ' : ', self.np1, ':',
-                        self.relation, ':', self.np2])
+        return ''.join([self.articleURL, ' : ', self.relation])
 
     def RelationAsText(self):
-        toReturn = ' '.join([self.np1, self.relation, self.np2])
+        toReturn = self.relation
         for char in '();.&#$':
             toReturn = toReturn.replace(char, '')
         return toReturn
 
-    def CanMerge(self, relation):
-        """ Can they be merged? """
-        return False
-
-
-    def Merge(self):
-        """ Merge these two articles. Return a new
-        article. """
-        pass
+    def RelationSentence(self):
+        return self.originalSentence
