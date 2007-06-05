@@ -152,6 +152,8 @@ public class Main {
 						", sentence " + s_i + ": " + Arrays.toString(r));*/
 					for (Relation rel : r) {
 						rel.annotate(new SentenceNoAnnotation(s_i));
+						rel.annotate(new HumanReadableSentenceAnnotation(
+							s.humanReadableSentence()));
 						set.add(rel);
 					}
 				}

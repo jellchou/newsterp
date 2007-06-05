@@ -172,6 +172,18 @@ public class TaggedSentence {
 		return true;
 	}
 
+	public String humanReadableSentence() {
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < mSentence.length; i++) {
+			sb.append(' ');
+			sb.append(mSentence[i].getWord());
+		}
+
+		sb.deleteCharAt(0);
+		return sb.toString();
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
