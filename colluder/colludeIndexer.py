@@ -117,9 +117,8 @@ class Colluder:
             if(percent != oldPercent):
                 print str(percent)+'% done.'
                 oldPercent = percent
-            #print 'Word:', word
+            print 'Word:', word
             items = self.index[word]
-            #print 'Items:', items
             for i in range(len(items)):
                 for j in range(len(items)):
                     if(i==j):
@@ -159,9 +158,9 @@ class Colluder:
             toConsider[item].sort()
             for a in toConsider[item]:
                 toWrite.append('\t'+str(a)+'\n')
-        f = open('out-collisions.dat', 'w')
-        f.write(''.join(toWrite))
-        f.close()
+        #f = open('out-collisions.dat', 'w')
+        #f.write(''.join(toWrite))
+        #f.close()
 
 
         # count up the matches in match counts per item, reverse sort
