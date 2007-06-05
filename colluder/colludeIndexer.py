@@ -194,7 +194,7 @@ class Colluder:
             bigSort.append((score, ' '.join(items)))
         bigSort.sort()
         bigSort.reverse()
-        print '\n\n\n\n'.join([str(a[1]) for a in bigSort])
+        #print '\n\n\n\n'.join([str(a[1]) for a in bigSort])
         f = open('out-articleMatches.dat', 'w')
         f.write('\n'.join(toWrite))
         f.close()
