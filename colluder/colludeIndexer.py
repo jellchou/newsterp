@@ -22,7 +22,7 @@ class Colluder:
         self.relations = {}
         self.index = {}
         self.relationFile = open('out-relationCountIndex.dat', 'w')
-        self.magicMatchNumber = 3
+        self.magicMatchNumber = 1
 
     def Init(self):
         self.stopWorder.Init()
