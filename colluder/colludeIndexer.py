@@ -16,7 +16,7 @@ class Colluder:
         #self.inputFileName = 'relations2.dat'
         #self.inputFileName = 'relations3.dat'
         #self.inputFileName = 'eval-relations-phase2.dat'
-        self.inputFileName = '/homes/iws/jhebert/ok-relations-phase1.dat'
+        self.inputFileName = '../ok-relations-phase1.dat'
         self.relationReader = RelationReader()
         self.relationCount = 0
         self.relations = {}
